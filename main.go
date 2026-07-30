@@ -18,13 +18,14 @@ func main() {
 	// Create an instance of the app structure
 	app := bindings.NewApp()
 
+	// Set up database
 	storage, err := database.NewStorage()
 	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
+		log.Fatalf("Failed to initialize database: %v\n", err)
 	}
 	defer func(storage *database.Storage) {
 		if err := storage.Close(); err != nil {
-			log.Fatalf("Failed to close database: %v", err)
+			log.Fatalf("Failed to close database: %v\n", err)
 		}
 	}(storage)
 

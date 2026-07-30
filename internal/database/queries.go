@@ -57,7 +57,7 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Printf("Error closing rows: %v", err)
+			log.Printf("Error closing rows: %v\n", err)
 		}
 	}()
 
