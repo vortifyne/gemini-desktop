@@ -95,7 +95,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[200px] sm:max-w-xs">Выберите чат</h2>
+                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[150px] sm:max-w-xs">Выберите чат</h2>
                 <button id="btn-export-chat" class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors shrink-0" title="Экспорт чата (Ctrl+E)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -103,7 +103,19 @@
                 </button>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-xs text-zinc-400" title="Размер шрифта чата">
+                    <button id="btn-font-dec" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">A-</button>
+                    <span id="font-size-val" class="font-mono text-[11px] px-1 text-zinc-300">15px</span>
+                    <button id="btn-font-inc" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">A+</button>
+                </div>
+
+                <div class="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-xs text-zinc-400" title="Масштаб интерфейса">
+                    <button id="btn-zoom-dec" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">-</button>
+                    <span id="zoom-val" class="font-mono text-[11px] px-1 text-zinc-300">100%</span>
+                    <button id="btn-zoom-inc" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">+</button>
+                </div>
+
                 <div id="net-status" class="flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="net-status-text">Онлайн</span>
@@ -135,24 +147,33 @@
 
         <div class="p-4 border-t border-zinc-800/60 bg-zinc-950">
             <div class="max-w-4xl mx-auto">
-                <form id="message-form" class="relative flex items-end gap-2 bg-zinc-900 border border-zinc-800 rounded-2xl p-2 focus-within:border-zinc-700 transition-colors shadow-lg" onsubmit="return false;">
-            <textarea
-                    id="message-input"
-                    rows="1"
-                    placeholder="Спроси о чём угодно..."
-                    class="flex-1 bg-transparent px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-48 custom-scrollbar text-sm leading-relaxed"
-            ></textarea>
-                    <button
-                            type="submit"
-                            id="btn-send"
-                            disabled
-                            class="p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md"
-                            title="Отправить"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
-                        </svg>
-                    </button>
+                <form id="message-form" class="relative flex flex-col bg-zinc-900 border border-zinc-800 rounded-2xl p-2 focus-within:border-zinc-700 transition-colors shadow-lg" onsubmit="return false;">
+                    <div class="flex items-center gap-1 mb-1.5 px-1 border-b border-zinc-800/50 pb-1.5">
+                        <button type="button" id="fmt-bold" class="p-1 px-2 text-xs font-bold text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Жирный">B</button>
+                        <button type="button" id="fmt-italic" class="p-1 px-2 text-xs italic text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Курсив">I</button>
+                        <button type="button" id="fmt-code" class="p-1 px-2 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Код">&lt;/&gt;</button>
+                        <button type="button" id="fmt-list" class="p-1 px-2 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Список">- [ ]</button>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                        <textarea
+                                id="message-input"
+                                rows="1"
+                                placeholder="Спроси о чём угодно..."
+                                class="flex-1 bg-transparent px-3 py-1.5 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-48 custom-scrollbar text-sm leading-relaxed"
+                        ></textarea>
+                        <button
+                                type="submit"
+                                id="btn-send"
+                                disabled
+                                class="p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md"
+                                title="Отправить"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
+                            </svg>
+                        </button>
+                    </div>
                 </form>
                 <div class="flex items-center justify-between text-[10px] text-zinc-600 mt-2 px-1">
                     <span>Gemini может допускать ошибки. Проверяйте важную информацию.</span>

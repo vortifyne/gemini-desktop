@@ -10,6 +10,8 @@ const state = {
     isMockMode: false,
     currentLoaderId: null,
     charBlurTimer: null,
+    chatFontSize: parseInt(localStorage.getItem('chatFontSize') || '15'),
+    uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
 };
 
 const mockResponses = [
@@ -87,6 +89,14 @@ const DOM = {
     currentChatTitle: document.getElementById('current-chat-title'),
     btnExportChat: document.getElementById('btn-export-chat'),
 
+    btnFontDec: document.getElementById('btn-font-dec'),
+    btnFontInc: document.getElementById('btn-font-inc'),
+    fontSizeVal: document.getElementById('font-size-val'),
+
+    btnZoomDec: document.getElementById('btn-zoom-dec'),
+    btnZoomInc: document.getElementById('btn-zoom-inc'),
+    zoomVal: document.getElementById('zoom-val'),
+
     exportModal: document.getElementById('export-modal'),
     btnCloseExportModal: document.getElementById('btn-close-export-modal'),
     btnExportMd: document.getElementById('btn-export-md'),
@@ -99,6 +109,11 @@ const DOM = {
     messageInput: document.getElementById('message-input'),
     charCounter: document.getElementById('char-counter'),
     btnSend: document.getElementById('btn-send'),
+
+    fmtBold: document.getElementById('fmt-bold'),
+    fmtItalic: document.getElementById('fmt-italic'),
+    fmtCode: document.getElementById('fmt-code'),
+    fmtList: document.getElementById('fmt-list'),
 
     toast: document.getElementById('toast'),
     toastBox: document.getElementById('toast-box'),
@@ -166,6 +181,38 @@ function getCharWord(count) {
     return 'символов';
 }
 
+function applyChatFontSize() {
+    DOM.messagesContainer.style.fontSize = `${state.chatFontSize}px`;
+    DOM.fontSizeVal.textContent = `${state.chatFontSize}px`;
+    localStorage.setItem('chatFontSize', state.chatFontSize);
+}
+
+function applyUiScale() {
+    document.body.style.zoom = `${state.uiScale}%`;
+    DOM.zoomVal.textContent = `${state.uiScale}%`;
+    localStorage.setItem('uiScale', state.uiScale);
+}
+
+function applyFormatting(before, after = '') {
+    const input = DOM.messageInput;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const val = input.value;
+    const selected = val.substring(start, end);
+
+    const replacement = before + selected + after;
+    input.value = val.substring(0, start) + replacement + val.substring(end);
+
+    input.focus();
+    if (selected.length > 0) {
+        input.setSelectionRange(start, start + replacement.length);
+    } else {
+        input.setSelectionRange(start + before.length, start + before.length);
+    }
+
+    input.dispatchEvent(new Event('input'));
+}
+
 function updateNetStatus() {
     if (navigator.onLine) {
         DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full';
@@ -216,6 +263,39 @@ window.addEventListener('keydown', (e) => {
         DOM.btnExportChat.click();
     }
 });
+
+DOM.btnFontDec.addEventListener('click', () => {
+    if (state.chatFontSize > 12) {
+        state.chatFontSize -= 1;
+        applyChatFontSize();
+    }
+});
+
+DOM.btnFontInc.addEventListener('click', () => {
+    if (state.chatFontSize < 24) {
+        state.chatFontSize += 1;
+        applyChatFontSize();
+    }
+});
+
+DOM.btnZoomDec.addEventListener('click', () => {
+    if (state.uiScale > 50) {
+        state.uiScale -= 10;
+        applyUiScale();
+    }
+});
+
+DOM.btnZoomInc.addEventListener('click', () => {
+    if (state.uiScale < 200) {
+        state.uiScale += 10;
+        applyUiScale();
+    }
+});
+
+DOM.fmtBold.addEventListener('click', () => applyFormatting('**', '**'));
+DOM.fmtItalic.addEventListener('click', () => applyFormatting('*', '*'));
+DOM.fmtCode.addEventListener('click', () => applyFormatting('`', '`'));
+DOM.fmtList.addEventListener('click', () => applyFormatting('- '));
 
 DOM.btnToggleSidebar.addEventListener('click', () => {
     DOM.sidebar.classList.toggle('collapsed');
@@ -387,6 +467,9 @@ DOM.btnLogout.addEventListener('click', () => {
 
 async function initChatApp() {
     try {
+        applyChatFontSize();
+        applyUiScale();
+
         const chats = await AppAPI.getChats();
         state.chats = chats || [];
         renderChatList();
@@ -578,23 +661,68 @@ function processCodeBlocks(container) {
             }
         });
 
+        const rawCodeText = code.innerText || code.textContent;
+
+        const lines = rawCodeText.split('\n');
+        if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+        const lineNumsHtml = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+
+        const codeWrapper = document.createElement('div');
+        codeWrapper.className = 'flex overflow-x-auto p-4 font-mono text-xs leading-relaxed';
+
+        const lineNumsDiv = document.createElement('div');
+        lineNumsDiv.className = 'select-none pr-3 border-r border-zinc-800/80 text-zinc-600 text-right shrink-0 font-mono';
+        lineNumsDiv.innerHTML = lineNumsHtml;
+
+        const codeContentDiv = document.createElement('div');
+        codeContentDiv.className = 'pl-3 flex-1 overflow-x-auto';
+        codeContentDiv.appendChild(code.cloneNode(true));
+
+        const rawTextArea = document.createElement('textarea');
+        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-xs p-3 focus:outline-none resize-y hidden';
+        rawTextArea.value = rawCodeText;
+        rawTextArea.readOnly = true;
+
+        codeWrapper.appendChild(lineNumsDiv);
+        codeWrapper.appendChild(codeContentDiv);
+
         const header = document.createElement('div');
         header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800 text-xs text-zinc-400 font-mono select-none';
         header.innerHTML = `
       <span>${lang}</span>
-      <button class="btn-copy-code flex items-center gap-1.5 hover:text-zinc-100 transition-colors">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
-        <span>Скопировать код</span>
-      </button>
+      <div class="flex items-center gap-3">
+        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors">Raw</button>
+        <button class="btn-copy-code flex items-center gap-1.5 hover:text-zinc-100 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <span>Скопировать код</span>
+        </button>
+      </div>
     `;
 
         const copyBtn = header.querySelector('.btn-copy-code');
         const copyText = copyBtn.querySelector('span');
+        const toggleRawBtn = header.querySelector('.btn-toggle-raw');
+
+        let isRaw = false;
+
+        toggleRawBtn.onclick = () => {
+            isRaw = !isRaw;
+            if (isRaw) {
+                codeWrapper.classList.add('hidden');
+                rawTextArea.classList.remove('hidden');
+                toggleRawBtn.textContent = 'Code';
+                toggleRawBtn.classList.add('text-indigo-400');
+            } else {
+                codeWrapper.classList.remove('hidden');
+                rawTextArea.classList.add('hidden');
+                toggleRawBtn.textContent = 'Raw';
+                toggleRawBtn.classList.remove('text-indigo-400');
+            }
+        };
 
         copyBtn.onclick = async () => {
-            const rawText = code.innerText || code.textContent;
             try {
-                await navigator.clipboard.writeText(rawText);
+                await navigator.clipboard.writeText(rawCodeText);
                 copyText.textContent = 'Скопировано!';
                 setTimeout(() => {
                     copyText.textContent = 'Скопировать код';
@@ -604,7 +732,10 @@ function processCodeBlocks(container) {
             }
         };
 
-        pre.insertBefore(header, pre.firstChild);
+        pre.innerHTML = '';
+        pre.appendChild(header);
+        pre.appendChild(codeWrapper);
+        pre.appendChild(rawTextArea);
     });
 }
 
@@ -638,10 +769,18 @@ function appendMessageUI(role, content, createdAt) {
           <div class="text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} text-right mt-1.5 select-none font-mono leading-none">${timeStr}</div>
         </div>
 
-        <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 01-2 2z"/></svg>
-          <span>Скопировать текст</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <span>Скопировать текст</span>
+          </button>
+          ${!isUser ? `
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-zinc-500 hover:text-indigo-400 transition-colors px-1 py-0.5 rounded">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+              <span>Продолжить...</span>
+            </button>
+          ` : ''}
+        </div>
       </div>
     </div>
   `;
@@ -659,6 +798,15 @@ function appendMessageUI(role, content, createdAt) {
             } catch (err) {
                 console.error('Copy message error:', err);
             }
+        };
+    }
+
+    const continueBtn = wrapper.querySelector('.btn-continue-ai');
+    if (continueBtn) {
+        continueBtn.onclick = () => {
+            DOM.messageInput.value = 'Продолжи с того места, где остановился';
+            DOM.messageInput.dispatchEvent(new Event('input'));
+            handleSendMessage();
         };
     }
 
