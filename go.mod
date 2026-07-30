@@ -4,7 +4,6 @@ go 1.25.7
 
 require (
 	github.com/google/generative-ai-go v0.20.1
-	github.com/joho/godotenv v1.5.1
 	github.com/pressly/goose/v3 v3.27.3
 	github.com/wailsapp/wails/v2 v2.13.0
 	google.golang.org/api v0.291.0
