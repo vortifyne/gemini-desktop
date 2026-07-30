@@ -94,7 +94,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
+                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[200px] sm:max-w-xs">Выберите чат</h2>
+                <button id="btn-export-chat" class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors shrink-0" title="Экспорт чата">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </button>
             </div>
 
             <div class="flex items-center gap-4">
@@ -133,7 +138,7 @@
             <textarea
                     id="message-input"
                     rows="1"
-                    placeholder="Спроси о чём угодно... (Shift + Enter для переноса)"
+                    placeholder="Спроси о чём угодно..."
                     class="flex-1 bg-transparent px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-48 custom-scrollbar text-sm leading-relaxed"
             ></textarea>
                     <button
@@ -148,10 +153,37 @@
                         </svg>
                     </button>
                 </form>
-                <div class="text-[10px] text-center text-zinc-600 mt-2">Gemini может допускать ошибки. Проверяйте важную информацию.</div>
+                <div class="flex items-center justify-between text-[10px] text-zinc-600 mt-2 px-1">
+                    <span>Gemini может допускать ошибки. Проверяйте важную информацию.</span>
+                    <span id="char-counter" class="font-mono transition-all duration-150">0 символов</span>
+                </div>
             </div>
         </div>
     </main>
+</div>
+
+<div id="export-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">
+    <div class="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl space-y-5">
+        <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Экспорт чата</h3>
+            <button id="btn-close-export-modal" class="p-1 text-zinc-400 hover:text-zinc-100 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <p class="text-xs text-zinc-400">Выберите формат для сохранения всей истории текущего диалога:</p>
+        <div class="space-y-2.5">
+            <button id="btn-export-md" class="w-full flex items-center justify-between p-3 bg-zinc-950 hover:bg-zinc-800/80 border border-zinc-800 rounded-xl text-xs font-medium text-zinc-200 transition-colors">
+                <span>Скачать как Markdown (.md)</span>
+                <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 rounded text-[10px] border border-indigo-500/20 font-mono">.md</span>
+            </button>
+            <button id="btn-export-json" class="w-full flex items-center justify-between p-3 bg-zinc-950 hover:bg-zinc-800/80 border border-zinc-800 rounded-xl text-xs font-medium text-zinc-200 transition-colors">
+                <span>Скачать как JSON (.json)</span>
+                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded text-[10px] border border-emerald-500/20 font-mono">.json</span>
+            </button>
+        </div>
+    </div>
 </div>
 
 <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">

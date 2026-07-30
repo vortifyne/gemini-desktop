@@ -9,6 +9,7 @@ const state = {
     isAborted: false,
     isMockMode: false,
     currentLoaderId: null,
+    charBlurTimer: null,
 };
 
 const AppAPI = {
@@ -71,12 +72,19 @@ const DOM = {
     btnNewChat: document.getElementById('btn-new-chat'),
     btnLogout: document.getElementById('btn-logout'),
     currentChatTitle: document.getElementById('current-chat-title'),
+    btnExportChat: document.getElementById('btn-export-chat'),
+
+    exportModal: document.getElementById('export-modal'),
+    btnCloseExportModal: document.getElementById('btn-close-export-modal'),
+    btnExportMd: document.getElementById('btn-export-md'),
+    btnExportJson: document.getElementById('btn-export-json'),
 
     messagesContainer: document.getElementById('messages-container'),
     btnScrollBottom: document.getElementById('btn-scroll-bottom'),
     emptyState: document.getElementById('empty-state'),
     messageForm: document.getElementById('message-form'),
     messageInput: document.getElementById('message-input'),
+    charCounter: document.getElementById('char-counter'),
     btnSend: document.getElementById('btn-send'),
 
     toast: document.getElementById('toast'),
@@ -136,6 +144,15 @@ function formatMessageTime(dateStr) {
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+function getCharWord(count) {
+    const lastTwo = count % 100;
+    if (lastTwo >= 11 && lastTwo <= 19) return 'символов';
+    const last = count % 10;
+    if (last === 1) return 'символ';
+    if (last >= 2 && last <= 4) return 'символа';
+    return 'символов';
+}
+
 function updateNetStatus() {
     if (navigator.onLine) {
         DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full';
@@ -178,6 +195,81 @@ DOM.messagesContainer.addEventListener('scroll', () => {
 
 DOM.btnScrollBottom.addEventListener('click', () => {
     scrollToBottom(true);
+});
+
+DOM.btnExportChat.addEventListener('click', () => {
+    if (!state.activeChatId) {
+        showToast('Выберите чат для экспорта', 'error');
+        return;
+    }
+    DOM.exportModal.classList.remove('hidden');
+});
+
+DOM.btnCloseExportModal.addEventListener('click', () => {
+    DOM.exportModal.classList.add('hidden');
+});
+
+DOM.exportModal.addEventListener('click', (e) => {
+    if (e.target === DOM.exportModal) {
+        DOM.exportModal.classList.add('hidden');
+    }
+});
+
+function downloadFile(content, filename, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+DOM.btnExportMd.addEventListener('click', async () => {
+    if (!state.activeChatId) return;
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    const title = currentChat ? (currentChat.title || currentChat.Title || 'Чат') : 'Чат';
+    const messages = await AppAPI.getMessages(state.activeChatId);
+
+    let md = `# ${title}\n\n`;
+    messages.forEach(msg => {
+        const role = (msg.role || msg.Role) === 'user' ? 'YOU' : 'AI';
+        const time = formatMessageTime(msg.created_at || msg.CreatedAt);
+        const text = msg.content || msg.Content || '';
+        md += `### **${role}** _(${time})_\n${text}\n\n---\n\n`;
+    });
+
+    const safeTitle = title.replace(/[^a-zA-Z0-9а-яА-Я_-]/g, '_');
+    const date = new Date().toISOString().slice(0, 10);
+    downloadFile(md, `chat_${safeTitle}_${date}.md`, 'text/markdown;charset=utf-8');
+    DOM.exportModal.classList.add('hidden');
+    showToast('Чат экспортирован в Markdown', 'info');
+});
+
+DOM.btnExportJson.addEventListener('click', async () => {
+    if (!state.activeChatId) return;
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    const title = currentChat ? (currentChat.title || currentChat.Title || 'Чат') : 'Чат';
+    const messages = await AppAPI.getMessages(state.activeChatId);
+
+    const exportData = {
+        title,
+        exportedAt: new Date().toISOString(),
+        messages: messages.map(msg => ({
+            role: msg.role || msg.Role,
+            content: msg.content || msg.Content,
+            createdAt: msg.created_at || msg.CreatedAt
+        }))
+    };
+
+    const json = JSON.stringify(exportData, null, 2);
+    const safeTitle = title.replace(/[^a-zA-Z0-9а-яА-Я_-]/g, '_');
+    const date = new Date().toISOString().slice(0, 10);
+    downloadFile(json, `chat_${safeTitle}_${date}.json`, 'application/json;charset=utf-8');
+    DOM.exportModal.classList.add('hidden');
+    showToast('Чат экспортирован в JSON', 'info');
 });
 
 function updateSendButtonUI() {
@@ -381,6 +473,9 @@ async function selectChat(chatId) {
     }
     DOM.btnSend.disabled = !DOM.messageInput.value.trim() || state.isSending;
 
+    const len = DOM.messageInput.value.length;
+    DOM.charCounter.textContent = `${len} ${getCharWord(len)}`;
+
     await loadMessages(chatId);
 }
 
@@ -569,6 +664,15 @@ DOM.messageInput.addEventListener('input', () => {
     if (!state.isSending) {
         DOM.btnSend.disabled = !DOM.messageInput.value.trim();
     }
+
+    const len = DOM.messageInput.value.length;
+    DOM.charCounter.classList.add('blur-[1px]', 'opacity-50');
+    DOM.charCounter.textContent = `${len} ${getCharWord(len)}`;
+
+    if (state.charBlurTimer) clearTimeout(state.charBlurTimer);
+    state.charBlurTimer = setTimeout(() => {
+        DOM.charCounter.classList.remove('blur-[1px]', 'opacity-50');
+    }, 150);
 });
 
 DOM.messageInput.addEventListener('keydown', (e) => {
@@ -606,6 +710,8 @@ async function handleSendMessage() {
     delete state.drafts[state.activeChatId];
     DOM.messageInput.value = '';
     DOM.messageInput.style.height = 'auto';
+
+    DOM.charCounter.textContent = '0 символов';
 
     state.isSending = true;
     state.isAborted = false;
