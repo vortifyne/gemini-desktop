@@ -175,7 +175,7 @@ DOM.authForm.addEventListener('submit', async (e) => {
             state.apiKey = key;
             DOM.authScreen.classList.add('hidden');
             DOM.chatScreen.classList.remove('hidden');
-            await loadInitialChats();
+            await initChatApp();
         } else {
             showToast('Неверный API ключ! Проверь и повтори попытку.', 'error');
         }
@@ -200,18 +200,17 @@ DOM.btnLogout.addEventListener('click', () => {
     DOM.messageInput.value = '';
 });
 
-async function loadInitialChats() {
+async function initChatApp() {
     try {
-        const chatsFromDB = await AppAPI.getChats();
-        if (chatsFromDB && chatsFromDB.length > 0) {
-            state.chats = chatsFromDB;
-            renderChatList();
-            const firstChatId = state.chats[0].id ?? state.chats[0].ID;
-            await selectChat(firstChatId);
+        const chats = await AppAPI.getChats();
+        state.chats = chats || [];
+        renderChatList();
+
+        if (state.chats.length > 0) {
+            const firstId = state.chats[0].id || state.chats[0].ID;
+            await selectChat(firstId);
         } else {
-            state.chats = [];
             state.activeChatId = null;
-            renderChatList();
             DOM.currentChatTitle.textContent = 'Выберите или создайте чат';
             DOM.messagesContainer.innerHTML = '';
             DOM.messagesContainer.appendChild(DOM.emptyState);
@@ -267,7 +266,7 @@ function renderChatList() {
     const unpinned = [];
 
     state.chats.forEach(chat => {
-        const id = chat.id ?? chat.ID;
+        const id = chat.id || chat.ID;
         if (state.pinnedChatIds.includes(id)) {
             pinned.push(chat);
         } else {
@@ -278,8 +277,8 @@ function renderChatList() {
     const sortedChats = [...pinned, ...unpinned];
 
     sortedChats.forEach((chat) => {
-        const id = chat.id ?? chat.ID;
-        const title = chat.title ?? chat.Title ?? 'Без названия';
+        const id = chat.id || chat.ID;
+        const title = chat.title || chat.Title || 'Без названия';
         const isActive = id === state.activeChatId;
         const isPinned = state.pinnedChatIds.includes(id);
 
@@ -318,9 +317,9 @@ async function selectChat(chatId) {
     }
 
     state.activeChatId = chatId;
-    const currentChat = state.chats.find(c => (c.id ?? c.ID) === chatId);
+    const currentChat = state.chats.find(c => (c.id || c.ID) === chatId);
     if (currentChat) {
-        DOM.currentChatTitle.textContent = currentChat.title ?? currentChat.Title ?? 'Без названия';
+        DOM.currentChatTitle.textContent = currentChat.title || currentChat.Title || 'Без названия';
     }
 
     renderChatList();
@@ -346,7 +345,7 @@ async function loadMessages(chatId) {
             return;
         }
 
-        messages.forEach(msg => appendMessageUI(msg.Role ?? msg.role, msg.Content ?? msg.content));
+        messages.forEach(msg => appendMessageUI(msg.role || msg.Role, msg.content || msg.Content));
         scrollToBottom(false);
     } catch (err) {
         showToast('Ошибка загрузки сообщений', 'error');
