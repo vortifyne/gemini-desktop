@@ -2,6 +2,7 @@ const state = {
     apiKey: null,
     activeChatId: null,
     chats: [],
+    drafts: {},
     isSending: false,
 };
 
@@ -133,9 +134,11 @@ DOM.btnLogout.addEventListener('click', () => {
     state.apiKey = null;
     state.activeChatId = null;
     state.chats = [];
+    state.drafts = {};
     DOM.chatScreen.classList.add('hidden');
     DOM.authScreen.classList.remove('hidden');
     DOM.apiKeyInput.value = '';
+    DOM.messageInput.value = '';
 });
 
 async function loadInitialChats() {
@@ -147,25 +150,42 @@ async function loadInitialChats() {
             const firstChatId = state.chats[0].id ?? state.chats[0].ID;
             await selectChat(firstChatId);
         } else {
-            await createNewChat('Новый чат');
+            state.chats = [];
+            state.activeChatId = null;
+            renderChatList();
+            DOM.currentChatTitle.textContent = 'Выберите или создайте чат';
+            DOM.messagesContainer.innerHTML = '';
+            DOM.messagesContainer.appendChild(DOM.emptyState);
         }
     } catch (err) {
         showToast('Ошибка загрузки истории чатов');
         console.error(err);
-        await createNewChat('Новый чат');
+        state.chats = [];
+        state.activeChatId = null;
+        renderChatList();
+        DOM.currentChatTitle.textContent = 'Выберите или создайте чат';
+        DOM.messagesContainer.innerHTML = '';
+        DOM.messagesContainer.appendChild(DOM.emptyState);
     }
 }
 
 async function createNewChat(title = 'Новый чат') {
+    if (DOM.btnNewChat.disabled) return;
+    DOM.btnNewChat.disabled = true;
+    DOM.btnNewChat.classList.add('opacity-50', 'pointer-events-none');
+
     try {
         const chatId = await AppAPI.createChat(title);
         const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}` };
         state.chats.unshift(newChat);
         renderChatList();
-        selectChat(chatId);
+        await selectChat(chatId);
     } catch (err) {
         showToast('Не удалось создать чат');
         console.error(err);
+    } finally {
+        DOM.btnNewChat.disabled = false;
+        DOM.btnNewChat.classList.remove('opacity-50', 'pointer-events-none');
     }
 }
 
@@ -195,6 +215,10 @@ function renderChatList() {
 }
 
 async function selectChat(chatId) {
+    if (state.activeChatId && state.activeChatId !== chatId) {
+        state.drafts[state.activeChatId] = DOM.messageInput.value;
+    }
+
     state.activeChatId = chatId;
     const currentChat = state.chats.find(c => (c.id ?? c.ID) === chatId);
     if (currentChat) {
@@ -202,6 +226,14 @@ async function selectChat(chatId) {
     }
 
     renderChatList();
+
+    DOM.messageInput.value = state.drafts[chatId] || '';
+    DOM.messageInput.style.height = 'auto';
+    if (DOM.messageInput.value) {
+        DOM.messageInput.style.height = `${Math.min(DOM.messageInput.scrollHeight, 192)}px`;
+    }
+    DOM.btnSend.disabled = !DOM.messageInput.value.trim() || state.isSending;
+
     await loadMessages(chatId);
 }
 
@@ -321,6 +353,7 @@ async function handleSendMessage() {
     const text = DOM.messageInput.value.trim();
     if (!text || !state.activeChatId || state.isSending) return;
 
+    delete state.drafts[state.activeChatId];
     DOM.messageInput.value = '';
     DOM.messageInput.style.height = 'auto';
     DOM.btnSend.disabled = true;

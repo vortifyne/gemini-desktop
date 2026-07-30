@@ -4,8 +4,6 @@ import {database} from '../models';
 
 export function CreateChat(arg1:string):Promise<number>;
 
-export function GetChats():Promise<Array<database.Chat>>;
-
 export function GetMessages(arg1:number):Promise<Array<database.Message>>;
 
 export function SendMessageToAI(arg1:number,arg2:string):Promise<string>;
