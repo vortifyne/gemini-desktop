@@ -1,3 +1,8 @@
+html, body {
+    background-color: #09090b !important;
+    color: #f4f4f5 !important;
+}
+
 ::selection {
     background-color: rgba(99, 102, 241, 0.35);
     color: #ffffff;
@@ -18,8 +23,10 @@
 
 #messages-container {
     scroll-behavior: smooth;
-    will-change: transform;
+    -webkit-overflow-scrolling: touch;
     transform: translateZ(0);
+    will-change: scroll-position;
+    contain: layout style paint;
 }
 
 #btn-scroll-bottom {

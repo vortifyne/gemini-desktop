@@ -356,10 +356,19 @@ async function loadMessages(chatId) {
 function processCodeBlocks(container) {
     const pres = container.querySelectorAll('pre');
     pres.forEach((pre) => {
+        const code = pre.querySelector('code');
+        if (code && !code.dataset.highlighted) {
+            try {
+                hljs.highlightElement(code);
+            } catch (e) {
+                console.error('Highlight error:', e);
+            }
+            code.dataset.highlighted = 'true';
+        }
+
         if (pre.dataset.hasHeader) return;
         pre.dataset.hasHeader = 'true';
 
-        const code = pre.querySelector('code');
         if (!code) return;
 
         let lang = 'code';
