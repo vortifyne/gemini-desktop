@@ -6,7 +6,9 @@ const state = {
     searchQuery: '',
     drafts: {},
     isSending: false,
+    isAborted: false,
     isMockMode: false,
+    currentLoaderId: null,
 };
 
 const AppAPI = {
@@ -123,6 +125,17 @@ function showToast(message, type = 'info', duration = 5000) {
     }, duration);
 }
 
+function formatMessageTime(dateStr) {
+    if (!dateStr) {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
 function updateNetStatus() {
     if (navigator.onLine) {
         DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full';
@@ -166,6 +179,28 @@ DOM.messagesContainer.addEventListener('scroll', () => {
 DOM.btnScrollBottom.addEventListener('click', () => {
     scrollToBottom(true);
 });
+
+function updateSendButtonUI() {
+    if (state.isSending) {
+        DOM.btnSend.disabled = false;
+        DOM.btnSend.className = 'p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.innerHTML = `
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <rect x="6" y="6" width="12" height="12" rx="2"/>
+      </svg>
+    `;
+        DOM.btnSend.title = 'Остановить генерацию';
+    } else {
+        DOM.btnSend.className = 'p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.innerHTML = `
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
+      </svg>
+    `;
+        DOM.btnSend.title = 'Отправить';
+        DOM.btnSend.disabled = !DOM.messageInput.value.trim();
+    }
+}
 
 DOM.authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -298,7 +333,7 @@ function renderChatList() {
         const isPinned = state.pinnedChatIds.includes(id);
 
         const btn = document.createElement('button');
-        btn.className = `w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between group ${
+        btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between group ${
             isActive
                 ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/20'
                 : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
@@ -360,7 +395,11 @@ async function loadMessages(chatId) {
             return;
         }
 
-        messages.forEach(msg => appendMessageUI(msg.role || msg.Role, msg.content || msg.Content));
+        messages.forEach(msg => appendMessageUI(
+            msg.role || msg.Role,
+            msg.content || msg.Content,
+            msg.created_at || msg.CreatedAt
+        ));
         scrollToBottom(false);
     } catch (err) {
         showToast('Ошибка загрузки сообщений', 'error');
@@ -423,12 +462,13 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content) {
+function appendMessageUI(role, content, createdAt) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
 
     const isUser = role === 'user';
+    const timeStr = formatMessageTime(createdAt);
     const wrapper = document.createElement('div');
     wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
 
@@ -449,6 +489,7 @@ function appendMessageUI(role, content) {
             : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
           ${htmlContent}
+          <div class="text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} text-right mt-1.5 select-none font-mono leading-none">${timeStr}</div>
         </div>
 
         <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
@@ -525,7 +566,9 @@ DOM.btnNewChat.addEventListener('click', () => createNewChat());
 DOM.messageInput.addEventListener('input', () => {
     DOM.messageInput.style.height = 'auto';
     DOM.messageInput.style.height = `${Math.min(DOM.messageInput.scrollHeight, 192)}px`;
-    DOM.btnSend.disabled = !DOM.messageInput.value.trim() || state.isSending;
+    if (!state.isSending) {
+        DOM.btnSend.disabled = !DOM.messageInput.value.trim();
+    }
 });
 
 DOM.messageInput.addEventListener('keydown', (e) => {
@@ -545,30 +588,55 @@ DOM.messageForm.addEventListener('submit', (e) => {
 });
 
 async function handleSendMessage() {
+    if (state.isSending) {
+        state.isAborted = true;
+        state.isSending = false;
+        if (state.currentLoaderId) {
+            removeLoaderUI(state.currentLoaderId);
+            state.currentLoaderId = null;
+        }
+        updateSendButtonUI();
+        showToast('Генерация остановлена', 'info');
+        return;
+    }
+
     const text = DOM.messageInput.value.trim();
-    if (!text || !state.activeChatId || state.isSending) return;
+    if (!text || !state.activeChatId) return;
 
     delete state.drafts[state.activeChatId];
     DOM.messageInput.value = '';
     DOM.messageInput.style.height = 'auto';
-    DOM.btnSend.disabled = true;
+
     state.isSending = true;
+    state.isAborted = false;
+    updateSendButtonUI();
 
     appendMessageUI('user', text);
 
     const loaderId = appendLoaderUI();
+    state.currentLoaderId = loaderId;
 
     try {
         const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, text);
 
+        if (state.isAborted) {
+            state.isAborted = false;
+            return;
+        }
+
         removeLoaderUI(loaderId);
+        state.currentLoaderId = null;
         appendMessageUI('assistant', aiResponse);
     } catch (err) {
-        removeLoaderUI(loaderId);
-        showToast('Ошибка при получении ответа от ИИ', 'error');
-        console.error(err);
+        if (!state.isAborted) {
+            removeLoaderUI(loaderId);
+            state.currentLoaderId = null;
+            showToast('Ошибка при получении ответа от ИИ', 'error');
+            console.error(err);
+        }
     } finally {
         state.isSending = false;
-        DOM.btnSend.disabled = !DOM.messageInput.value.trim();
+        state.currentLoaderId = null;
+        updateSendButtonUI();
     }
 }
