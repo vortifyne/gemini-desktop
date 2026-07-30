@@ -39,6 +39,7 @@ func NewStorage() (*Storage, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.SetMaxOpenConns(1)
 
 	// Check if database is alive
 	if err := db.Ping(); err != nil {
