@@ -3,6 +3,7 @@ const state = {
     activeChatId: null,
     chats: [],
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
+    searchQuery: '',
     drafts: {},
     isSending: false,
     isMockMode: false,
@@ -63,6 +64,7 @@ const DOM = {
     mockModeToggle: document.getElementById('mock-mode-toggle'),
     netStatus: document.getElementById('net-status'),
     netStatusText: document.getElementById('net-status-text'),
+    searchChatInput: document.getElementById('search-chat-input'),
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
     btnLogout: document.getElementById('btn-logout'),
@@ -101,11 +103,11 @@ function showToast(message, type = 'info', duration = 5000) {
     DOM.toastMessage.textContent = message;
 
     if (type === 'error') {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950/95 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl shadow-2xl';
         DOM.toastIconError.classList.remove('hidden');
         DOM.toastIconInfo.classList.add('hidden');
     } else {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-800/95 border border-zinc-700/60 text-zinc-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-4 py-3 rounded-xl shadow-2xl';
         DOM.toastIconInfo.classList.remove('hidden');
         DOM.toastIconError.classList.add('hidden');
     }
@@ -145,6 +147,11 @@ DOM.mockModeToggle.addEventListener('change', (e) => {
     } else {
         showToast('Mock Mode отключен: работаем через Gemini API', 'info');
     }
+});
+
+DOM.searchChatInput.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value.trim().toLowerCase();
+    renderChatList();
 });
 
 DOM.messagesContainer.addEventListener('scroll', () => {
@@ -262,10 +269,18 @@ function togglePinChat(chatId, e) {
 function renderChatList() {
     DOM.chatList.innerHTML = '';
 
+    let filteredChats = state.chats;
+    if (state.searchQuery) {
+        filteredChats = state.chats.filter(chat => {
+            const title = (chat.title || chat.Title || '').toLowerCase();
+            return title.includes(state.searchQuery);
+        });
+    }
+
     const pinned = [];
     const unpinned = [];
 
-    state.chats.forEach(chat => {
+    filteredChats.forEach(chat => {
         const id = chat.id || chat.ID;
         if (state.pinnedChatIds.includes(id)) {
             pinned.push(chat);
@@ -427,15 +442,38 @@ function appendMessageUI(role, content) {
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
-      <div class="px-4 py-3 rounded-2xl select-text ${
+      <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
+        <div class="px-4 py-3 rounded-2xl select-text ${
         isUser
             ? 'bg-indigo-600 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
             : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
-        ${htmlContent}
+          ${htmlContent}
+        </div>
+
+        <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <span>Скопировать текст</span>
+        </button>
       </div>
     </div>
   `;
+
+    const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
+    if (copyMsgBtn) {
+        const copyMsgSpan = copyMsgBtn.querySelector('span');
+        copyMsgBtn.onclick = async () => {
+            try {
+                await navigator.clipboard.writeText(content);
+                copyMsgSpan.textContent = 'Скопировано!';
+                setTimeout(() => {
+                    copyMsgSpan.textContent = 'Скопировать текст';
+                }, 2000);
+            } catch (err) {
+                console.error('Copy message error:', err);
+            }
+        };
+    }
 
     const msgBubble = wrapper.querySelector('.markdown-body');
     if (msgBubble) {

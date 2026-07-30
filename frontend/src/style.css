@@ -23,7 +23,6 @@ html, body {
 
 #messages-container {
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
     transform: translateZ(0);
     will-change: scroll-position;
     contain: layout style paint;
