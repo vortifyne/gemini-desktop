@@ -1,10 +1,7 @@
-/**
- * SENIOR ARCHITECTURE: Vanilla JS Wails Connector
- */
 const state = {
     apiKey: null,
     activeChatId: null,
-    chats: [], // [{ id, title }]
+    chats: [],
     isSending: false,
 };
 
@@ -28,7 +25,7 @@ const AppAPI = {
             return await window.go.bindings.App.SendMessageToAI(chatId, text);
         }
         console.warn('[Wails] Running in mock mode for SendMessageToAI');
-        await new Promise((res) => setTimeout(res, 1500)); // Имитация задержки
+        await new Promise((res) => setTimeout(res, 1500));
         return `Это тестовый ответ от **ИИ** (без Go-бэкенда).\n\nВот тебе пример кода:\n\`\`\`js\nconsole.log("Hello, Wails!");\n\`\`\``;
     },
     validateApiKey: async (key) => {
@@ -47,6 +44,8 @@ const DOM = {
     apiKeyInput: document.getElementById('api-key-input'),
     btnLogin: document.getElementById('btn-login'),
 
+    sidebar: document.getElementById('sidebar'),
+    btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
     btnLogout: document.getElementById('btn-logout'),
@@ -89,6 +88,10 @@ function showToast(message, duration = 5000) {
         DOM.toast.classList.add('translate-y-20', 'opacity-0');
     }, duration);
 }
+
+DOM.btnToggleSidebar.addEventListener('click', () => {
+    DOM.sidebar.classList.toggle('collapsed');
+});
 
 DOM.authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -187,7 +190,7 @@ async function loadMessages(chatId) {
         }
 
         messages.forEach(msg => appendMessageUI(msg.Role, msg.Content));
-        scrollToBottom();
+        scrollToBottom(false);
     } catch (err) {
         showToast('Ошибка загрузки сообщений');
         console.error(err);
@@ -203,9 +206,7 @@ function appendMessageUI(role, content) {
     const wrapper = document.createElement('div');
     wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
 
-    const htmlContent = isUser
-        ? escapeHTML(content).replace(/\n/g, '<br>')
-        : marked.parse(content);
+    const htmlContent = marked.parse(content);
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
@@ -217,7 +218,7 @@ function appendMessageUI(role, content) {
 
       <div class="px-4 py-3 rounded-2xl ${
         isUser
-            ? 'bg-indigo-600 text-white rounded-tr-none'
+            ? 'bg-indigo-600 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
             : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
         ${htmlContent}
@@ -226,7 +227,7 @@ function appendMessageUI(role, content) {
   `;
 
     DOM.messagesContainer.appendChild(wrapper);
-    scrollToBottom();
+    scrollToBottom(true);
 }
 
 function appendLoaderUI() {
@@ -249,7 +250,7 @@ function appendLoaderUI() {
   `;
 
     DOM.messagesContainer.appendChild(wrapper);
-    scrollToBottom();
+    scrollToBottom(true);
     return loaderId;
 }
 
@@ -258,14 +259,11 @@ function removeLoaderUI(loaderId) {
     if (loader) loader.remove();
 }
 
-function scrollToBottom() {
-    DOM.messagesContainer.scrollTop = DOM.messagesContainer.scrollHeight;
-}
-
-function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g,
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-    );
+function scrollToBottom(smooth = true) {
+    DOM.messagesContainer.scrollTo({
+        top: DOM.messagesContainer.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto'
+    });
 }
 
 DOM.btnNewChat.addEventListener('click', () => createNewChat());

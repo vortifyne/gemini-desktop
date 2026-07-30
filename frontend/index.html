@@ -6,11 +6,8 @@
     <title>Gemini AI Desktop</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <link rel="stylesheet" href="/src/style.css" />
@@ -51,10 +48,9 @@
     </div>
 </div>
 
-
 <div id="chat-screen" class="hidden flex-1 flex h-full overflow-hidden bg-zinc-950">
 
-    <aside class="w-64 bg-zinc-900 border-r border-zinc-800/80 flex flex-col shrink-0">
+    <aside id="sidebar" class="w-64 bg-zinc-900 border-r border-zinc-800/80 flex flex-col shrink-0">
         <div class="p-4 border-b border-zinc-800/50">
             <button
                     id="btn-new-chat"
@@ -81,7 +77,14 @@
     <main class="flex-1 flex flex-col h-full bg-zinc-950 relative overflow-hidden">
 
         <header class="h-14 border-b border-zinc-800/60 px-6 flex items-center justify-between bg-zinc-950/80 backdrop-blur">
-            <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
+            <div class="flex items-center gap-3">
+                <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-xl transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
+            </div>
             <span class="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20 font-medium">Gemini Pro</span>
         </header>
 
@@ -120,7 +123,6 @@
         </div>
     </main>
 </div>
-
 
 <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
     <div class="flex items-center gap-3 bg-rose-950/90 border border-rose-500/30 text-rose-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md">
