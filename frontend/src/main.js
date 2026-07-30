@@ -216,7 +216,7 @@ function appendMessageUI(role, content) {
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
-      <div class="px-4 py-3 rounded-2xl ${
+      <div class="px-4 py-3 rounded-2xl select-text ${
         isUser
             ? 'bg-indigo-600 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
             : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
