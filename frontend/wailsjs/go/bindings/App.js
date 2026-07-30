@@ -13,3 +13,7 @@ export function GetMessages(arg1) {
 export function SendMessageToAI(arg1, arg2) {
   return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2);
 }
+
+export function SetApiKey(arg1) {
+  return window['go']['bindings']['App']['SetApiKey'](arg1);
+}

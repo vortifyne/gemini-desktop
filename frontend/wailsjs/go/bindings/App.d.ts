@@ -7,3 +7,5 @@ export function CreateChat(arg1:string):Promise<number>;
 export function GetMessages(arg1:number):Promise<Array<database.Message>>;
 
 export function SendMessageToAI(arg1:number,arg2:string):Promise<string>;
+
+export function SetApiKey(arg1:string):Promise<boolean>;
