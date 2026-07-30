@@ -1,7 +1,6 @@
 const hljsThemes = {
     'atom-one-dark': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
     'vs2015': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
-    'dracula': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css',
     'monokai': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
 };
 
@@ -22,8 +21,7 @@ const state = {
     currentLoaderId: null,
     charBlurTimer: null,
     uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
-    accentColor: localStorage.getItem('accentColor') || '#6366f1',
-    accentHover: localStorage.getItem('accentHover') || '#4f46e5',
+    accentName: localStorage.getItem('accentName') || 'indigo',
     codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
 };
 
@@ -226,19 +224,13 @@ function getChatDateGroup(dateStr) {
     return 'Ранее';
 }
 
-function applyAccentColor(color, hover) {
-    state.accentColor = color;
-    state.accentHover = hover;
-    document.documentElement.style.setProperty('--accent-color', color);
-    document.documentElement.style.setProperty('--accent-hover', hover);
-    document.documentElement.style.setProperty('--accent-alpha', `${color}26`);
-    document.documentElement.style.setProperty('--accent-border', `${color}4d`);
-
-    localStorage.setItem('accentColor', color);
-    localStorage.setItem('accentHover', hover);
+function applyAccentColor(accentName) {
+    state.accentName = accentName;
+    document.documentElement.setAttribute('data-accent', accentName);
+    localStorage.setItem('accentName', accentName);
 
     document.querySelectorAll('.btn-accent-color').forEach(btn => {
-        if (btn.dataset.color === color) {
+        if (btn.dataset.accent === accentName) {
             btn.classList.remove('border-transparent');
             btn.classList.add('border-white', 'ring-2', 'ring-white/30');
         } else {
@@ -393,7 +385,7 @@ DOM.settingsModal.addEventListener('click', (e) => {
 
 document.querySelectorAll('.btn-accent-color').forEach(btn => {
     btn.onclick = () => {
-        applyAccentColor(btn.dataset.color, btn.dataset.hover);
+        applyAccentColor(btn.dataset.accent);
     };
 });
 
@@ -563,7 +555,7 @@ function renderStarredMessages() {
       <div class="markdown-body">${marked.parse(item.content)}</div>
       <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
         <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors" title="Скопировать">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
         </button>
         <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors" title="Удалить из закладок">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
@@ -657,7 +649,7 @@ function updateSendButtonUI() {
     `;
         DOM.btnSend.title = 'Остановить генерацию';
     } else {
-        DOM.btnSend.className = 'p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.className = 'p-2.5 bg-accent bg-accent-hover disabled:opacity-40 disabled:hover:bg-accent text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
         DOM.btnSend.innerHTML = `
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
@@ -710,7 +702,7 @@ DOM.btnLogout.addEventListener('click', () => {
 
 async function initChatApp() {
     try {
-        applyAccentColor(state.accentColor, state.accentHover);
+        applyAccentColor(state.accentName);
         applyCodeTheme(state.codeTheme);
         applyUiScale();
 
@@ -815,7 +807,7 @@ function renderChatList() {
             const btn = document.createElement('button');
             btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex flex-col gap-1 group ${
                 isActive
-                    ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/20'
+                    ? 'bg-accent-alpha text-accent border border-accent'
                     : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
             }`;
 
@@ -823,21 +815,21 @@ function renderChatList() {
         <div class="flex items-center justify-between w-full">
           <div class="flex items-center gap-2 truncate max-w-[170px]">
             ${tagObj ? `<span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
-            ${isPinned ? `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
+            ${isPinned ? `<svg class="w-3.5 h-3.5 text-accent shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
             <span class="truncate">${title}</span>
           </div>
           <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="btn-tag p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="Метка">
+            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="Метка">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
             </button>
-            <button class="btn-pin p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
-              <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-indigo-400' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
+              <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-accent' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
             </button>
           </div>
         </div>
         ${isActive ? `
           <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
-            <div id="active-chat-progress" class="h-full bg-indigo-500 transition-all duration-75" style="width: 0%;"></div>
+            <div id="active-chat-progress" class="h-full bg-accent transition-all duration-75" style="width: 0%;"></div>
           </div>
         ` : ''}
       `;
@@ -1015,12 +1007,12 @@ function processCodeBlocks(container) {
                 codeWrapper.classList.add('hidden');
                 rawTextArea.classList.remove('hidden');
                 toggleRawBtn.textContent = 'Code';
-                toggleRawBtn.classList.add('text-indigo-400');
+                toggleRawBtn.classList.add('text-accent');
             } else {
                 codeWrapper.classList.remove('hidden');
                 rawTextArea.classList.add('hidden');
                 toggleRawBtn.textContent = 'Raw';
-                toggleRawBtn.classList.remove('text-indigo-400');
+                toggleRawBtn.classList.remove('text-accent');
             }
         };
 
@@ -1062,28 +1054,26 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-      <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
-        isUser ? 'bg-indigo-600 text-white' : 'bg-zinc-800 text-indigo-400 border border-zinc-700/50'
-    }">
+      <div class="user-avatar w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
       <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
-        <div class="px-4 py-3 rounded-2xl select-text relative group transition-all duration-200 border ${
+        <div class="user-msg-bubble px-4 py-3 rounded-2xl select-text relative group transition-all duration-200 border ${
         isUser
-            ? 'bg-indigo-600 border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
-            : 'bg-zinc-900 border-zinc-800/80 hover:border-indigo-500/40 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
+            ? 'bg-accent border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
+            : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
           ${htmlContent}
           <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
-            ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400 font-medium">⚡ ${duration}</span>` : '<span></span>'}
+            ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">⚡ ${duration}</span>` : '<span></span>'}
             <span>${timeStr}</span>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>Скопировать текст</span>
           </button>
           <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="${isStarred ? 'Убрать из закладок' : 'В закладки'}">
@@ -1153,13 +1143,13 @@ function appendLoaderUI() {
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl flex-row">
-      <div class="w-8 h-8 rounded-xl bg-zinc-800 text-indigo-400 border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
+      <div class="w-8 h-8 rounded-xl bg-zinc-800 text-accent border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
         AI
       </div>
       <div class="px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1.5">
-        <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-fast"></div>
-        <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
-        <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>
+        <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast"></div>
+        <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
+        <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>
       </div>
     </div>
   `;
