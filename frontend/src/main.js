@@ -6,6 +6,13 @@ const state = {
 };
 
 const AppAPI = {
+    getChats: async () => {
+        if (window.go?.bindings?.App?.GetChats) {
+            return await window.go.bindings.App.GetChats();
+        }
+        console.warn('[Wails] Running in mock mode for GetChats');
+        return [];
+    },
     createChat: async (title) => {
         if (window.go?.bindings?.App?.CreateChat) {
             return await window.go.bindings.App.CreateChat(title);
@@ -108,9 +115,7 @@ DOM.authForm.addEventListener('submit', async (e) => {
             state.apiKey = key;
             DOM.authScreen.classList.add('hidden');
             DOM.chatScreen.classList.remove('hidden');
-            if (state.chats.length === 0) {
-                await createNewChat('Новый чат');
-            }
+            await loadInitialChats();
         } else {
             showToast('Неверный API ключ! Проверь и повтори попытку.');
         }
@@ -127,16 +132,35 @@ DOM.authForm.addEventListener('submit', async (e) => {
 DOM.btnLogout.addEventListener('click', () => {
     state.apiKey = null;
     state.activeChatId = null;
+    state.chats = [];
     DOM.chatScreen.classList.add('hidden');
     DOM.authScreen.classList.remove('hidden');
     DOM.apiKeyInput.value = '';
 });
 
+async function loadInitialChats() {
+    try {
+        const chatsFromDB = await AppAPI.getChats();
+        if (chatsFromDB && chatsFromDB.length > 0) {
+            state.chats = chatsFromDB;
+            renderChatList();
+            const firstChatId = state.chats[0].id ?? state.chats[0].ID;
+            await selectChat(firstChatId);
+        } else {
+            await createNewChat('Новый чат');
+        }
+    } catch (err) {
+        showToast('Ошибка загрузки истории чатов');
+        console.error(err);
+        await createNewChat('Новый чат');
+    }
+}
+
 async function createNewChat(title = 'Новый чат') {
     try {
         const chatId = await AppAPI.createChat(title);
         const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}` };
-        state.chats.push(newChat);
+        state.chats.unshift(newChat);
         renderChatList();
         selectChat(chatId);
     } catch (err) {
@@ -149,7 +173,10 @@ function renderChatList() {
     DOM.chatList.innerHTML = '';
 
     state.chats.forEach((chat) => {
-        const isActive = chat.id === state.activeChatId;
+        const id = chat.id ?? chat.ID;
+        const title = chat.title ?? chat.Title ?? 'Без названия';
+        const isActive = id === state.activeChatId;
+
         const btn = document.createElement('button');
         btn.className = `w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between group ${
             isActive
@@ -158,20 +185,20 @@ function renderChatList() {
         }`;
 
         btn.innerHTML = `
-      <span class="truncate max-w-[170px]">${chat.title}</span>
+      <span class="truncate max-w-[170px]">${title}</span>
       <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     `;
 
-        btn.onclick = () => selectChat(chat.id);
+        btn.onclick = () => selectChat(id);
         DOM.chatList.appendChild(btn);
     });
 }
 
 async function selectChat(chatId) {
     state.activeChatId = chatId;
-    const currentChat = state.chats.find(c => c.id === chatId);
+    const currentChat = state.chats.find(c => (c.id ?? c.ID) === chatId);
     if (currentChat) {
-        DOM.currentChatTitle.textContent = currentChat.title;
+        DOM.currentChatTitle.textContent = currentChat.title ?? currentChat.Title ?? 'Без названия';
     }
 
     renderChatList();
@@ -189,7 +216,7 @@ async function loadMessages(chatId) {
             return;
         }
 
-        messages.forEach(msg => appendMessageUI(msg.Role, msg.Content));
+        messages.forEach(msg => appendMessageUI(msg.Role ?? msg.role, msg.Content ?? msg.content));
         scrollToBottom(false);
     } catch (err) {
         showToast('Ошибка загрузки сообщений');
