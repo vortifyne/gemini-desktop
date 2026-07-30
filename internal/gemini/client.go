@@ -76,18 +76,20 @@ func (c *Client) SendMessage(promt string) (string, error) {
 	}()
 
 	// Choose generative model and try to get response from it
-	genModel := client.GenerativeModel("gemini-3.5-flash")
+	genModel := client.GenerativeModel("gemini-3.6-flash")
 	resp, err := genModel.GenerateContent(ctx, genai.Text(promt))
 	if err != nil {
 		return "", fmt.Errorf("failed to get response from generative model: %w", err)
 	}
 	if len(resp.Candidates) == 0 { // Check if model even give any response
-		log.Println("empty response candidates")
+		log.Println("gemini returned no candidates")
 		return "", nil
 	}
-	if len(resp.Candidates[0].Content.Parts) == 0 { // Check if content of response contains anything: URL, image or text
-		log.Println("candidate have empty parts")
-		return "", nil
+
+	// Check if content is empty
+	candidate := resp.Candidates[0]
+	if candidate.Content == nil || len(candidate.Content.Parts) == 0 {
+		return "", fmt.Errorf("gemini returned empty content")
 	}
 
 	// Extract text from content of response
@@ -96,5 +98,5 @@ func (c *Client) SendMessage(promt string) (string, error) {
 		return string(textPart), nil
 	}
 
-	return "", nil
+	return "", fmt.Errorf("unexpected content type in response")
 }

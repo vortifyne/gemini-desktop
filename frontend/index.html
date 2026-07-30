@@ -1,12 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" class="h-full bg-zinc-950 text-zinc-100 antialiased">
 <head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>temp-wails</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini AI Desktop</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body>
-<div id="app"></div>
-<script src="./src/main.js" type="module"></script>
+<body class="h-full flex flex-col font-sans overflow-hidden">
+
+<div id="auth-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-zinc-950 p-4">
+    <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl space-y-6">
+        <div class="text-center space-y-2">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600/10 text-indigo-400 mb-2 border border-indigo-500/20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">Авторизация</h1>
+            <p class="text-sm text-zinc-400">Введи API-ключ Gemini для доступа к ИИ</p>
+        </div>
+
+        <form id="auth-form" class="space-y-4" onsubmit="return false;">
+            <div>
+                <label for="api-key-input" class="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">API Key</label>
+                <input
+                        type="password"
+                        id="api-key-input"
+                        placeholder="AIzaSy..."
+                        class="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono text-sm"
+                        required
+                />
+            </div>
+            <button
+                    type="submit"
+                    id="btn-login"
+                    class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 font-medium rounded-xl text-white shadow-lg shadow-indigo-600/20 transition-all duration-200 flex items-center justify-center gap-2"
+            >
+                <span>Войти в систему</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="chat-screen" class="hidden flex-1 flex h-full overflow-hidden bg-zinc-950">
+
+    <aside id="sidebar" class="w-64 bg-zinc-900 border-r border-zinc-800/80 flex flex-col shrink-0">
+        <div class="p-4 border-b border-zinc-800/50">
+            <button
+                    id="btn-new-chat"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-xl font-medium transition-all duration-200 border border-zinc-700/50 shadow-sm"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>Новый чат</span>
+            </button>
+        </div>
+
+        <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+        </div>
+
+        <div class="p-3 border-t border-zinc-800/50 bg-zinc-900/50">
+            <button id="btn-logout" class="w-full flex items-center gap-3 px-3 py-2 text-xs font-medium text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                <span>Сменить API-ключ</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full bg-zinc-950 relative overflow-hidden">
+
+        <header class="h-14 border-b border-zinc-800/60 px-6 flex items-center justify-between bg-zinc-950/80 backdrop-blur">
+            <div class="flex items-center gap-3">
+                <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-xl transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20 font-medium">Gemini Pro</span>
+        </header>
+
+        <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text">
+            <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-zinc-500">
+                <div class="w-16 h-16 mb-4 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <h3 class="text-lg font-medium text-zinc-300 mb-1">Чем я могу помочь?</h3>
+                <p class="text-sm max-w-sm">Создай новый чат слева или выбери существующий, чтобы начать беседу.</p>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-zinc-800/60 bg-zinc-950">
+            <div class="max-w-4xl mx-auto">
+                <form id="message-form" class="relative flex items-end gap-2 bg-zinc-900 border border-zinc-800 rounded-2xl p-2 focus-within:border-zinc-700 transition-colors shadow-lg" onsubmit="return false;">
+            <textarea
+                    id="message-input"
+                    rows="1"
+                    placeholder="Спроси о чём угодно... (Shift + Enter для переноса)"
+                    class="flex-1 bg-transparent px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-48 custom-scrollbar text-sm leading-relaxed"
+            ></textarea>
+                    <button
+                            type="submit"
+                            id="btn-send"
+                            disabled
+                            class="p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </form>
+                <div class="text-[10px] text-center text-zinc-600 mt-2">Gemini может допускать ошибки. Проверяйте важную информацию.</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="flex items-center gap-3 bg-rose-950/90 border border-rose-500/30 text-rose-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md">
+        <svg class="w-5 h-5 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span id="toast-message" class="text-sm font-medium">Ошибка</span>
+    </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>

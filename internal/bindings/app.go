@@ -63,3 +63,13 @@ func (a *App) SendMessageToAI(chatID int64, prompt string) (string, error) {
 
 	return resp, nil
 }
+
+func (a *App) SetApiKey(apiKey string) (bool, error) {
+	isValid, err := gemini.CheckGeminiKeyLive(apiKey)
+	if !isValid || err != nil {
+		return false, err
+	}
+
+	a.aiClient = gemini.NewGeminiClient(apiKey)
+	return true, nil
+}

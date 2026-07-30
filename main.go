@@ -3,12 +3,9 @@ package main
 import (
 	"embed"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/vortifyne/gemini-desktop/internal/bindings"
 	"github.com/vortifyne/gemini-desktop/internal/database"
-	"github.com/vortifyne/gemini-desktop/internal/gemini"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -29,21 +26,7 @@ func main() {
 		}
 	}(storage)
 
-	// Read API key
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using system ENVs")
-	}
-
-	key := os.Getenv("GEMINI_API_KEY")
-
-	// Initialize Gemini Client
-	isValid, err := gemini.CheckGeminiKeyLive(key)
-	if err != nil || !isValid {
-		log.Println("Key read from .env isn't valid")
-	}
-
-	client := gemini.NewGeminiClient(key)
-	app := bindings.NewApp(storage, client)
+	app := bindings.NewApp(storage, nil)
 
 	// Create application with options
 	err = wails.Run(&options.App{
