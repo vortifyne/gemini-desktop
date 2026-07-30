@@ -11,6 +11,12 @@
     border-right-width: 0;
 }
 
+#messages-container {
+    scroll-behavior: smooth;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
     height: 8px;
