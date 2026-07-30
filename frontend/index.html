@@ -56,7 +56,7 @@
                 <input
                         id="search-chat-input"
                         type="text"
-                        placeholder="Поиск чатов..."
+                        placeholder="Поиск чатов... (Ctrl+F)"
                         class="w-full pl-8 pr-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
                 />
                 <svg class="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,6 +66,7 @@
             <button
                     id="btn-new-chat"
                     class="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-lg text-xs font-medium transition-all duration-200 border border-zinc-700/50 shadow-sm disabled:opacity-50 disabled:pointer-events-none"
+                    title="Новый чат (Ctrl+N)"
             >
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -89,13 +90,13 @@
 
         <header class="h-14 border-b border-zinc-800/60 px-6 flex items-center justify-between bg-zinc-950">
             <div class="flex items-center gap-3">
-                <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-xl transition-colors">
+                <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-xl transition-colors" title="Свернуть сайдбар (Ctrl+\)">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
                 <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[200px] sm:max-w-xs">Выберите чат</h2>
-                <button id="btn-export-chat" class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors shrink-0" title="Экспорт чата">
+                <button id="btn-export-chat" class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors shrink-0" title="Экспорт чата (Ctrl+E)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
@@ -108,7 +109,7 @@
                     <span id="net-status-text">Онлайн</span>
                 </div>
 
-                <label class="inline-flex items-center cursor-pointer gap-2">
+                <label class="inline-flex items-center cursor-pointer gap-2" title="Переключить Mock Mode (Ctrl+M)">
                     <input type="checkbox" id="mock-mode-toggle" class="sr-only peer">
                     <div class="relative w-9 h-5 bg-zinc-900 border border-zinc-700 rounded-full peer peer-checked:bg-indigo-600 peer-checked:border-indigo-500 peer-focus:outline-none transition-all after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-zinc-400 peer-checked:after:bg-white after:border-zinc-500 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:after:translate-x-4"></div>
                     <span class="text-xs font-medium text-zinc-300 peer-checked:text-indigo-400 select-none">Mock Mode</span>

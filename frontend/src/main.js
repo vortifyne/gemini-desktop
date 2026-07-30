@@ -12,6 +12,18 @@ const state = {
     charBlurTimer: null,
 };
 
+const mockResponses = [
+    `Да, я полностью согласен с твоим подходом! Это наиболее эффективное техническое решение. Чем я могу помочь еще?`,
+
+    `Отличный вопрос! Вот пример конкурентной обработки каналов на **Go** с использованием горутин:\n\n\`\`\`go\npackage main\n\nimport (\n\t"fmt"\n\t"time"\n)\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n\tfor j := range jobs {\n\t\tfmt.Printf("Worker %d started job %d\\n", id, j)\n\t\ttime.Sleep(time.Millisecond * 500)\n\t\tresults <- j * 2\n\t}\n}\n\nfunc main() {\n\tjobs := make(chan int, 100)\n\tresults := make(chan int, 100)\n\n\tfor w := 1; w <= 3; w++ {\n\t\tgo worker(w, jobs, results)\n\t}\n\n\tfor j := 1; j <= 5; j++ {\n\t\tjobs <- j\n\t}\n\tclose(jobs)\n\n\tfor a := 1; a <= 5; a++ {\n\t\t<-results\n\t}\n}\n\`\`\``,
+
+    `## Архитектурный разбор системы\n\nПроектирование современных клиент-серверных приложений требует соблюдения нескольких ключевых принципов:\n\n1. **Изоляция слоев (Clean Architecture):** Доменная логика не должна зависеть от фреймворков и БД.\n2. **Асинхронность и конкурентность:** Использование фоновых воркеров для тяжелых вычислений.\n3. **Кэширование и персистентность:** Сохранение состояния на клиенте и сервере.\n\n> "Хороший код — это не тот, который легко написать, а тот, который легко поддерживать и масштабировать."\n\n* **Плюсы:** Высокий FPS, низкое потребление памяти.\n* **Минусы:** Требуется повышенный контроль за состоянием приложения.`,
+
+    `Вот готовый пример верстки карточки профиля на **HTML & JavaScript**:\n\n\`\`\`javascript\nclass UserCard extends HTMLElement {\n  constructor() {\n    super();\n    this.attachShadow({ mode: 'open' });\n  }\n\n  connectedCallback() {\n    const name = this.getAttribute('name') || 'Гость';\n    this.shadowRoot.innerHTML = \\\`\n      <style>\n        .card { padding: 1rem; border-radius: 12px; background: #18181b; color: #fff; }\n      </style>\n      <div class="card">\n        <h3>Привет, \\\${name}!</h3>\n      </div>\n    \\\`;\n  }\n}\n\ncustomElements.define('user-card', UserCard);\n\`\`\``,
+
+    `Ниже приведено сравнение популярных ИИ моделей для разработчиков:\n\n| Модель | Скорость | Качество кода | Окно контекста |\n| :--- | :---: | :---: | :---: |\n| **Gemini Pro** | Высокая | Отличное | 1M токенов |\n| **GPT-4o** | Средняя | Превосходное | 128k токенов |\n| **Claude 3.5** | Высокая | Выдающееся | 200k токенов |\n\nОсновные рекомендации:\n* Используйте **Gemini** для больших документов и быстрого прототипирования.\n* Используйте **Claude** для глубокого рефакторинга сложного кода.`
+];
+
 const AppAPI = {
     getChats: async () => {
         if (window.go?.bindings?.App?.GetChats) {
@@ -37,7 +49,8 @@ const AppAPI = {
     sendMessageToAI: async (chatId, text) => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
-            return `[MOCK MODE] Локальный ответ без обращения к Gemini API.\n\nВаш запрос: "${text}"\n\n\`\`\`javascript\nconsole.log("Mock Mode Active");\n\`\`\``;
+            const randomIndex = Math.floor(Math.random() * mockResponses.length);
+            return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.SendMessageToAI) {
             return await window.go.bindings.App.SendMessageToAI(chatId, text);
@@ -165,6 +178,44 @@ function updateNetStatus() {
 }
 window.addEventListener('online', updateNetStatus);
 window.addEventListener('offline', updateNetStatus);
+
+window.addEventListener('keydown', (e) => {
+    const isCmdOrCtrl = e.ctrlKey || e.metaKey;
+
+    if (e.key === 'Escape') {
+        DOM.exportModal.classList.add('hidden');
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
+        return;
+    }
+
+    if (!isCmdOrCtrl) return;
+
+    const key = e.key.toLowerCase();
+
+    if (key === 'n') {
+        e.preventDefault();
+        createNewChat();
+    } else if (key === 'f') {
+        e.preventDefault();
+        if (DOM.sidebar.classList.contains('collapsed')) {
+            DOM.sidebar.classList.remove('collapsed');
+        }
+        DOM.searchChatInput.focus();
+        DOM.searchChatInput.select();
+    } else if (e.key === '\\') {
+        e.preventDefault();
+        DOM.sidebar.classList.toggle('collapsed');
+    } else if (key === 'm') {
+        e.preventDefault();
+        DOM.mockModeToggle.checked = !DOM.mockModeToggle.checked;
+        DOM.mockModeToggle.dispatchEvent(new Event('change'));
+    } else if (key === 'e') {
+        e.preventDefault();
+        DOM.btnExportChat.click();
+    }
+});
 
 DOM.btnToggleSidebar.addEventListener('click', () => {
     DOM.sidebar.classList.toggle('collapsed');
@@ -588,7 +639,7 @@ function appendMessageUI(role, content, createdAt) {
         </div>
 
         <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 01-2 2z"/></svg>
           <span>Скопировать текст</span>
         </button>
       </div>
