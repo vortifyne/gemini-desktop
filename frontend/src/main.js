@@ -1,9 +1,17 @@
+const hljsThemes = {
+    'atom-one-dark': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
+    'vs2015': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
+    'dracula': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css',
+    'monokai': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
+};
+
 const state = {
     apiKey: null,
     activeChatId: null,
     chats: [],
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
     chatTags: JSON.parse(localStorage.getItem('chatTags') || '{}'),
+    starredMessages: JSON.parse(localStorage.getItem('starredMessages') || '[]'),
     currentTagChatId: null,
     searchQuery: '',
     drafts: {},
@@ -14,6 +22,9 @@ const state = {
     currentLoaderId: null,
     charBlurTimer: null,
     uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
+    accentColor: localStorage.getItem('accentColor') || '#6366f1',
+    accentHover: localStorage.getItem('accentHover') || '#4f46e5',
+    codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
 };
 
 const mockResponses = [
@@ -90,6 +101,8 @@ const DOM = {
     btnLogout: document.getElementById('btn-logout'),
     currentChatTitle: document.getElementById('current-chat-title'),
     btnExportChat: document.getElementById('btn-export-chat'),
+    btnStarredModal: document.getElementById('btn-starred-modal'),
+    btnSettingsModal: document.getElementById('btn-settings-modal'),
 
     btnZoomDec: document.getElementById('btn-zoom-dec'),
     btnZoomInc: document.getElementById('btn-zoom-inc'),
@@ -99,6 +112,14 @@ const DOM = {
     btnCloseExportModal: document.getElementById('btn-close-export-modal'),
     btnExportMd: document.getElementById('btn-export-md'),
     btnExportJson: document.getElementById('btn-export-json'),
+
+    starredModal: document.getElementById('starred-modal'),
+    btnCloseStarredModal: document.getElementById('btn-close-starred-modal'),
+    starredMessagesList: document.getElementById('starred-messages-list'),
+
+    settingsModal: document.getElementById('settings-modal'),
+    btnCloseSettingsModal: document.getElementById('btn-close-settings-modal'),
+    codeThemeSelect: document.getElementById('code-theme-select'),
 
     tagModal: document.getElementById('tag-modal'),
     btnCloseTagModal: document.getElementById('btn-close-tag-modal'),
@@ -205,6 +226,49 @@ function getChatDateGroup(dateStr) {
     return 'Ранее';
 }
 
+function applyAccentColor(color, hover) {
+    state.accentColor = color;
+    state.accentHover = hover;
+    document.documentElement.style.setProperty('--accent-color', color);
+    document.documentElement.style.setProperty('--accent-hover', hover);
+    document.documentElement.style.setProperty('--accent-alpha', `${color}26`);
+    document.documentElement.style.setProperty('--accent-border', `${color}4d`);
+
+    localStorage.setItem('accentColor', color);
+    localStorage.setItem('accentHover', hover);
+
+    document.querySelectorAll('.btn-accent-color').forEach(btn => {
+        if (btn.dataset.color === color) {
+            btn.classList.remove('border-transparent');
+            btn.classList.add('border-white', 'ring-2', 'ring-white/30');
+        } else {
+            btn.classList.remove('border-white', 'ring-2', 'ring-white/30');
+            btn.classList.add('border-transparent');
+        }
+    });
+}
+
+function applyCodeTheme(themeKey) {
+    state.codeTheme = themeKey;
+    const themeUrl = hljsThemes[themeKey] || hljsThemes['atom-one-dark'];
+    const hljsLink = document.getElementById('hljs-theme');
+    if (hljsLink) {
+        hljsLink.setAttribute('href', themeUrl);
+    }
+    localStorage.setItem('codeTheme', themeKey);
+    if (DOM.codeThemeSelect) DOM.codeThemeSelect.value = themeKey;
+
+    const previewCode = document.getElementById('preview-code-block');
+    if (previewCode) {
+        delete previewCode.dataset.highlighted;
+        try {
+            hljs.highlightElement(previewCode);
+        } catch (e) {
+            console.error('Preview highlight error:', e);
+        }
+    }
+}
+
 function applyUiScale() {
     document.body.style.zoom = `${state.uiScale}%`;
     DOM.zoomVal.textContent = `${state.uiScale}%`;
@@ -244,11 +308,26 @@ function updateNetStatus() {
 window.addEventListener('online', updateNetStatus);
 window.addEventListener('offline', updateNetStatus);
 
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="http"]');
+    if (link) {
+        e.preventDefault();
+        const url = link.getAttribute('href');
+        if (window.runtime?.BrowserOpenURL) {
+            window.runtime.BrowserOpenURL(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+});
+
 window.addEventListener('keydown', (e) => {
     const isCmdOrCtrl = e.ctrlKey || e.metaKey;
 
     if (e.key === 'Escape') {
         DOM.exportModal.classList.add('hidden');
+        DOM.starredModal.classList.add('hidden');
+        DOM.settingsModal.classList.add('hidden');
         DOM.tagModal.classList.add('hidden');
         if (document.activeElement) {
             document.activeElement.blur();
@@ -297,6 +376,31 @@ DOM.btnZoomInc.addEventListener('click', () => {
     }
 });
 
+DOM.btnSettingsModal.addEventListener('click', () => {
+    DOM.settingsModal.classList.remove('hidden');
+    applyCodeTheme(state.codeTheme);
+});
+
+DOM.btnCloseSettingsModal.addEventListener('click', () => {
+    DOM.settingsModal.classList.add('hidden');
+});
+
+DOM.settingsModal.addEventListener('click', (e) => {
+    if (e.target === DOM.settingsModal) {
+        DOM.settingsModal.classList.add('hidden');
+    }
+});
+
+document.querySelectorAll('.btn-accent-color').forEach(btn => {
+    btn.onclick = () => {
+        applyAccentColor(btn.dataset.color, btn.dataset.hover);
+    };
+});
+
+DOM.codeThemeSelect.addEventListener('change', (e) => {
+    applyCodeTheme(e.target.value);
+});
+
 DOM.fmtBold.addEventListener('click', () => applyFormatting('**', '**'));
 DOM.fmtItalic.addEventListener('click', () => applyFormatting('*', '*'));
 DOM.fmtCode.addEventListener('click', () => applyFormatting('`', '`'));
@@ -321,6 +425,14 @@ DOM.searchChatInput.addEventListener('input', (e) => {
 });
 
 DOM.messagesContainer.addEventListener('scroll', () => {
+    const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
+    const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
+
+    const progressBar = document.getElementById('active-chat-progress');
+    if (progressBar) {
+        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    }
+
     const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
     if (distanceToBottom > 200) {
         DOM.btnScrollBottom.classList.remove('hidden');
@@ -331,6 +443,21 @@ DOM.messagesContainer.addEventListener('scroll', () => {
 
 DOM.btnScrollBottom.addEventListener('click', () => {
     scrollToBottom(true);
+});
+
+DOM.btnStarredModal.addEventListener('click', () => {
+    renderStarredMessages();
+    DOM.starredModal.classList.remove('hidden');
+});
+
+DOM.btnCloseStarredModal.addEventListener('click', () => {
+    DOM.starredModal.classList.add('hidden');
+});
+
+DOM.starredModal.addEventListener('click', (e) => {
+    if (e.target === DOM.starredModal) {
+        DOM.starredModal.classList.add('hidden');
+    }
 });
 
 DOM.btnExportChat.addEventListener('click', () => {
@@ -405,6 +532,62 @@ document.querySelectorAll('.btn-tag-preset').forEach(btn => {
         DOM.tagModal.classList.add('hidden');
     };
 });
+
+function toggleStarMessage(msgObj) {
+    const idx = state.starredMessages.findIndex(s => s.id === msgObj.id);
+    if (idx > -1) {
+        state.starredMessages.splice(idx, 1);
+        showToast('Сообщение удалено из закладок', 'info');
+    } else {
+        state.starredMessages.push(msgObj);
+        showToast('Сообщение добавлено в закладки', 'info');
+    }
+    localStorage.setItem('starredMessages', JSON.stringify(state.starredMessages));
+}
+
+function renderStarredMessages() {
+    DOM.starredMessagesList.innerHTML = '';
+    if (state.starredMessages.length === 0) {
+        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">Нет сохраненных закладок</div>`;
+        return;
+    }
+
+    state.starredMessages.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'bg-zinc-950 border border-zinc-800 rounded-xl p-3 space-y-2 text-xs text-zinc-200 select-text';
+        div.innerHTML = `
+      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1">
+        <span>${item.chatTitle || 'Чат'}</span>
+        <span>${formatMessageTime(item.createdAt)}</span>
+      </div>
+      <div class="markdown-body">${marked.parse(item.content)}</div>
+      <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
+        <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors" title="Скопировать">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+        </button>
+        <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors" title="Удалить из закладок">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
+      </div>
+    `;
+
+        div.querySelector('.btn-copy-star-text').onclick = async () => {
+            await navigator.clipboard.writeText(item.content);
+            showToast('Текст скопирован', 'info');
+        };
+
+        div.querySelector('.btn-unstar-item').onclick = () => {
+            toggleStarMessage(item);
+            renderStarredMessages();
+            renderChatList();
+            if (state.activeChatId) {
+                loadMessages(state.activeChatId);
+            }
+        };
+
+        DOM.starredMessagesList.appendChild(div);
+    });
+}
 
 function downloadFile(content, filename, type) {
     const blob = new Blob([content], { type });
@@ -527,6 +710,8 @@ DOM.btnLogout.addEventListener('click', () => {
 
 async function initChatApp() {
     try {
+        applyAccentColor(state.accentColor, state.accentHover);
+        applyCodeTheme(state.codeTheme);
         applyUiScale();
 
         const chats = await AppAPI.getChats();
@@ -628,26 +813,33 @@ function renderChatList() {
             const isPinned = state.pinnedChatIds.includes(id);
 
             const btn = document.createElement('button');
-            btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between group ${
+            btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex flex-col gap-1 group ${
                 isActive
                     ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/20'
                     : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
             }`;
 
             btn.innerHTML = `
-        <div class="flex items-center gap-2 truncate max-w-[170px]">
-          ${tagObj ? `<span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
-          ${isPinned ? `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
-          <span class="truncate">${title}</span>
+        <div class="flex items-center justify-between w-full">
+          <div class="flex items-center gap-2 truncate max-w-[170px]">
+            ${tagObj ? `<span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
+            ${isPinned ? `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
+            <span class="truncate">${title}</span>
+          </div>
+          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="btn-tag p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="Метка">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
+            </button>
+            <button class="btn-pin p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
+              <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-indigo-400' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            </button>
+          </div>
         </div>
-        <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button class="btn-tag p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="Метка">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
-          </button>
-          <button class="btn-pin p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
-            <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-indigo-400' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-          </button>
-        </div>
+        ${isActive ? `
+          <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
+            <div id="active-chat-progress" class="h-full bg-indigo-500 transition-all duration-75" style="width: 0%;"></div>
+          </div>
+        ` : ''}
       `;
 
             btn.onclick = () => selectChat(id);
@@ -862,6 +1054,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
 
     const htmlContent = marked.parse(content);
+    const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
+    const isStarred = state.starredMessages.some(s => s.id === msgId);
+
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Чат') : 'Чат';
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
@@ -886,8 +1083,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
         <div class="flex items-center gap-2">
           <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>Скопировать текст</span>
+          </button>
+          <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="${isStarred ? 'Убрать из закладок' : 'В закладки'}">
+            <svg class="w-3.5 h-3.5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
           ${(!isUser && isAborted) ? `
             <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-1 py-0.5 rounded">
@@ -913,6 +1113,17 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             } catch (err) {
                 console.error('Copy message error:', err);
             }
+        };
+    }
+
+    const starBtn = wrapper.querySelector('.btn-star-msg');
+    if (starBtn) {
+        starBtn.onclick = () => {
+            toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content, createdAt, role });
+            const nowStarred = state.starredMessages.some(s => s.id === msgId);
+            starBtn.className = `btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${nowStarred ? 'text-amber-400' : ''}`;
+            const svg = starBtn.querySelector('svg');
+            if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
         };
     }
 

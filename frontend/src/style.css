@@ -1,3 +1,30 @@
+:root {
+    --accent-color: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-alpha: rgba(99, 102, 241, 0.15);
+    --accent-border: rgba(99, 102, 241, 0.3);
+}
+
+.bg-accent {
+    background-color: var(--accent-color) !important;
+}
+
+.bg-accent-hover:hover {
+    background-color: var(--accent-hover) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.border-accent {
+    border-color: var(--accent-border) !important;
+}
+
+.bg-accent-alpha {
+    background-color: var(--accent-alpha) !important;
+}
+
 html, body {
     background-color: #09090b !important;
     color: #f4f4f5 !important;
@@ -26,6 +53,10 @@ html, body {
     transform: translateZ(0);
     will-change: scroll-position;
     contain: layout style paint;
+}
+
+#active-chat-progress {
+    transition: width 150ms ease-out;
 }
 
 #btn-scroll-bottom {
@@ -116,11 +147,11 @@ html, body {
     line-height: 1.5;
 }
 
-.btn-pin, .btn-tag {
+.btn-pin, .btn-tag, .btn-star-msg {
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.btn-pin:hover, .btn-tag:hover {
+.btn-pin:hover, .btn-tag:hover, .btn-star-msg:hover {
     transform: scale(1.15);
 }
 
