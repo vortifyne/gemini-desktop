@@ -50,7 +50,8 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	defer cancel()
 
 	// Extract all messages from chatID
-	rows, err := s.db.QueryContext(ctx,
+	rows, err := s.db.QueryContext(
+		ctx,
 		"SELECT id, chat_id, role, content, created_at FROM messages where chat_id = ? ORDER BY id ASC", chatID)
 	if err != nil {
 		return nil, fmt.Errorf("GetMessages.QueryContext(): %w", err)
@@ -74,9 +75,49 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 		msgs = append(msgs, msg)
 	}
 
+	// Check that cycle finished correctly
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("connection interrupted after rows.Next() iterations: %w", err)
 	}
 
 	return msgs, nil
+}
+
+func (s *Storage) GetChats() ([]Chat, error) {
+	// Set timeout for queries
+	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	defer cancel()
+
+	// Get all chats by descendancy (new chats will be on top)
+	rows, err := s.db.QueryContext(
+		ctx,
+		"SELECT id, title, created_at FROM chats ORDER BY id DESC")
+	if err != nil {
+		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
+	}
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("Error closing rows: %v\n", err)
+		}
+	}()
+
+	// Extract all chats row by row
+	var chats []Chat
+
+	for rows.Next() {
+		var c Chat
+
+		if err := rows.Scan(&c.ID, &c.Title, &c.CreatedAt); err != nil {
+			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
+		}
+
+		chats = append(chats, c)
+	}
+
+	// Check that cycle finished correctly
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("connection interrupted after rows.Next() iterations: %w", err)
+	}
+
+	return chats, nil
 }
