@@ -85,6 +85,12 @@
                 </button>
                 <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
             </div>
+
+            <label class="inline-flex items-center cursor-pointer gap-2">
+                <input type="checkbox" id="mock-mode-toggle" class="sr-only peer">
+                <div class="relative w-8 h-4.5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-zinc-400 peer-checked:after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                <span class="text-xs font-medium text-zinc-400 peer-checked:text-indigo-400 select-none">Mock Mode</span>
+            </label>
         </header>
 
         <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text">

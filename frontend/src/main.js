@@ -4,6 +4,7 @@ const state = {
     chats: [],
     drafts: {},
     isSending: false,
+    isMockMode: false,
 };
 
 const AppAPI = {
@@ -29,6 +30,10 @@ const AppAPI = {
         return [];
     },
     sendMessageToAI: async (chatId, text) => {
+        if (state.isMockMode) {
+            await new Promise((res) => setTimeout(res, 1000));
+            return `[MOCK MODE] Локальный ответ без обращения к Gemini API.\n\nВаш запрос: "${text}"\n\n\`\`\`javascript\nconsole.log("Mock Mode Enabled");\n\`\`\``;
+        }
         if (window.go?.bindings?.App?.SendMessageToAI) {
             return await window.go.bindings.App.SendMessageToAI(chatId, text);
         }
@@ -54,6 +59,7 @@ const DOM = {
 
     sidebar: document.getElementById('sidebar'),
     btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
+    mockModeToggle: document.getElementById('mock-mode-toggle'),
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
     btnLogout: document.getElementById('btn-logout'),
@@ -99,6 +105,15 @@ function showToast(message, duration = 5000) {
 
 DOM.btnToggleSidebar.addEventListener('click', () => {
     DOM.sidebar.classList.toggle('collapsed');
+});
+
+DOM.mockModeToggle.addEventListener('change', (e) => {
+    state.isMockMode = e.target.checked;
+    if (state.isMockMode) {
+        showToast('Mock Mode включен: запросы в API Gemini не отправляются!');
+    } else {
+        showToast('Mock Mode отключен: работаем через Gemini API.');
+    }
 });
 
 DOM.authForm.addEventListener('submit', async (e) => {
