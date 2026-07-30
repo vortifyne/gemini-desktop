@@ -86,11 +86,18 @@
                 <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate">Выберите чат</h2>
             </div>
 
-            <label class="inline-flex items-center cursor-pointer gap-2">
-                <input type="checkbox" id="mock-mode-toggle" class="sr-only peer">
-                <div class="relative w-8 h-4.5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-zinc-400 peer-checked:after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
-                <span class="text-xs font-medium text-zinc-400 peer-checked:text-indigo-400 select-none">Mock Mode</span>
-            </label>
+            <div class="flex items-center gap-4">
+                <div id="net-status" class="flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="net-status-text">Онлайн</span>
+                </div>
+
+                <label class="inline-flex items-center cursor-pointer gap-2">
+                    <input type="checkbox" id="mock-mode-toggle" class="sr-only peer">
+                    <div class="relative w-8 h-4.5 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-zinc-400 peer-checked:after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    <span class="text-xs font-medium text-zinc-400 peer-checked:text-indigo-400 select-none">Mock Mode</span>
+                </label>
+            </div>
         </header>
 
         <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text">
@@ -102,6 +109,12 @@
                 <p class="text-sm max-w-sm">Создай новый чат слева или выбери существующий, чтобы начать беседу.</p>
             </div>
         </div>
+
+        <button id="btn-scroll-bottom" class="hidden absolute bottom-20 right-6 z-20 p-2.5 bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-full border border-zinc-700/60 shadow-xl backdrop-blur transition-all duration-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7m14-8l-7 7-7-7"/>
+            </svg>
+        </button>
 
         <div class="p-4 border-t border-zinc-800/60 bg-zinc-950">
             <div class="max-w-4xl mx-auto">
@@ -130,11 +143,14 @@
 </div>
 
 <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="flex items-center gap-3 bg-rose-950/90 border border-rose-500/30 text-rose-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md">
-        <svg class="w-5 h-5 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div id="toast-box" class="flex items-center gap-3 bg-zinc-800/95 border border-zinc-700/60 text-zinc-200 px-4 py-3 rounded-xl shadow-2xl backdrop-blur-md">
+        <svg id="toast-icon-info" class="w-5 h-5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <svg id="toast-icon-error" class="w-5 h-5 text-rose-400 shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span id="toast-message" class="text-sm font-medium">Ошибка</span>
+        <span id="toast-message" class="text-sm font-medium">Информация</span>
     </div>
 </div>
 
