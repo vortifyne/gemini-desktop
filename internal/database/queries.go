@@ -9,7 +9,7 @@ import (
 
 func (s *Storage) CreateChat(title string) (int64, error) {
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Insert new chat with title in the table
@@ -29,7 +29,7 @@ func (s *Storage) CreateChat(title string) (int64, error) {
 
 func (s *Storage) SaveMessage(chatID int64, role, content string) error {
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Insert message in the table
@@ -46,7 +46,7 @@ func (s *Storage) SaveMessage(chatID int64, role, content string) error {
 
 func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Extract all messages from chatID
@@ -85,7 +85,7 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 
 func (s *Storage) GetChats() ([]Chat, error) {
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Get all chats by descendancy (new chats will be on top)
