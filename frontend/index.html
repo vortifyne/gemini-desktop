@@ -50,16 +50,12 @@
             <div class="font-bold tracking-wider text-xs text-zinc-300 uppercase select-none" data-i18n="unofficialClient">UNOFFICIAL CLIENT</div>
             <div class="text-[11px] text-zinc-400 select-none" data-i18n="createdForEnthusiasts">Created by enthusiast for enthusiasts</div>
             <div class="text-[11px] font-mono pt-1">
-                <a href="https://github.com/vortifyne/gemini-client/releases" class="text-indigo-400 hover:underline">v0.0.1 (github.com/vortifyne/gemini-client/releases)</a>
+                <a href="https://github.com/vortifyne/gemini-client/releases" class="text-indigo-400 hover:underline">v0.0.1</a>
             </div>
             <div class="flex items-center justify-center gap-4 pt-1 text-zinc-400">
                 <a href="https://github.com/vortifyne" class="flex items-center gap-1 hover:text-white transition-colors text-[11px]" title="GitHub">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                     <span>GitHub</span>
-                </a>
-                <a href="https://t.me/surrealmonsur_dev" class="flex items-center gap-1 hover:text-white transition-colors text-[11px]" title="Telegram">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.65.15-.17 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                    <span>Telegram</span>
                 </a>
                 <div class="flex items-center gap-1 text-[11px] select-text text-zinc-300" title="Email">
                     <svg class="w-3.5 h-3.5 shrink-0 text-zinc-400 select-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -120,6 +116,12 @@
                     </svg>
                 </button>
                 <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[150px] sm:max-w-xs" data-i18n="selectChatTitle">Select or create a chat</h2>
+                <div id="saved-status" class="flex items-center gap-1 text-xs text-emerald-400 opacity-0 transition-opacity duration-300 select-none">
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span data-i18n="savedStatus">Saved</span>
+                </div>
                 <button id="btn-export-chat" class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors shrink-0" title="Export Chat (Ctrl+E)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>

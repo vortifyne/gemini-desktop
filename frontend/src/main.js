@@ -1,3 +1,9 @@
+const hljsThemes = {
+    'atom-one-dark': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
+    'vs2015': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
+    'monokai': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
+};
+
 const locales = {
     en: {
         authTitle: "Authorization",
@@ -64,6 +70,7 @@ const locales = {
         chatExportedMd: "Chat exported to Markdown",
         chatExportedJson: "Chat exported to JSON",
         selectExportChat: "Select a chat to export",
+        savedStatus: "Saved",
     },
     ru: {
         authTitle: "Авторизация",
@@ -130,6 +137,7 @@ const locales = {
         chatExportedMd: "Чат экспортирован в Markdown",
         chatExportedJson: "Чат экспортирован в JSON",
         selectExportChat: "Выберите чат для экспорта",
+        savedStatus: "Сохранено",
     },
     zh: {
         authTitle: "身份验证",
@@ -196,6 +204,7 @@ const locales = {
         chatExportedMd: "对话已导出为 Markdown",
         chatExportedJson: "对话已导出为 JSON",
         selectExportChat: "请选择要导出的对话",
+        savedStatus: "已保存",
     },
     ja: {
         authTitle: "認証",
@@ -262,6 +271,7 @@ const locales = {
         chatExportedMd: "チャットをMarkdownでエクスポートしました",
         chatExportedJson: "チャットをJSONでエクスポートしました",
         selectExportChat: "エクスポートするチャットを選択してください",
+        savedStatus: "保存済み",
     },
     ko: {
         authTitle: "인증",
@@ -328,6 +338,7 @@ const locales = {
         chatExportedMd: "채팅이 Markdown으로 내보내졌습니다",
         chatExportedJson: "채팅이 JSON으로 내보내졌습니다",
         selectExportChat: "내보낼 채팅을 선택하세요",
+        savedStatus: "저장됨",
     },
     es: {
         authTitle: "Autenticación",
@@ -394,6 +405,7 @@ const locales = {
         chatExportedMd: "Chat exportado a Markdown",
         chatExportedJson: "Chat exportado a JSON",
         selectExportChat: "Selecciona un chat para exportar",
+        savedStatus: "Guardado",
     },
     de: {
         authTitle: "Authentifizierung",
@@ -460,6 +472,7 @@ const locales = {
         chatExportedMd: "Chat als Markdown exportiert",
         chatExportedJson: "Chat als JSON exportiert",
         selectExportChat: "Wähle einen Chat zum Exportieren aus",
+        savedStatus: "Gespeichert",
     },
     fr: {
         authTitle: "Authentification",
@@ -526,6 +539,7 @@ const locales = {
         chatExportedMd: "Chat exporté en Markdown",
         chatExportedJson: "Chat exporté en JSON",
         selectExportChat: "Sélectionnez un chat à exporter",
+        savedStatus: "Enregistré",
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -592,6 +606,7 @@ const locales = {
         chatExportedMd: "Chat exportado para Markdown",
         chatExportedJson: "Chat exportado para JSON",
         selectExportChat: "Selecione um chat para exportar",
+        savedStatus: "Salvo",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -658,6 +673,7 @@ const locales = {
         chatExportedMd: "चैट Markdown में निर्यात किया गया",
         chatExportedJson: "चैट JSON में निर्यात किया गया",
         selectExportChat: "निर्यात करने के लिए एक चैट चुनें",
+        savedStatus: "सहेजा गया",
     },
     it: {
         authTitle: "Autenticazione",
@@ -724,6 +740,7 @@ const locales = {
         chatExportedMd: "Chat esportata in Markdown",
         chatExportedJson: "Chat esportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
+        savedStatus: "Salvato",
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -790,6 +807,7 @@ const locales = {
         chatExportedMd: "Czat wyeksportowany do Markdown",
         chatExportedJson: "Czat wyeksportowany do JSON",
         selectExportChat: "Wybierz czat do eksportu",
+        savedStatus: "Zapisano",
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -856,13 +874,8 @@ const locales = {
         chatExportedMd: "Sohbet Markdown olarak dışa aktarıldı",
         chatExportedJson: "Sohbet JSON olarak dışa aktarıldı",
         selectExportChat: "Dışa aktarmak için bir sohbet seçin",
+        savedStatus: "Kaydedildi",
     }
-};
-
-const hljsThemes = {
-    'atom-one-dark': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
-    'vs2015': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
-    'monokai': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
 };
 
 const state = {
@@ -881,50 +894,12 @@ const state = {
     isMockMode: false,
     currentLoaderId: null,
     charBlurTimer: null,
+    savedTimer: null,
     uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
     accentName: localStorage.getItem('accentName') || 'indigo',
     codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
     language: localStorage.getItem('language') || 'en',
 };
-
-function t(key) {
-    return locales[state.language]?.[key] || locales.en[key] || key;
-}
-
-function applyLanguage(lang) {
-    state.language = lang;
-    localStorage.setItem('language', lang);
-    document.documentElement.setAttribute('lang', lang);
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        if (locales[lang]?.[key]) {
-            el.textContent = locales[lang][key];
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.dataset.i18nPlaceholder;
-        if (locales[lang]?.[key]) {
-            el.placeholder = locales[lang][key];
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.dataset.i18nTitle;
-        if (locales[lang]?.[key]) {
-            el.title = locales[lang][key];
-        }
-    });
-
-    if (DOM.languageSelect) DOM.languageSelect.value = lang;
-
-    updateNetStatus();
-    renderChatList();
-    if (!state.activeChatId) {
-        DOM.currentChatTitle.textContent = t('selectChatTitle');
-    }
-}
 
 const mockResponses = [
     `Да, я полностью согласен с твоим подходом! Это наиболее эффективное техническое решение. Чем я могу помочь еще?`,
@@ -1002,6 +977,7 @@ const DOM = {
     btnExportChat: document.getElementById('btn-export-chat'),
     btnStarredModal: document.getElementById('btn-starred-modal'),
     btnSettingsModal: document.getElementById('btn-settings-modal'),
+    savedStatus: document.getElementById('saved-status'),
 
     btnZoomDec: document.getElementById('btn-zoom-dec'),
     btnZoomInc: document.getElementById('btn-zoom-inc'),
@@ -1086,6 +1062,56 @@ function showToast(message, type = 'info', duration = 5000) {
         DOM.toast.classList.remove('translate-y-0', 'opacity-100');
         DOM.toast.classList.add('translate-y-20', 'opacity-0');
     }, duration);
+}
+
+function t(key) {
+    return locales[state.language]?.[key] || locales.en[key] || key;
+}
+
+function applyLanguage(lang) {
+    state.language = lang;
+    localStorage.setItem('language', lang);
+    document.documentElement.setAttribute('lang', lang);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (locales[lang]?.[key]) {
+            el.textContent = locales[lang][key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (locales[lang]?.[key]) {
+            el.placeholder = locales[lang][key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.dataset.i18nTitle;
+        if (locales[lang]?.[key]) {
+            el.title = locales[lang][key];
+        }
+    });
+
+    if (DOM.languageSelect) DOM.languageSelect.value = lang;
+
+    updateNetStatus();
+    renderChatList();
+    if (!state.activeChatId) {
+        DOM.currentChatTitle.textContent = t('selectChatTitle');
+    }
+}
+
+function triggerSavedStatus() {
+    if (!DOM.savedStatus) return;
+    DOM.savedStatus.classList.remove('opacity-0');
+    DOM.savedStatus.classList.add('opacity-100');
+    if (state.savedTimer) clearTimeout(state.savedTimer);
+    state.savedTimer = setTimeout(() => {
+        DOM.savedStatus.classList.remove('opacity-100');
+        DOM.savedStatus.classList.add('opacity-0');
+    }, 2000);
 }
 
 function formatMessageTime(dateStr) {
@@ -1214,6 +1240,12 @@ window.addEventListener('keydown', (e) => {
     const isCmdOrCtrl = e.ctrlKey || e.metaKey;
 
     if (e.key === 'Escape') {
+        if (DOM.searchChatInput && DOM.searchChatInput.value) {
+            DOM.searchChatInput.value = '';
+            state.searchQuery = '';
+            renderChatList();
+            DOM.searchChatInput.blur();
+        }
         DOM.exportModal.classList.add('hidden');
         DOM.starredModal.classList.add('hidden');
         DOM.settingsModal.classList.add('hidden');
@@ -1650,6 +1682,7 @@ async function createNewChat(title = 'New Chat') {
     } finally {
         DOM.btnNewChat.disabled = false;
         DOM.btnNewChat.classList.remove('opacity-50', 'pointer-events-none');
+        DOM.messageInput.focus();
     }
 }
 
@@ -1806,6 +1839,8 @@ async function selectChat(chatId) {
     const len = DOM.messageInput.value.length;
     DOM.charCounter.textContent = `${len} ${getCharWord(len)}`;
 
+    DOM.messageInput.focus();
+
     await loadMessages(chatId);
 }
 
@@ -1825,6 +1860,7 @@ async function loadMessages(chatId) {
             msg.content || msg.Content,
             msg.created_at || msg.CreatedAt,
             msg.duration || msg.Duration || null,
+            false,
             false
         ));
         scrollToBottom(false);
@@ -1937,7 +1973,7 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -1954,6 +1990,13 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
     const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Chat') : 'Chat';
 
+    const renderFooter = () => `
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
+        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">⚡ ${duration}</span>` : '<span></span>'}
+        <span>${timeStr}</span>
+      </div>
+    `;
+
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
       <div class="user-avatar w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
@@ -1966,16 +2009,12 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             ? 'bg-accent border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
             : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
-          ${htmlContent}
-          <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
-            ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">⚡ ${duration}</span>` : '<span></span>'}
-            <span>${timeStr}</span>
-          </div>
+          <div class="markdown-text-body"></div>
         </div>
 
         <div class="flex items-center gap-2">
           <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>${t('copyText')}</span>
           </button>
           <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
@@ -1991,6 +2030,32 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       </div>
     </div>
   `;
+
+    const textBody = wrapper.querySelector('.markdown-text-body');
+
+    const finalizeMessage = () => {
+        textBody.innerHTML = marked.parse(content) + renderFooter();
+        processCodeBlocks(textBody);
+        scrollToBottom(true);
+        triggerSavedStatus();
+    };
+
+    if (isTypewriter && !isUser) {
+        let idx = 0;
+        const step = Math.max(2, Math.floor(content.length / 80));
+        const timer = setInterval(() => {
+            idx += step;
+            if (idx >= content.length || state.isAborted) {
+                clearInterval(timer);
+                finalizeMessage();
+                return;
+            }
+            textBody.innerHTML = marked.parse(content.substring(0, idx));
+            scrollToBottom(true);
+        }, 12);
+    } else {
+        finalizeMessage();
+    }
 
     const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
     if (copyMsgBtn) {
@@ -2026,11 +2091,6 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             DOM.messageInput.dispatchEvent(new Event('input'));
             handleSendMessage();
         };
-    }
-
-    const msgBubble = wrapper.querySelector('.markdown-body');
-    if (msgBubble) {
-        processCodeBlocks(msgBubble);
     }
 
     DOM.messagesContainer.appendChild(wrapper);
@@ -2154,7 +2214,7 @@ async function handleSendMessage() {
 
         removeLoaderUI(loaderId);
         state.currentLoaderId = null;
-        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false);
+        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true);
     } catch (err) {
         if (!state.isAborted) {
             removeLoaderUI(loaderId);
