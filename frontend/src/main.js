@@ -3,14 +3,16 @@ const state = {
     activeChatId: null,
     chats: [],
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
+    chatTags: JSON.parse(localStorage.getItem('chatTags') || '{}'),
+    currentTagChatId: null,
     searchQuery: '',
     drafts: {},
     isSending: false,
     isAborted: false,
+    wasLastAborted: false,
     isMockMode: false,
     currentLoaderId: null,
     charBlurTimer: null,
-    chatFontSize: parseInt(localStorage.getItem('chatFontSize') || '15'),
     uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
 };
 
@@ -89,10 +91,6 @@ const DOM = {
     currentChatTitle: document.getElementById('current-chat-title'),
     btnExportChat: document.getElementById('btn-export-chat'),
 
-    btnFontDec: document.getElementById('btn-font-dec'),
-    btnFontInc: document.getElementById('btn-font-inc'),
-    fontSizeVal: document.getElementById('font-size-val'),
-
     btnZoomDec: document.getElementById('btn-zoom-dec'),
     btnZoomInc: document.getElementById('btn-zoom-inc'),
     zoomVal: document.getElementById('zoom-val'),
@@ -101,6 +99,14 @@ const DOM = {
     btnCloseExportModal: document.getElementById('btn-close-export-modal'),
     btnExportMd: document.getElementById('btn-export-md'),
     btnExportJson: document.getElementById('btn-export-json'),
+
+    tagModal: document.getElementById('tag-modal'),
+    btnCloseTagModal: document.getElementById('btn-close-tag-modal'),
+    customTagForm: document.getElementById('custom-tag-form'),
+    tagColorInput: document.getElementById('tag-color-input'),
+    tagNameInput: document.getElementById('tag-name-input'),
+    btnSaveTag: document.getElementById('btn-save-tag'),
+    btnRemoveTag: document.getElementById('btn-remove-tag'),
 
     messagesContainer: document.getElementById('messages-container'),
     btnScrollBottom: document.getElementById('btn-scroll-bottom'),
@@ -181,10 +187,22 @@ function getCharWord(count) {
     return 'символов';
 }
 
-function applyChatFontSize() {
-    DOM.messagesContainer.style.fontSize = `${state.chatFontSize}px`;
-    DOM.fontSizeVal.textContent = `${state.chatFontSize}px`;
-    localStorage.setItem('chatFontSize', state.chatFontSize);
+function getChatDateGroup(dateStr) {
+    if (!dateStr) return 'Ранее';
+    const chatDate = new Date(dateStr);
+    if (isNaN(chatDate.getTime())) return 'Ранее';
+
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterdayStart = new Date(todayStart);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    const past7DaysStart = new Date(todayStart);
+    past7DaysStart.setDate(past7DaysStart.getDate() - 7);
+
+    if (chatDate >= todayStart) return 'Сегодня';
+    if (chatDate >= yesterdayStart) return 'Вчера';
+    if (chatDate >= past7DaysStart) return 'Прошлые 7 дней';
+    return 'Ранее';
 }
 
 function applyUiScale() {
@@ -231,6 +249,7 @@ window.addEventListener('keydown', (e) => {
 
     if (e.key === 'Escape') {
         DOM.exportModal.classList.add('hidden');
+        DOM.tagModal.classList.add('hidden');
         if (document.activeElement) {
             document.activeElement.blur();
         }
@@ -261,20 +280,6 @@ window.addEventListener('keydown', (e) => {
     } else if (key === 'e') {
         e.preventDefault();
         DOM.btnExportChat.click();
-    }
-});
-
-DOM.btnFontDec.addEventListener('click', () => {
-    if (state.chatFontSize > 12) {
-        state.chatFontSize -= 1;
-        applyChatFontSize();
-    }
-});
-
-DOM.btnFontInc.addEventListener('click', () => {
-    if (state.chatFontSize < 24) {
-        state.chatFontSize += 1;
-        applyChatFontSize();
     }
 });
 
@@ -344,6 +349,61 @@ DOM.exportModal.addEventListener('click', (e) => {
     if (e.target === DOM.exportModal) {
         DOM.exportModal.classList.add('hidden');
     }
+});
+
+function openTagModal(chatId) {
+    state.currentTagChatId = chatId;
+    const existing = state.chatTags[chatId];
+    if (existing) {
+        DOM.tagNameInput.value = existing.name || '';
+        DOM.tagColorInput.value = existing.color || '#a855f7';
+    } else {
+        DOM.tagNameInput.value = '';
+        DOM.tagColorInput.value = '#a855f7';
+    }
+    DOM.tagModal.classList.remove('hidden');
+}
+
+DOM.btnCloseTagModal.addEventListener('click', () => {
+    DOM.tagModal.classList.add('hidden');
+});
+
+DOM.tagModal.addEventListener('click', (e) => {
+    if (e.target === DOM.tagModal) {
+        DOM.tagModal.classList.add('hidden');
+    }
+});
+
+DOM.customTagForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!state.currentTagChatId) return;
+    const name = DOM.tagNameInput.value.trim();
+    const color = DOM.tagColorInput.value;
+
+    state.chatTags[state.currentTagChatId] = { name, color };
+    localStorage.setItem('chatTags', JSON.stringify(state.chatTags));
+    renderChatList();
+    DOM.tagModal.classList.add('hidden');
+});
+
+DOM.btnRemoveTag.addEventListener('click', () => {
+    if (!state.currentTagChatId) return;
+    delete state.chatTags[state.currentTagChatId];
+    localStorage.setItem('chatTags', JSON.stringify(state.chatTags));
+    renderChatList();
+    DOM.tagModal.classList.add('hidden');
+});
+
+document.querySelectorAll('.btn-tag-preset').forEach(btn => {
+    btn.onclick = () => {
+        if (!state.currentTagChatId) return;
+        const name = btn.dataset.presetName;
+        const color = btn.dataset.presetColor;
+        state.chatTags[state.currentTagChatId] = { name, color };
+        localStorage.setItem('chatTags', JSON.stringify(state.chatTags));
+        renderChatList();
+        DOM.tagModal.classList.add('hidden');
+    };
 });
 
 function downloadFile(content, filename, type) {
@@ -467,7 +527,6 @@ DOM.btnLogout.addEventListener('click', () => {
 
 async function initChatApp() {
     try {
-        applyChatFontSize();
         applyUiScale();
 
         const chats = await AppAPI.getChats();
@@ -502,7 +561,7 @@ async function createNewChat(title = 'Новый чат') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}` };
+        const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}`, created_at: new Date().toISOString() };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
@@ -530,9 +589,10 @@ function togglePinChat(chatId, e) {
 function renderChatList() {
     DOM.chatList.innerHTML = '';
 
-    let filteredChats = state.chats;
+    let list = [...state.chats];
+
     if (state.searchQuery) {
-        filteredChats = state.chats.filter(chat => {
+        list = list.filter(chat => {
             const title = (chat.title || chat.Title || '').toLowerCase();
             return title.includes(state.searchQuery);
         });
@@ -541,7 +601,7 @@ function renderChatList() {
     const pinned = [];
     const unpinned = [];
 
-    filteredChats.forEach(chat => {
+    list.forEach(chat => {
         const id = chat.id || chat.ID;
         if (state.pinnedChatIds.includes(id)) {
             pinned.push(chat);
@@ -550,40 +610,90 @@ function renderChatList() {
         }
     });
 
-    const sortedChats = [...pinned, ...unpinned];
+    const renderChatGroup = (chatArray, groupTitle = null) => {
+        if (chatArray.length === 0) return;
 
-    sortedChats.forEach((chat) => {
-        const id = chat.id || chat.ID;
-        const title = chat.title || chat.Title || 'Без названия';
-        const isActive = id === state.activeChatId;
-        const isPinned = state.pinnedChatIds.includes(id);
-
-        const btn = document.createElement('button');
-        btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between group ${
-            isActive
-                ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/20'
-                : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
-        }`;
-
-        btn.innerHTML = `
-      <div class="flex items-center gap-2 truncate max-w-[170px]">
-        ${isPinned ? `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
-        <span class="truncate">${title}</span>
-      </div>
-      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button class="btn-pin p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
-          <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-indigo-400' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-        </button>
-      </div>
-    `;
-
-        btn.onclick = () => selectChat(id);
-        const pinBtn = btn.querySelector('.btn-pin');
-        if (pinBtn) {
-            pinBtn.onclick = (e) => togglePinChat(id, e);
+        if (groupTitle) {
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'text-[10px] uppercase font-bold text-zinc-500 px-3 pt-3 pb-1 select-none';
+            headerDiv.textContent = groupTitle;
+            DOM.chatList.appendChild(headerDiv);
         }
 
-        DOM.chatList.appendChild(btn);
+        chatArray.forEach((chat) => {
+            const id = chat.id || chat.ID;
+            const title = chat.title || chat.Title || 'Без названия';
+            const tagObj = state.chatTags[id];
+            const isActive = id === state.activeChatId;
+            const isPinned = state.pinnedChatIds.includes(id);
+
+            const btn = document.createElement('button');
+            btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-between group ${
+                isActive
+                    ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/20'
+                    : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
+            }`;
+
+            btn.innerHTML = `
+        <div class="flex items-center gap-2 truncate max-w-[170px]">
+          ${tagObj ? `<span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
+          ${isPinned ? `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
+          <span class="truncate">${title}</span>
+        </div>
+        <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button class="btn-tag p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="Метка">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
+          </button>
+          <button class="btn-pin p-1 text-zinc-500 hover:text-indigo-400 rounded transition-colors" title="${isPinned ? 'Открепить' : 'Закрепить'}">
+            <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-indigo-400' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+          </button>
+        </div>
+      `;
+
+            btn.onclick = () => selectChat(id);
+            btn.oncontextmenu = (e) => {
+                e.preventDefault();
+                openTagModal(id);
+            };
+
+            const tagBtn = btn.querySelector('.btn-tag');
+            if (tagBtn) {
+                tagBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openTagModal(id);
+                };
+            }
+
+            const pinBtn = btn.querySelector('.btn-pin');
+            if (pinBtn) {
+                pinBtn.onclick = (e) => togglePinChat(id, e);
+            }
+
+            DOM.chatList.appendChild(btn);
+        });
+    };
+
+    if (pinned.length > 0) {
+        renderChatGroup(pinned, 'Закрепленные');
+    }
+
+    const groups = {
+        'Сегодня': [],
+        'Вчера': [],
+        'Прошлые 7 дней': [],
+        'Ранее': []
+    };
+
+    unpinned.forEach(chat => {
+        const dateStr = chat.created_at || chat.CreatedAt;
+        const grp = getChatDateGroup(dateStr);
+        groups[grp].push(chat);
+    });
+
+    ['Сегодня', 'Вчера', 'Прошлые 7 дней', 'Ранее'].forEach(grpName => {
+        if (groups[grpName].length > 0) {
+            renderChatGroup(groups[grpName], grpName);
+        }
     });
 }
 
@@ -627,7 +737,9 @@ async function loadMessages(chatId) {
         messages.forEach(msg => appendMessageUI(
             msg.role || msg.Role,
             msg.content || msg.Content,
-            msg.created_at || msg.CreatedAt
+            msg.created_at || msg.CreatedAt,
+            msg.duration || msg.Duration || null,
+            false
         ));
         scrollToBottom(false);
     } catch (err) {
@@ -739,7 +851,7 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content, createdAt) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -760,13 +872,16 @@ function appendMessageUI(role, content, createdAt) {
       </div>
 
       <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
-        <div class="px-4 py-3 rounded-2xl select-text ${
+        <div class="px-4 py-3 rounded-2xl select-text relative group transition-all duration-200 border ${
         isUser
-            ? 'bg-indigo-600 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
-            : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
+            ? 'bg-indigo-600 border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
+            : 'bg-zinc-900 border-zinc-800/80 hover:border-indigo-500/40 text-zinc-200 rounded-tl-none markdown-body shadow-sm'
     }">
           ${htmlContent}
-          <div class="text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} text-right mt-1.5 select-none font-mono leading-none">${timeStr}</div>
+          <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
+            ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400 font-medium">⚡ ${duration}</span>` : '<span></span>'}
+            <span>${timeStr}</span>
+          </div>
         </div>
 
         <div class="flex items-center gap-2">
@@ -774,10 +889,10 @@ function appendMessageUI(role, content, createdAt) {
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>Скопировать текст</span>
           </button>
-          ${!isUser ? `
-            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-zinc-500 hover:text-indigo-400 transition-colors px-1 py-0.5 rounded">
+          ${(!isUser && isAborted) ? `
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-1 py-0.5 rounded">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
-              <span>Продолжить...</span>
+              <span>Продолжить генерацию...</span>
             </button>
           ` : ''}
         </div>
@@ -893,6 +1008,7 @@ DOM.messageForm.addEventListener('submit', (e) => {
 async function handleSendMessage() {
     if (state.isSending) {
         state.isAborted = true;
+        state.wasLastAborted = true;
         state.isSending = false;
         if (state.currentLoaderId) {
             removeLoaderUI(state.currentLoaderId);
@@ -914,12 +1030,14 @@ async function handleSendMessage() {
 
     state.isSending = true;
     state.isAborted = false;
+    state.wasLastAborted = false;
     updateSendButtonUI();
 
     appendMessageUI('user', text);
 
     const loaderId = appendLoaderUI();
     state.currentLoaderId = loaderId;
+    const startTime = Date.now();
 
     try {
         const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, text);
@@ -929,9 +1047,11 @@ async function handleSendMessage() {
             return;
         }
 
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+
         removeLoaderUI(loaderId);
         state.currentLoaderId = null;
-        appendMessageUI('assistant', aiResponse);
+        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false);
     } catch (err) {
         if (!state.isAborted) {
             removeLoaderUI(loaderId);

@@ -104,12 +104,6 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-xs text-zinc-400" title="Размер шрифта чата">
-                    <button id="btn-font-dec" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">A-</button>
-                    <span id="font-size-val" class="font-mono text-[11px] px-1 text-zinc-300">15px</span>
-                    <button id="btn-font-inc" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">A+</button>
-                </div>
-
                 <div class="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-xs text-zinc-400" title="Масштаб интерфейса">
                     <button id="btn-zoom-dec" class="px-1.5 py-0.5 hover:text-zinc-100 rounded hover:bg-zinc-800 transition-colors">-</button>
                     <span id="zoom-val" class="font-mono text-[11px] px-1 text-zinc-300">100%</span>
@@ -182,6 +176,49 @@
             </div>
         </div>
     </main>
+</div>
+
+<div id="tag-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">
+    <div class="w-full max-w-xs bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-white">Метка чата</h3>
+            <button id="btn-close-tag-modal" class="p-1 text-zinc-400 hover:text-zinc-100 rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="space-y-2">
+            <div class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Пресеты</div>
+            <div class="grid grid-cols-3 gap-2">
+                <button data-preset-name="Работа" data-preset-color="#3b82f6" class="btn-tag-preset flex items-center gap-1.5 p-2 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs text-zinc-200 transition-colors">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span>
+                    <span class="truncate">Работа</span>
+                </button>
+                <button data-preset-name="Учеба" data-preset-color="#22c55e" class="btn-tag-preset flex items-center gap-1.5 p-2 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs text-zinc-200 transition-colors">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></span>
+                    <span class="truncate">Учеба</span>
+                </button>
+                <button data-preset-name="Важное" data-preset-color="#ef4444" class="btn-tag-preset flex items-center gap-1.5 p-2 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs text-zinc-200 transition-colors">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span>
+                    <span class="truncate">Важное</span>
+                </button>
+            </div>
+        </div>
+
+        <form id="custom-tag-form" class="space-y-3 pt-2 border-t border-zinc-800/80" onsubmit="return false;">
+            <div class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Своя метка</div>
+            <div class="flex items-center gap-2">
+                <input type="color" id="tag-color-input" value="#a855f7" class="w-8 h-8 rounded-lg bg-zinc-950 border border-zinc-800 cursor-pointer shrink-0 p-0.5">
+                <input type="text" id="tag-name-input" placeholder="Название метки..." class="flex-1 px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors">
+            </div>
+            <div class="flex gap-2">
+                <button type="submit" id="btn-save-tag" class="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium transition-colors">Сохранить</button>
+                <button type="button" id="btn-remove-tag" class="py-1.5 px-3 bg-zinc-800 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-400 border border-zinc-700/50 rounded-lg text-xs transition-colors">Сбросить</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div id="export-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">

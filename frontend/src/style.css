@@ -116,11 +116,11 @@ html, body {
     line-height: 1.5;
 }
 
-.btn-pin {
+.btn-pin, .btn-tag {
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.btn-pin:hover {
+.btn-pin:hover, .btn-tag:hover {
     transform: scale(1.15);
 }
 
