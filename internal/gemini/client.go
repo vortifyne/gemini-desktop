@@ -24,7 +24,7 @@ func NewGeminiClient(apiKey string) *Client {
 
 func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	// Create new client with API key

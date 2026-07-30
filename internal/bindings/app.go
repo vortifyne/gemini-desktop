@@ -73,3 +73,7 @@ func (a *App) SetApiKey(apiKey string) (bool, error) {
 	a.aiClient = gemini.NewGeminiClient(apiKey)
 	return true, nil
 }
+
+func (a *App) GetChats() ([]database.Chat, error) {
+	return a.storage.GetChats()
+}
