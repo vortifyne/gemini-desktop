@@ -1,5 +1,82 @@
+:root, html[data-accent="indigo"] {
+    --accent-color: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-alpha: rgba(99, 102, 241, 0.15);
+    --accent-border: rgba(99, 102, 241, 0.35);
+}
+
+html[data-accent="emerald"] {
+    --accent-color: #10b981;
+    --accent-hover: #059669;
+    --accent-alpha: rgba(16, 185, 129, 0.15);
+    --accent-border: rgba(16, 185, 129, 0.35);
+}
+
+html[data-accent="rose"] {
+    --accent-color: #f43f5e;
+    --accent-hover: #e11d48;
+    --accent-alpha: rgba(244, 63, 94, 0.15);
+    --accent-border: rgba(244, 63, 94, 0.35);
+}
+
+html[data-accent="amber"] {
+    --accent-color: #f59e0b;
+    --accent-hover: #d97706;
+    --accent-alpha: rgba(245, 158, 11, 0.15);
+    --accent-border: rgba(245, 158, 11, 0.35);
+}
+
+html[data-accent="cyan"] {
+    --accent-color: #06b6d4;
+    --accent-hover: #0891b2;
+    --accent-alpha: rgba(6, 182, 212, 0.15);
+    --accent-border: rgba(6, 182, 212, 0.35);
+}
+
+.bg-accent {
+    background-color: var(--accent-color) !important;
+}
+
+.bg-accent-hover:hover {
+    background-color: var(--accent-hover) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.border-accent {
+    border-color: var(--accent-border) !important;
+}
+
+.bg-accent-alpha {
+    background-color: var(--accent-alpha) !important;
+}
+
+.hover-border-accent:hover {
+    border-color: var(--accent-border) !important;
+}
+
+select, select option {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #18181b !important;
+    color: #f4f4f5 !important;
+    border-color: #27272a !important;
+}
+
+html, body {
+    background-color: #09090b !important;
+    color: #f4f4f5 !important;
+}
+
+::selection {
+    background-color: rgba(99, 102, 241, 0.35);
+    color: #ffffff;
+}
+
 #sidebar {
-    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #sidebar.collapsed {
@@ -9,6 +86,28 @@
     padding-right: 0;
     overflow: hidden;
     border-right-width: 0;
+}
+
+#messages-container {
+    scroll-behavior: smooth;
+    transform: translateZ(0);
+    will-change: scroll-position;
+    contain: layout style paint;
+}
+
+#active-chat-progress {
+    transition: width 150ms ease-out;
+}
+
+#btn-scroll-bottom {
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#btn-scroll-bottom.hidden {
+    display: flex !important;
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+    pointer-events: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -22,17 +121,21 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.35);
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 .markdown-body {
     font-size: 0.9375rem;
-    line-height: 1.6;
+    line-height: 1.625;
 }
 
 .markdown-body p {
@@ -52,25 +155,27 @@
 .markdown-body ol { list-style-type: decimal; }
 
 .markdown-body code:not(pre code) {
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 0.15rem 0.35rem;
-    border-radius: 0.25rem;
-    font-family: monospace;
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.85em;
     color: #f43f5e;
 }
 
 .markdown-user code:not(pre code) {
     color: #fecdd3;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .markdown-body pre {
-    margin-top: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-top: 0.875rem;
+    margin-bottom: 0.875rem;
     border-radius: 0.75rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #282c34;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .markdown-body pre code {
@@ -79,6 +184,30 @@
     overflow-x: auto;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.btn-pin, .btn-tag, .btn-star-msg {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-pin:hover, .btn-tag:hover, .btn-star-msg:hover {
+    transform: scale(1.15);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes pulse-fast {
