@@ -32,7 +32,7 @@ func NewStorage() (*Storage, error) {
 
 	// Path to database file in app directory
 	dbPath := filepath.Join(appDir, "app.db")
-	dsn := "file:" + dbPath + "?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)" // WAL
+	dsn := "file:" + dbPath + "?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=synchronous(NORMAL)"
 
 	// Preparing database structure
 	db, err := sql.Open("sqlite", dsn)
@@ -40,6 +40,7 @@ func NewStorage() (*Storage, error) {
 		return nil, err
 	}
 	db.SetMaxOpenConns(1)
+	db.SetMaxIdleConns(1)
 
 	// Check if database is alive
 	if err := db.Ping(); err != nil {
