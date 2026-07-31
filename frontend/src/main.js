@@ -2310,7 +2310,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const isUser = role === 'user';
     const timeStr = formatMessageTime(createdAt);
     const wrapper = document.createElement('div');
-    wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
+    wrapper.className = `flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in mb-4`;
 
     const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
     const isStarred = state.starredMessages.some(s => s.id === msgId);
@@ -2319,38 +2319,38 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Chat') : 'Chat';
 
     const renderFooter = () => `
-      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
         ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
         <span>${timeStr}</span>
       </div>
     `;
 
     wrapper.innerHTML = `
-    <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
+    <div class="flex gap-4 max-w-4xl w-full group ${isUser ? 'flex-row-reverse' : 'flex-row'}">
+      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold text-white shadow-sm mt-0.5 ${isUser ? 'bg-zinc-700' : 'bg-transparent border border-zinc-700/80 text-accent'}">
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
-      <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
-        <div class="user-msg-bubble px-5 py-3.5 select-text relative group transition-all duration-200 border ${
+      <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
+        <div class="select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-accent border-transparent text-white rounded-[22px] rounded-tr-md markdown-body markdown-user shadow-sm'
-            : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-[22px] rounded-tl-md markdown-body shadow-sm'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto'
+            : 'text-zinc-200 markdown-body w-full'
     }">
-          <div class="markdown-text-body"></div>
+          <div class="markdown-text-body break-words w-full"></div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-2 py-0.5 rounded-full">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>${t('copyText')}</span>
           </button>
           <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded-full ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
-            <svg class="w-3.5 h-3.5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            <svg class="w-4 h-4" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
           ${(!isUser && isAborted) ? `
             <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-2 py-0.5 rounded-full">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               <span>${t('continueGen')}</span>
             </button>
           ` : ''}
@@ -2429,14 +2429,14 @@ function appendLoaderUI() {
     const loaderId = `loader-${Date.now()}`;
     const wrapper = document.createElement('div');
     wrapper.id = loaderId;
-    wrapper.className = 'flex gap-4 justify-start animate-fade-in';
+    wrapper.className = 'flex w-full justify-start animate-fade-in mb-4';
 
     wrapper.innerHTML = `
-    <div class="flex gap-3 max-w-3xl flex-row">
-      <div class="w-8 h-8 rounded-full bg-zinc-800 text-accent border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
+    <div class="flex gap-4 max-w-4xl w-full flex-row">
+      <div class="w-8 h-8 rounded-full bg-transparent border border-zinc-700/80 text-accent flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">
         AI
       </div>
-      <div class="px-5 py-3.5 rounded-[22px] rounded-tl-md bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1.5">
+      <div class="py-2 text-zinc-400 flex items-center gap-1.5 w-full">
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>
