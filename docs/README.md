@@ -1,15 +1,6 @@
 <div align="center">
+  <img src="../build/appicon.png" width="96" height="96" alt="Gemini Desktop Logo">
 
-<svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z" fill="url(#gemini-spark)"/>
-  <defs>
-    <linearGradient id="gemini-spark" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6366F1"/>
-      <stop offset="0.5" stop-color="#A855F7"/>
-      <stop offset="1" stop-color="#EC4899"/>
-    </linearGradient>
-  </defs>
-</svg>
 
 # Gemini Desktop
 
