@@ -81,6 +81,7 @@ const locales = {
         hotkeyMock: "Toggle Mock Mode",
         hotkeyExport: "Export Chat",
         hotkeyEsc: "Close Modals / Reset Search",
+        regenerate: "Regenerate response",
     },
     ru: {
         authTitle: "Авторизация",
@@ -158,6 +159,7 @@ const locales = {
         hotkeyMock: "Включить / выключить Mock Mode",
         hotkeyExport: "Экспортировать чат",
         hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
+        regenerate: "Перегенерировать ответ",
     },
     zh: {
         authTitle: "身份验证",
@@ -235,6 +237,7 @@ const locales = {
         hotkeyMock: "切换模拟模式",
         hotkeyExport: "导出对话",
         hotkeyEsc: "关闭弹窗 / 重置搜索",
+        regenerate: "重新生成响应",
     },
     ja: {
         authTitle: "認証",
@@ -312,6 +315,7 @@ const locales = {
         hotkeyMock: "モックモード切り替え",
         hotkeyExport: "チャットのエクスポート",
         hotkeyEsc: "モーダルを閉じる / 検索リセット",
+        regenerate: "応答を再生成する",
     },
     ko: {
         authTitle: "인증",
@@ -389,6 +393,7 @@ const locales = {
         hotkeyMock: "모의 모드 토글",
         hotkeyExport: "채팅 내보내기",
         hotkeyEsc: "모달 닫기 / 검색 초기화",
+        regenerate: "응답 다시 생성",
     },
     es: {
         authTitle: "Autenticación",
@@ -466,6 +471,7 @@ const locales = {
         hotkeyMock: "Alternar modo simulado",
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
+        regenerate: "Regenerar respuesta",
     },
     de: {
         authTitle: "Authentifizierung",
@@ -543,6 +549,7 @@ const locales = {
         hotkeyMock: "Mock-Modus umschalten",
         hotkeyExport: "Chat exportieren",
         hotkeyEsc: "Modals schließen / Suche zurücksetzen",
+        regenerate: "Antwort neu generieren",
     },
     fr: {
         authTitle: "Authentification",
@@ -620,6 +627,7 @@ const locales = {
         hotkeyMock: "Basculer le mode fictif",
         hotkeyExport: "Exporter le chat",
         hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
+        regenerate: "Régénérer la réponse",
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -627,7 +635,7 @@ const locales = {
         apiKeyLabel: "Chave API",
         loginBtn: "Entrar",
         checking: "Verificando...",
-        unofficialClient: "CLIENTE NÃO OFICIAL",
+        unofficialClient: "CLIENT NÃO OFICIAL",
         createdForEnthusiasts: "Criado por entusiasta para entusiastas",
         searchPlaceholder: "Pesquisar chats... (Ctrl+F)",
         newChatBtn: "Novo Chat",
@@ -697,6 +705,7 @@ const locales = {
         hotkeyMock: "Alternar modo simulado",
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Fechar modais / Redefinir pesquisa",
+        regenerate: "Regenerar resposta",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -774,6 +783,7 @@ const locales = {
         hotkeyMock: "मॉक मोड बदलें",
         hotkeyExport: "चैट निर्यात करें",
         hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
+        regenerate: "प्रतिक्रिया पुन: उत्पन्न करें",
     },
     it: {
         authTitle: "Autenticazione",
@@ -836,7 +846,7 @@ const locales = {
         starredAdded: "Messaggio aggiunto ai segnalibri",
         starredRemoved: "Messaggio rimmosso dai segnalibri",
         chatExportedMd: "Chat esportata in Markdown",
-        chatExportedJson: "Chat esportata in JSON",
+        chatExportedJson: "Chat exportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
         savedStatus: "Salvato",
         deleteChatTitle: "Eliminare la chat?",
@@ -851,6 +861,7 @@ const locales = {
         hotkeyMock: "Attiva/Disattiva Modalità Mock",
         hotkeyExport: "Esporta chat",
         hotkeyEsc: "Chiudi modali / Ripristina ricerca",
+        regenerate: "Rigenera risposta",
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -928,6 +939,7 @@ const locales = {
         hotkeyMock: "Przełącz Tryb Mock",
         hotkeyExport: "Eksportuj czat",
         hotkeyEsc: "Zamknij okna / Resetuj szukanie",
+        regenerate: "Wygeneruj ponownie odpowiedź",
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1005,6 +1017,7 @@ const locales = {
         hotkeyMock: "Mock Modunu Değiştir",
         hotkeyExport: "Sohbeti Dışa Aktar",
         hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
+        regenerate: "Yanıtı yeniden oluştur",
     }
 };
 
@@ -1029,6 +1042,7 @@ const state = {
     accentName: localStorage.getItem('accentName') || 'indigo',
     codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
     language: localStorage.getItem('language') || 'en',
+    lastUserPrompt: '',
 };
 
 function formatResponseTime(ms) {
@@ -1125,6 +1139,13 @@ const AppAPI = {
         }
         console.warn('[Wails] Running in mock mode');
         return key && key.trim().length >= 5;
+    },
+    deleteLastResponse: async (chatId) => {
+        if (window.go?.bindings?.App?.DeleteLastResponse) {
+            return await window.go.bindings.App.DeleteLastResponse(chatId);
+        }
+        console.warn('[Wails] Running in mock mode for DeleteLastResponse');
+        return true;
     }
 };
 
@@ -2192,14 +2213,24 @@ async function loadMessages(chatId) {
             return;
         }
 
-        messages.forEach(msg => appendMessageUI(
-            msg.role || msg.Role,
-            msg.content || msg.Content,
-            msg.created_at || msg.CreatedAt,
-            formatResponseTime(msg.duration || msg.Duration || null),
-            false,
-            false
-        ));
+        messages.forEach((msg, idx) => {
+            const role = msg.role || msg.Role;
+            const content = msg.content || msg.Content;
+            if (role === 'user') {
+                state.lastUserPrompt = content;
+            }
+            const isLastInChat = idx === messages.length - 1;
+
+            appendMessageUI(
+                role,
+                content,
+                msg.created_at || msg.CreatedAt,
+                formatResponseTime(msg.duration || msg.Duration || null),
+                false,
+                false,
+                isLastInChat
+            );
+        });
         scrollToBottom(false);
     } catch (err) {
         showToast(t('msgLoadError'), 'error');
@@ -2300,7 +2331,7 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false, isLastInChat = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -2345,6 +2376,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
           <button class="btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
             <svg class="w-5 h-5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
+          ${(!isUser && isLastInChat) ? `
+          <button class="btn-regenerate-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('regenerate')}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+          </button>
+          ` : ''}
           ${(!isUser && isAborted) ? `
             <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 hover:bg-zinc-800/60 transition-all px-3 py-1.5 rounded-full">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
@@ -2406,6 +2442,27 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
             const svg = starBtn.querySelector('svg');
             if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
+        };
+    }
+
+    const regenerateBtn = wrapper.querySelector('.btn-regenerate-msg');
+    if (regenerateBtn) {
+        regenerateBtn.onclick = async () => {
+            if (state.isSending || !state.lastUserPrompt) return;
+
+            state.isSending = true;
+            updateSendButtonUI();
+
+            try {
+                await AppAPI.deleteLastResponse(state.activeChatId);
+                wrapper.remove();
+                await triggerAIGeneration(state.lastUserPrompt);
+            } catch (err) {
+                state.isSending = false;
+                updateSendButtonUI();
+                showToast(t('aiError'), 'error');
+                console.error('Regenerate error:', err);
+            }
         };
     }
 
@@ -2493,6 +2550,40 @@ DOM.messageForm.addEventListener('submit', (e) => {
     }
 });
 
+async function triggerAIGeneration(prompt) {
+    const loaderId = appendLoaderUI();
+    state.currentLoaderId = loaderId;
+    const startTime = Date.now();
+
+    try {
+        const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, prompt);
+
+        if (state.isAborted) {
+            state.isAborted = false;
+            return;
+        }
+
+        const durationMs = Date.now() - startTime;
+        const duration = formatResponseTime(durationMs);
+
+        removeLoaderUI(loaderId);
+        state.currentLoaderId = null;
+
+        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true, true);
+    } catch (err) {
+        if (!state.isAborted) {
+            removeLoaderUI(loaderId);
+            state.currentLoaderId = null;
+            showToast(t('aiError'), 'error');
+            console.error(err);
+        }
+    } finally {
+        state.isSending = false;
+        state.currentLoaderId = null;
+        updateSendButtonUI();
+    }
+}
+
 async function handleSendMessage() {
     if (state.isSending) {
         state.isAborted = true;
@@ -2519,40 +2610,12 @@ async function handleSendMessage() {
     state.isSending = true;
     state.isAborted = false;
     state.wasLastAborted = false;
+    state.lastUserPrompt = text;
     updateSendButtonUI();
 
-    appendMessageUI('user', text);
+    appendMessageUI('user', text, new Date().toISOString(), null, false, false, false);
 
-    const loaderId = appendLoaderUI();
-    state.currentLoaderId = loaderId;
-    const startTime = Date.now();
-
-    try {
-        const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, text);
-
-        if (state.isAborted) {
-            state.isAborted = false;
-            return;
-        }
-
-        const durationMs = Date.now() - startTime;
-        const duration = formatResponseTime(durationMs);
-
-        removeLoaderUI(loaderId);
-        state.currentLoaderId = null;
-        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true);
-    } catch (err) {
-        if (!state.isAborted) {
-            removeLoaderUI(loaderId);
-            state.currentLoaderId = null;
-            showToast(t('aiError'), 'error');
-            console.error(err);
-        }
-    } finally {
-        state.isSending = false;
-        state.currentLoaderId = null;
-        updateSendButtonUI();
-    }
+    await triggerAIGeneration(text);
 }
 
 autoLoginWithSavedKey();
