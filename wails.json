@@ -1,20 +1,20 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "gemini-desktop",
+  "name": "Gemini Desktop",
   "outputfilename": "gemini-desktop",
   "frontend:install": "npm install",
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
   "author": {
-    "name": "Nikita Sinepupov",
+    "name": "vortifyne (Nikita Sinepupov)",
     "email": "vortifyne@gmail.com"
   },
   "info": {
-    "companyName": "",
-    "productName": "gemini-desktop",
-    "productVersion": "1.0.0",
-    "copyright": ""
+    "companyName": "vortifyne (Nikita Sinepupov)",
+    "productName": "Gemini Desktop",
+    "productVersion": "0.0.1",
+    "copyright": "Copyright 2026 vortifyne (Nikita Sinepupov)"
   },
   "tags": "webkit2_41"
 }

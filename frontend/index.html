@@ -16,14 +16,21 @@
 
 <div id="auth-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-zinc-950 p-4">
     <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl space-y-6">
-        <div class="text-center space-y-2">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600/10 text-indigo-400 mb-2 border border-indigo-500/20">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
-                </svg>
+        <div class="text-center space-y-4">
+            <div class="inline-flex items-center justify-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-indigo-500/30 flex items-center justify-center shadow-lg shadow-indigo-500/10">
+                    <svg class="w-7 h-7 text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+                    Gemini Desktop
+                </h1>
             </div>
-            <h1 class="text-2xl font-bold tracking-tight text-white" data-i18n="authTitle">Authorization</h1>
-            <p class="text-sm text-zinc-400" data-i18n="authDesc">Enter Gemini API Key to access AI</p>
+            <div class="pt-1 space-y-1">
+                <h2 class="text-lg font-semibold text-white" data-i18n="authTitle">Authorization</h2>
+                <p class="text-xs text-zinc-400" data-i18n="authDesc">Enter Gemini API Key to access AI</p>
+            </div>
         </div>
 
         <form id="auth-form" class="space-y-4" onsubmit="return false;">
@@ -56,10 +63,6 @@
                 <a href="https://github.com/vortifyne" class="flex items-center gap-1 hover:text-white transition-colors text-[11px]" title="GitHub">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                     <span>GitHub</span>
-                </a>
-                <a href="https://t.me/surrealmonsur_dev" class="flex items-center gap-1 hover:text-white transition-colors text-[11px]" title="Telegram">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.65.15-.17 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                    <span>Telegram</span>
                 </a>
                 <div class="flex items-center gap-1 text-[11px] select-text text-zinc-300" title="Email">
                     <svg class="w-3.5 h-3.5 shrink-0 text-zinc-400 select-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -113,7 +116,7 @@
     <main class="flex-1 flex flex-col h-full bg-zinc-950 relative overflow-hidden">
 
         <header class="h-14 border-b border-zinc-800/60 px-6 flex items-center justify-between bg-zinc-950">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
                 <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-xl transition-colors" title="Toggle Sidebar (Ctrl+\)">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -121,7 +124,7 @@
                 </button>
 
                 <div id="current-chat-title-container" class="px-2 py-1 rounded-lg border border-transparent hover:border-zinc-800 hover:bg-zinc-900/50 cursor-pointer flex items-center gap-2 transition-all">
-                    <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[150px] sm:max-w-xs" data-i18n="selectChatTitle">Select or create a chat</h2>
+                    <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[150px] sm:max-w-xs">Select or create a chat</h2>
                     <svg id="chat-title-pencil" class="text-zinc-500 w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                     </svg>
@@ -235,7 +238,7 @@
 </div>
 
 <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">
-    <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl space-y-6">
+    <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl space-y-5">
         <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
             <h3 class="text-base font-semibold text-white" data-i18n="settingsTitle">Appearance Settings</h3>
             <button id="btn-close-settings-modal" class="p-1 text-zinc-400 hover:text-zinc-100 rounded-lg transition-colors">
@@ -245,51 +248,85 @@
             </button>
         </div>
 
-        <div class="space-y-3">
-            <div class="text-xs font-medium text-zinc-300" data-i18n="languageLabel">Interface Language</div>
-            <select id="language-select" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 transition-colors">
-                <option value="en" class="bg-zinc-950 text-zinc-200">English (en)</option>
-                <option value="ru" class="bg-zinc-950 text-zinc-200">Русский (ru)</option>
-                <option value="zh" class="bg-zinc-950 text-zinc-200">中文 (zh)</option>
-                <option value="ja" class="bg-zinc-950 text-zinc-200">日本語 (ja)</option>
-                <option value="ko" class="bg-zinc-950 text-zinc-200">한국어 (ko)</option>
-                <option value="es" class="bg-zinc-950 text-zinc-200">Español (es)</option>
-                <option value="de" class="bg-zinc-950 text-zinc-200">Deutsch (de)</option>
-                <option value="fr" class="bg-zinc-950 text-zinc-200">Français (fr)</option>
-                <option value="pt-BR" class="bg-zinc-950 text-zinc-200">Português (pt-BR)</option>
-                <option value="hi" class="bg-zinc-950 text-zinc-200">हिन्दी (hi)</option>
-                <option value="it" class="bg-zinc-950 text-zinc-200">Italiano (it)</option>
-                <option value="pl" class="bg-zinc-950 text-zinc-200">Polski (pl)</option>
-                <option value="tr" class="bg-zinc-950 text-zinc-200">Türkçe (tr)</option>
-            </select>
+        <div class="flex border-b border-zinc-800 text-xs font-medium gap-2">
+            <button id="tab-btn-appearance" class="px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors" data-i18n="tabAppearance">Appearance</button>
+            <button id="tab-btn-shortcuts" class="px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors" data-i18n="tabShortcuts">Hotkeys</button>
         </div>
 
-        <div class="space-y-3 pt-3 border-t border-zinc-800">
-            <div class="text-xs font-medium text-zinc-300" data-i18n="accentColorLabel">Interface Accent Color</div>
-            <div class="flex items-center gap-3">
-                <button data-accent="indigo" class="btn-accent-color w-7 h-7 rounded-full bg-[#6366f1] border-2 border-white transition-transform hover:scale-110" title="Indigo"></button>
-                <button data-accent="emerald" class="btn-accent-color w-7 h-7 rounded-full bg-[#10b981] border-2 border-transparent transition-transform hover:scale-110" title="Emerald"></button>
-                <button data-accent="rose" class="btn-accent-color w-7 h-7 rounded-full bg-[#f43f5e] border-2 border-transparent transition-transform hover:scale-110" title="Rose"></button>
-                <button data-accent="amber" class="btn-accent-color w-7 h-7 rounded-full bg-[#f59e0b] border-2 border-transparent transition-transform hover:scale-110" title="Amber"></button>
-                <button data-accent="cyan" class="btn-accent-color w-7 h-7 rounded-full bg-[#06b6d4] border-2 border-transparent transition-transform hover:scale-110" title="Cyan"></button>
+        <div id="tab-content-appearance" class="space-y-4">
+            <div class="space-y-2">
+                <div class="text-xs font-medium text-zinc-300" data-i18n="languageLabel">Interface Language</div>
+                <select id="language-select" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 transition-colors">
+                    <option value="en" class="bg-zinc-950 text-zinc-200">English (en)</option>
+                    <option value="ru" class="bg-zinc-950 text-zinc-200">Русский (ru)</option>
+                    <option value="zh" class="bg-zinc-950 text-zinc-200">中文 (zh)</option>
+                    <option value="ja" class="bg-zinc-950 text-zinc-200">日本語 (ja)</option>
+                    <option value="ko" class="bg-zinc-950 text-zinc-200">한국어 (ko)</option>
+                    <option value="es" class="bg-zinc-950 text-zinc-200">Español (es)</option>
+                    <option value="de" class="bg-zinc-950 text-zinc-200">Deutsch (de)</option>
+                    <option value="fr" class="bg-zinc-950 text-zinc-200">Français (fr)</option>
+                    <option value="pt-BR" class="bg-zinc-950 text-zinc-200">Português (pt-BR)</option>
+                    <option value="hi" class="bg-zinc-950 text-zinc-200">हिन्दी (hi)</option>
+                    <option value="it" class="bg-zinc-950 text-zinc-200">Italiano (it)</option>
+                    <option value="pl" class="bg-zinc-950 text-zinc-200">Polski (pl)</option>
+                    <option value="tr" class="bg-zinc-950 text-zinc-200">Türkçe (tr)</option>
+                </select>
             </div>
-            <div class="flex items-center gap-3 p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-zinc-400">
-                <span class="select-none" data-i18n="preview">Preview:</span>
-                <div class="w-6 h-6 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-[10px]">AI</div>
-                <button class="px-3 py-1 bg-accent bg-accent-hover text-white rounded-lg font-medium transition-colors">Btn</button>
+
+            <div class="space-y-2 pt-3 border-t border-zinc-800">
+                <div class="text-xs font-medium text-zinc-300" data-i18n="accentColorLabel">Interface Accent Color</div>
+                <div class="flex items-center gap-3">
+                    <button data-accent="indigo" class="btn-accent-color w-7 h-7 rounded-full bg-[#6366f1] border-2 border-white transition-transform hover:scale-110" title="Indigo"></button>
+                    <button data-accent="emerald" class="btn-accent-color w-7 h-7 rounded-full bg-[#10b981] border-2 border-transparent transition-transform hover:scale-110" title="Emerald"></button>
+                    <button data-accent="rose" class="btn-accent-color w-7 h-7 rounded-full bg-[#f43f5e] border-2 border-transparent transition-transform hover:scale-110" title="Rose"></button>
+                    <button data-accent="amber" class="btn-accent-color w-7 h-7 rounded-full bg-[#f59e0b] border-2 border-transparent transition-transform hover:scale-110" title="Amber"></button>
+                    <button data-accent="cyan" class="btn-accent-color w-7 h-7 rounded-full bg-[#06b6d4] border-2 border-transparent transition-transform hover:scale-110" title="Cyan"></button>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-zinc-400">
+                    <span class="select-none" data-i18n="preview">Preview:</span>
+                    <div class="w-6 h-6 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-[10px]">AI</div>
+                    <button class="px-3 py-1 bg-accent bg-accent-hover text-white rounded-lg font-medium transition-colors">Btn</button>
+                </div>
+            </div>
+
+            <div class="space-y-2 pt-3 border-t border-zinc-800">
+                <div class="text-xs font-medium text-zinc-300" data-i18n="codeThemeLabel">Code Highlight Theme</div>
+                <select id="code-theme-select" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 transition-colors">
+                    <option value="atom-one-dark" class="bg-zinc-950 text-zinc-200">Atom One Dark</option>
+                    <option value="vs2015" class="bg-zinc-950 text-zinc-200">VS Code Dark</option>
+                    <option value="monokai" class="bg-zinc-950 text-zinc-200">Monokai</option>
+                </select>
+                <div class="p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs">
+                    <div class="text-[10px] text-zinc-500 mb-1 font-mono select-none" data-i18n="previewCodeTitle">Code Preview:</div>
+                    <pre class="bg-[#282c34] p-2 rounded-lg text-xs font-mono overflow-x-auto"><code id="preview-code-block" class="language-javascript">function hello() { return "Wails"; }</code></pre>
+                </div>
             </div>
         </div>
 
-        <div class="space-y-3 pt-3 border-t border-zinc-800">
-            <div class="text-xs font-medium text-zinc-300" data-i18n="codeThemeLabel">Code Highlight Theme</div>
-            <select id="code-theme-select" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 transition-colors">
-                <option value="atom-one-dark" class="bg-zinc-950 text-zinc-200">Atom One Dark</option>
-                <option value="vs2015" class="bg-zinc-950 text-zinc-200">VS Code Dark</option>
-                <option value="monokai" class="bg-zinc-950 text-zinc-200">Monokai</option>
-            </select>
-            <div class="p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs">
-                <div class="text-[10px] text-zinc-500 mb-1 font-mono select-none" data-i18n="previewCodeTitle">Code Preview:</div>
-                <pre class="bg-[#282c34] p-2 rounded-lg text-xs font-mono overflow-x-auto"><code id="preview-code-block" class="language-javascript">function hello() { return "Wails"; }</code></pre>
+        <div id="tab-content-shortcuts" class="space-y-2.5 hidden">
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeyNewChat">New Chat</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Ctrl + N</kbd>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeySearch">Search Chats</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Ctrl + F</kbd>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeySidebar">Toggle Sidebar</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Ctrl + \</kbd>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeyMock">Toggle Mock Mode</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Ctrl + M</kbd>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeyExport">Export Chat</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Ctrl + E</kbd>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-zinc-950 border border-zinc-800/80 rounded-xl text-xs">
+                <span class="text-zinc-300" data-i18n="hotkeyEsc">Close Modals / Reset Search</span>
+                <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-xs font-mono text-zinc-300">Esc</kbd>
             </div>
         </div>
     </div>
