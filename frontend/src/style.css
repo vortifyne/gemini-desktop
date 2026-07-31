@@ -89,7 +89,7 @@ html, body {
 }
 
 #messages-container {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     transform: translateZ(0);
     will-change: scroll-position;
     contain: layout style paint;
