@@ -77,3 +77,15 @@ func (a *App) SetApiKey(apiKey string) (bool, error) {
 func (a *App) GetChats() ([]database.Chat, error) {
 	return a.storage.GetChats()
 }
+
+func (a *App) DeleteChat(chatID int64) error {
+	return a.storage.DeleteChat(chatID)
+}
+
+func (a *App) DeleteLastResponse(chatID int64) error {
+	return a.storage.DeleteLastResponse(chatID)
+}
+
+func (a *App) UpdateChatTitle(chatID int64, newTitle string) error {
+	return a.storage.UpdateChatTitle(chatID, newTitle)
+}

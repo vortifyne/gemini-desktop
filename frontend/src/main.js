@@ -71,6 +71,10 @@ const locales = {
         chatExportedJson: "Chat exported to JSON",
         selectExportChat: "Select a chat to export",
         savedStatus: "Saved",
+        deleteChatTitle: "Delete Chat?",
+        deleteChatConfirm: "Are you sure? All messages in this chat will be lost permanently.",
+        btnCancel: "Cancel",
+        btnDelete: "Delete",
     },
     ru: {
         authTitle: "Авторизация",
@@ -138,6 +142,10 @@ const locales = {
         chatExportedJson: "Чат экспортирован в JSON",
         selectExportChat: "Выберите чат для экспорта",
         savedStatus: "Сохранено",
+        deleteChatTitle: "Удалить чат?",
+        deleteChatConfirm: "Вы уверены? Все сообщения из этого чата будут навсегда удалены.",
+        btnCancel: "Отмена",
+        btnDelete: "Удалить",
     },
     zh: {
         authTitle: "身份验证",
@@ -205,6 +213,10 @@ const locales = {
         chatExportedJson: "对话已导出为 JSON",
         selectExportChat: "请选择要导出的对话",
         savedStatus: "已保存",
+        deleteChatTitle: "删除对话？",
+        deleteChatConfirm: "您确定吗？此对话中的所有消息都将永久丢失。",
+        btnCancel: "取消",
+        btnDelete: "删除",
     },
     ja: {
         authTitle: "認証",
@@ -272,6 +284,10 @@ const locales = {
         chatExportedJson: "チャットをJSONでエクスポートしました",
         selectExportChat: "エクスポートするチャットを選択してください",
         savedStatus: "保存済み",
+        deleteChatTitle: "チャットを削除しますか？",
+        deleteChatConfirm: "本当によろしいですか？このチャットのすべてのメッセージが永久に失われます。",
+        btnCancel: "キャンセル",
+        btnDelete: "削除",
     },
     ko: {
         authTitle: "인증",
@@ -339,6 +355,10 @@ const locales = {
         chatExportedJson: "채팅이 JSON으로 내보내졌습니다",
         selectExportChat: "내보낼 채팅을 선택하세요",
         savedStatus: "저장됨",
+        deleteChatTitle: "채팅을 삭제하시겠습니까?",
+        deleteChatConfirm: "정말 진행하시겠습니까? 이 채팅의 모든 메시지가 영구적으로 삭제됩니다.",
+        btnCancel: "취소",
+        btnDelete: "삭제",
     },
     es: {
         authTitle: "Autenticación",
@@ -406,6 +426,10 @@ const locales = {
         chatExportedJson: "Chat exportado a JSON",
         selectExportChat: "Selecciona un chat para exportar",
         savedStatus: "Guardado",
+        deleteChatTitle: "¿Eliminar chat?",
+        deleteChatConfirm: "¿Estás seguro? Todos los mensajes de este chat se perderán permanentemente.",
+        btnCancel: "Cancelar",
+        btnDelete: "Eliminar",
     },
     de: {
         authTitle: "Authentifizierung",
@@ -473,6 +497,10 @@ const locales = {
         chatExportedJson: "Chat als JSON exportiert",
         selectExportChat: "Wähle einen Chat zum Exportieren aus",
         savedStatus: "Gespeichert",
+        deleteChatTitle: "Chat löschen?",
+        deleteChatConfirm: "Bist du sicher? Alle Nachrichten in diesem Chat gehen dauerhaft verloren.",
+        btnCancel: "Abbrechen",
+        btnDelete: "Löschen",
     },
     fr: {
         authTitle: "Authentification",
@@ -540,6 +568,10 @@ const locales = {
         chatExportedJson: "Chat exporté en JSON",
         selectExportChat: "Sélectionnez un chat à exporter",
         savedStatus: "Enregistré",
+        deleteChatTitle: "Supprimer le chat ?",
+        deleteChatConfirm: "Êtes-vous sûr ? Tous les messages de ce chat seront définitivement perdus.",
+        btnCancel: "Annuler",
+        btnDelete: "Supprimer",
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -607,6 +639,10 @@ const locales = {
         chatExportedJson: "Chat exportado para JSON",
         selectExportChat: "Selecione um chat para exportar",
         savedStatus: "Salvo",
+        deleteChatTitle: "Excluir chat?",
+        deleteChatConfirm: "Tem certeza? Todas as mensagens neste chat serão perdidas permanentemente.",
+        btnCancel: "Cancelar",
+        btnDelete: "Excluir",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -674,6 +710,10 @@ const locales = {
         chatExportedJson: "चैट JSON में निर्यात किया गया",
         selectExportChat: "निर्यात करने के लिए एक चैट चुनें",
         savedStatus: "सहेजा गया",
+        deleteChatTitle: "चैट हटाएं?",
+        deleteChatConfirm: "क्या आप निश्चित हैं? इस चैट के सभी संदेश स्थायी रूप से खो जाएंगे।",
+        btnCancel: "रद्द करें",
+        btnDelete: "हटाएं",
     },
     it: {
         authTitle: "Autenticazione",
@@ -741,6 +781,10 @@ const locales = {
         chatExportedJson: "Chat esportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
         savedStatus: "Salvato",
+        deleteChatTitle: "Eliminare la chat?",
+        deleteChatConfirm: "Sei sicuro? Tutti i messaggi in questa chat andranno persi in modo permanente.",
+        btnCancel: "Annulla",
+        btnDelete: "Elimina",
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -808,6 +852,10 @@ const locales = {
         chatExportedJson: "Czat wyeksportowany do JSON",
         selectExportChat: "Wybierz czat do eksportu",
         savedStatus: "Zapisano",
+        deleteChatTitle: "Usunąć czat?",
+        deleteChatConfirm: "Czy na pewno? Wszystkie wiadomości w tym czacie zostaną trwale utracone.",
+        btnCancel: "Anuluj",
+        btnDelete: "Usuń",
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -875,6 +923,10 @@ const locales = {
         chatExportedJson: "Sohbet JSON olarak dışa aktarıldı",
         selectExportChat: "Dışa aktarmak için bir sohbet seçin",
         savedStatus: "Kaydedildi",
+        deleteChatTitle: "Sohbet Silinsin mi?",
+        deleteChatConfirm: "Emin misiniz? Bu sohbetteki tüm mesajlar kalıcı olarak kaybolacak.",
+        btnCancel: "İptal",
+        btnDelete: "Sil",
     }
 };
 
@@ -928,6 +980,20 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for CreateChat');
         return Date.now();
     },
+    updateChatTitle: async (chatId, title) => {
+        if (window.go?.bindings?.App?.UpdateChatTitle) {
+            return await window.go.bindings.App.UpdateChatTitle(chatId, title);
+        }
+        console.warn('[Wails] Running in mock mode for UpdateChatTitle');
+        return true;
+    },
+    deleteChat: async (chatId) => {
+        if (window.go?.bindings?.App?.DeleteChat) {
+            return await window.go.bindings.App.DeleteChat(chatId);
+        }
+        console.warn('[Wails] Running in mock mode for DeleteChat');
+        return true;
+    },
     getMessages: async (chatId) => {
         if (window.go?.bindings?.App?.GetMessages) {
             return await window.go.bindings.App.GetMessages(chatId);
@@ -973,10 +1039,16 @@ const DOM = {
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
     btnLogout: document.getElementById('btn-logout'),
+
+    currentChatTitleContainer: document.getElementById('current-chat-title-container'),
     currentChatTitle: document.getElementById('current-chat-title'),
+    chatTitlePencil: document.getElementById('chat-title-pencil'),
+    chatTitleInput: document.getElementById('chat-title-input'),
+
     btnExportChat: document.getElementById('btn-export-chat'),
     btnStarredModal: document.getElementById('btn-starred-modal'),
     btnSettingsModal: document.getElementById('btn-settings-modal'),
+    btnDeleteChat: document.getElementById('btn-delete-chat'),
     savedStatus: document.getElementById('saved-status'),
 
     btnZoomDec: document.getElementById('btn-zoom-dec'),
@@ -987,6 +1059,10 @@ const DOM = {
     btnCloseExportModal: document.getElementById('btn-close-export-modal'),
     btnExportMd: document.getElementById('btn-export-md'),
     btnExportJson: document.getElementById('btn-export-json'),
+
+    deleteChatModal: document.getElementById('delete-chat-modal'),
+    btnCancelDeleteChat: document.getElementById('btn-cancel-delete-chat'),
+    btnConfirmDeleteChat: document.getElementById('btn-confirm-delete-chat'),
 
     starredModal: document.getElementById('starred-modal'),
     btnCloseStarredModal: document.getElementById('btn-close-starred-modal'),
@@ -1249,6 +1325,7 @@ window.addEventListener('keydown', (e) => {
         DOM.exportModal.classList.add('hidden');
         DOM.starredModal.classList.add('hidden');
         DOM.settingsModal.classList.add('hidden');
+        DOM.deleteChatModal.classList.add('hidden');
         DOM.tagModal.classList.add('hidden');
         if (document.activeElement) {
             document.activeElement.blur();
@@ -1403,6 +1480,126 @@ DOM.exportModal.addEventListener('click', (e) => {
     }
 });
 
+function startRenameTitle() {
+    if (!state.activeChatId) return;
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    if (!currentChat) return;
+
+    DOM.currentChatTitle.classList.add('hidden');
+    DOM.chatTitlePencil.classList.add('hidden');
+    DOM.chatTitleInput.classList.remove('hidden');
+
+    DOM.chatTitleInput.value = currentChat.title || currentChat.Title || '';
+    DOM.chatTitleInput.focus();
+    DOM.chatTitleInput.select();
+}
+
+async function finishRenameTitle() {
+    if (!state.activeChatId) return;
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    if (!currentChat) return;
+
+    const newTitle = DOM.chatTitleInput.value.trim();
+    const oldTitle = currentChat.title || currentChat.Title || '';
+
+    DOM.chatTitleInput.classList.add('hidden');
+    DOM.currentChatTitle.classList.remove('hidden');
+    DOM.chatTitlePencil.classList.remove('hidden');
+
+    if (newTitle && newTitle !== oldTitle) {
+        currentChat.title = newTitle;
+        if (currentChat.Title) currentChat.Title = newTitle;
+
+        DOM.currentChatTitle.textContent = newTitle;
+        renderChatList();
+
+        try {
+            await AppAPI.updateChatTitle(state.activeChatId, newTitle);
+            triggerSavedStatus();
+        } catch (err) {
+            console.error('Rename error:', err);
+        }
+    }
+}
+
+DOM.currentChatTitleContainer.addEventListener('click', (e) => {
+    if (DOM.chatTitleInput.classList.contains('hidden')) {
+        startRenameTitle();
+    }
+});
+
+DOM.chatTitleInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        finishRenameTitle();
+    } else if (e.key === 'Escape') {
+        DOM.chatTitleInput.classList.add('hidden');
+        DOM.currentChatTitle.classList.remove('hidden');
+        DOM.chatTitlePencil.classList.remove('hidden');
+    }
+});
+
+DOM.chatTitleInput.addEventListener('blur', () => {
+    finishRenameTitle();
+});
+
+DOM.btnDeleteChat.addEventListener('click', () => {
+    if (!state.activeChatId) {
+        showToast(t('selectChatTitle'), 'error');
+        return;
+    }
+    DOM.deleteChatModal.classList.remove('hidden');
+});
+
+DOM.btnCancelDeleteChat.addEventListener('click', () => {
+    DOM.deleteChatModal.classList.add('hidden');
+});
+
+DOM.deleteChatModal.addEventListener('click', (e) => {
+    if (e.target === DOM.deleteChatModal) {
+        DOM.deleteChatModal.classList.add('hidden');
+    }
+});
+
+DOM.btnConfirmDeleteChat.addEventListener('click', async () => {
+    if (!state.activeChatId) return;
+    const idToDelete = state.activeChatId;
+
+    DOM.deleteChatModal.classList.add('hidden');
+
+    try {
+        await AppAPI.deleteChat(idToDelete);
+
+        state.chats = state.chats.filter(c => (c.id || c.ID) !== idToDelete);
+
+        delete state.drafts[idToDelete];
+        delete state.chatTags[idToDelete];
+        localStorage.setItem('chatTags', JSON.stringify(state.chatTags));
+
+        const pinIdx = state.pinnedChatIds.indexOf(idToDelete);
+        if (pinIdx > -1) {
+            state.pinnedChatIds.splice(pinIdx, 1);
+            localStorage.setItem('pinnedChatIds', JSON.stringify(state.pinnedChatIds));
+        }
+
+        if (state.chats.length > 0) {
+            const nextId = state.chats[0].id || state.chats[0].ID;
+            await selectChat(nextId);
+        } else {
+            state.activeChatId = null;
+            renderChatList();
+            DOM.currentChatTitle.textContent = t('selectChatTitle');
+            DOM.messagesContainer.innerHTML = '';
+            DOM.messagesContainer.appendChild(DOM.emptyState);
+        }
+
+        triggerSavedStatus();
+    } catch (err) {
+        showToast('Error deleting chat', 'error');
+        console.error('Delete chat error:', err);
+    }
+});
+
 function openTagModal(chatId) {
     state.currentTagChatId = chatId;
     const existing = state.chatTags[chatId];
@@ -1488,7 +1685,7 @@ function renderStarredMessages() {
       <div class="markdown-body">${marked.parse(item.content)}</div>
       <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
         <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors" title="${t('copyText')}">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
         </button>
         <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors" title="Remove Bookmark">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
@@ -1606,6 +1803,7 @@ DOM.authForm.addEventListener('submit', async (e) => {
 
         if (isValid) {
             state.apiKey = key;
+            localStorage.setItem('gemini_api_key', key);
             DOM.authScreen.classList.add('hidden');
             DOM.chatScreen.classList.remove('hidden');
             await initChatApp();
@@ -1627,11 +1825,37 @@ DOM.btnLogout.addEventListener('click', () => {
     state.activeChatId = null;
     state.chats = [];
     state.drafts = {};
+    localStorage.removeItem('gemini_api_key');
     DOM.chatScreen.classList.add('hidden');
     DOM.authScreen.classList.remove('hidden');
     DOM.apiKeyInput.value = '';
     DOM.messageInput.value = '';
 });
+
+async function autoLoginWithSavedKey() {
+    const savedKey = localStorage.getItem('gemini_api_key');
+    if (savedKey && savedKey.trim().length >= 5) {
+        DOM.apiKeyInput.value = savedKey;
+        DOM.btnLogin.disabled = true;
+        DOM.btnLogin.innerHTML = `<span>${t('checking')}</span>`;
+
+        try {
+            const isValid = await AppAPI.validateApiKey(savedKey);
+            if (isValid) {
+                state.apiKey = savedKey;
+                DOM.authScreen.classList.add('hidden');
+                DOM.chatScreen.classList.remove('hidden');
+                await initChatApp();
+                return;
+            }
+        } catch (err) {
+            console.error('Auto login error:', err);
+        } finally {
+            DOM.btnLogin.disabled = false;
+            DOM.btnLogin.innerHTML = `<span>${t('loginBtn')}</span>`;
+        }
+    }
+}
 
 async function initChatApp() {
     try {
@@ -2228,3 +2452,5 @@ async function handleSendMessage() {
         updateSendButtonUI();
     }
 }
+
+autoLoginWithSavedKey();

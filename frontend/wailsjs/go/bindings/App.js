@@ -6,6 +6,14 @@ export function CreateChat(arg1) {
   return window['go']['bindings']['App']['CreateChat'](arg1);
 }
 
+export function DeleteChat(arg1) {
+  return window['go']['bindings']['App']['DeleteChat'](arg1);
+}
+
+export function DeleteLastResponse(arg1) {
+  return window['go']['bindings']['App']['DeleteLastResponse'](arg1);
+}
+
 export function GetChats() {
   return window['go']['bindings']['App']['GetChats']();
 }
@@ -20,4 +28,8 @@ export function SendMessageToAI(arg1, arg2) {
 
 export function SetApiKey(arg1) {
   return window['go']['bindings']['App']['SetApiKey'](arg1);
+}
+
+export function UpdateChatTitle(arg1, arg2) {
+  return window['go']['bindings']['App']['UpdateChatTitle'](arg1, arg2);
 }
