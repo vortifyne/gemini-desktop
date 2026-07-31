@@ -350,7 +350,7 @@ const locales = {
         languageLabel: "인터페이스 언어",
         preview: "미리보기:",
         previewCodeTitle: "코드 미리보기:",
-        copyText: "텍스트 복사",
+        copyText: "텍스트 복 복사",
         copied: "복사됨!",
         copyCode: "코드 복사",
         pinnedGroup: "고정됨",
@@ -1786,19 +1786,27 @@ function renderStarredMessages() {
         <span>${formatMessageTime(item.createdAt)}</span>
       </div>
       <div class="markdown-body">${marked.parse(item.content)}</div>
-      <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
-        <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors rounded-full" title="${t('copyText')}">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+      <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
+        <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
         </button>
-        <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors rounded-full" title="Remove Bookmark">
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
         </button>
       </div>
     `;
 
-        div.querySelector('.btn-copy-star-text').onclick = async () => {
-            await navigator.clipboard.writeText(item.content);
-            showToast(t('copied'), 'info');
+        div.querySelector('.btn-copy-star-text').onclick = async function() {
+            try {
+                await navigator.clipboard.writeText(item.content);
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                }, 2000);
+            } catch (err) {
+                console.error('Copy error:', err);
+            }
         };
 
         div.querySelector('.btn-unstar-item').onclick = () => {
@@ -2226,44 +2234,33 @@ function processCodeBlocks(container) {
 
         const rawCodeText = code.innerText || code.textContent;
 
-        const lines = rawCodeText.split('\n');
-        if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
-        const lineNumsHtml = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
-
         const codeWrapper = document.createElement('div');
-        codeWrapper.className = 'flex overflow-x-auto p-4 font-mono text-xs leading-relaxed';
-
-        const lineNumsDiv = document.createElement('div');
-        lineNumsDiv.className = 'select-none pr-3 border-r border-zinc-800/80 text-zinc-600 text-right shrink-0 font-mono';
-        lineNumsDiv.innerHTML = lineNumsHtml;
+        codeWrapper.className = 'overflow-x-auto p-4 font-mono text-sm leading-relaxed custom-scrollbar';
 
         const codeContentDiv = document.createElement('div');
-        codeContentDiv.className = 'pl-3 flex-1 overflow-x-auto';
+        codeContentDiv.className = 'min-w-full';
         codeContentDiv.appendChild(code.cloneNode(true));
 
         const rawTextArea = document.createElement('textarea');
-        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-xs p-3 focus:outline-none resize-y hidden';
+        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-sm p-4 focus:outline-none resize-y hidden custom-scrollbar';
         rawTextArea.value = rawCodeText;
         rawTextArea.readOnly = true;
 
-        codeWrapper.appendChild(lineNumsDiv);
         codeWrapper.appendChild(codeContentDiv);
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800 text-xs text-zinc-400 font-mono select-none';
+        header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800/80 text-xs text-zinc-400 font-mono select-none';
         header.innerHTML = `
       <span>${lang}</span>
-      <div class="flex items-center gap-3">
-        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors">Raw</button>
-        <button class="btn-copy-code flex items-center gap-1.5 hover:text-zinc-100 transition-colors">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
-          <span>${t('copyCode')}</span>
+      <div class="flex items-center gap-1">
+        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors px-2 py-1">Raw</button>
+        <button class="btn-copy-code p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700/50 transition-all rounded-full flex items-center justify-center" title="${t('copyCode')}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
         </button>
       </div>
     `;
 
         const copyBtn = header.querySelector('.btn-copy-code');
-        const copyText = copyBtn.querySelector('span');
         const toggleRawBtn = header.querySelector('.btn-toggle-raw');
 
         let isRaw = false;
@@ -2283,12 +2280,13 @@ function processCodeBlocks(container) {
             }
         };
 
-        copyBtn.onclick = async () => {
+        copyBtn.onclick = async function() {
             try {
                 await navigator.clipboard.writeText(rawCodeText);
-                copyText.textContent = t('copied');
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
-                    copyText.textContent = t('copyCode');
+                    this.innerHTML = originalHTML;
                 }, 2000);
             } catch (err) {
                 console.error('Copy error:', err);
@@ -2340,17 +2338,16 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
           <div class="markdown-text-body break-words w-full"></div>
         </div>
 
-        <div class="flex items-center gap-2 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-2 py-0.5 rounded-full">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
-            <span>${t('copyText')}</span>
+        <div class="flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button class="btn-copy-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
           </button>
-          <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded-full ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
-            <svg class="w-4 h-4" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          <button class="btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
+            <svg class="w-5 h-5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
           ${(!isUser && isAborted) ? `
-            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-2 py-0.5 rounded-full">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 hover:bg-zinc-800/60 transition-all px-3 py-1.5 rounded-full">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               <span>${t('continueGen')}</span>
             </button>
           ` : ''}
@@ -2387,13 +2384,13 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
     if (copyMsgBtn) {
-        const copyMsgSpan = copyMsgBtn.querySelector('span');
-        copyMsgBtn.onclick = async () => {
+        copyMsgBtn.onclick = async function() {
             try {
                 await navigator.clipboard.writeText(content);
-                copyMsgSpan.textContent = t('copied');
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
-                    copyMsgSpan.textContent = t('copyText');
+                    this.innerHTML = originalHTML;
                 }, 2000);
             } catch (err) {
                 console.error('Copy message error:', err);
@@ -2406,7 +2403,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
         starBtn.onclick = () => {
             toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content, createdAt, role });
             const nowStarred = state.starredMessages.some(s => s.id === msgId);
-            starBtn.className = `btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded-full ${nowStarred ? 'text-amber-400' : ''}`;
+            starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
             const svg = starBtn.querySelector('svg');
             if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
         };
