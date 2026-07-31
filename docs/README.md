@@ -1,6 +1,5 @@
 <div align="center">
 
-<!-- Прозрачный стильный баннер с искоркой Gemini -->
 <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z" fill="url(#gemini-spark)"/>
   <defs>
@@ -37,10 +36,10 @@ Built with Go, Wails v2, SQLite, and Vanilla JS.
 
 ## Preview
 
-<!-- Вставь сюда короткую 5-секундную гифку или скриншоты -->
-<div align="center">
-  <img src="../assets/preview.mp4" alt="Gemini Desktop Preview" width="100%" style="border-radius: 12px; border: 1px solid #27272a;">
-</div>
+<p align="center">
+  <img src="../assets/auth.png" width="48%" alt="Auth Screen" />
+  <img src="../assets/chat.png" width="48%" alt="Chat Interface" />
+</p>
 
 ---
 
