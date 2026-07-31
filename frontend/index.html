@@ -114,8 +114,7 @@
     </aside>
 
     <main class="flex-1 flex flex-col h-full bg-zinc-950 relative overflow-hidden">
-
-        <header class="h-14 px-6 flex items-center justify-between bg-zinc-950">
+        <header class="relative z-10 shrink-0 h-14 px-6 flex items-center justify-between bg-zinc-950">
             <div class="flex items-center gap-2">
                 <button id="btn-toggle-sidebar" class="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 rounded-full transition-colors" title="Toggle Sidebar (Ctrl+\)">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,7 +122,7 @@
                     </svg>
                 </button>
 
-                <div id="current-chat-title-container" class="px-2 py-1.5 rounded-xl border border-transparent hover:border-zinc-800 hover:bg-zinc-900/40 cursor-pointer flex items-center gap-2 transition-colors duration-150">
+                <div id="current-chat-title-container" class="relative shrink-0 px-2 py-1.5 rounded-xl border border-transparent hover:border-zinc-800 hover:bg-zinc-900/40 cursor-pointer flex items-center gap-2 transition-colors duration-150">
                     <h2 id="current-chat-title" class="text-sm font-semibold text-zinc-200 truncate max-w-[150px] sm:max-w-xs">Select or create a chat</h2>
                     <svg id="chat-title-pencil" class="text-zinc-500 w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
@@ -176,7 +175,7 @@
             </div>
         </header>
 
-        <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text">
+        <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text relative z-0">
             <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-zinc-500 select-none">
                 <div class="relative flex items-center justify-center mb-8 spark-contour-glow">
                     <svg class="w-20 h-20 overflow-visible" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
