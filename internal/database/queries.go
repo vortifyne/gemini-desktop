@@ -121,3 +121,64 @@ func (s *Storage) GetChats() ([]Chat, error) {
 
 	return chats, nil
 }
+
+func (s *Storage) DeleteChat(chatID int64) error {
+	// Set timeout for queries
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Initialize transaction to exclude database inconsistency
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create transaction: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	// Firstly, delete all message to exclude orphan messages
+	_, err = tx.ExecContext(ctx, "DELETE FROM messages WHERE chat_id = ?", chatID)
+	if err != nil {
+		return err
+	}
+
+	// Delete the whole chat itself
+	_, err = tx.ExecContext(ctx, "DELETE FROM chats WHERE id = ?", chatID)
+	if err != nil {
+		return err
+	}
+
+	// Save changes to database if it's successful
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit changes after transaction: %w", err)
+	}
+
+	return nil
+}
+
+func (s *Storage) DeleteLastResponse(chatID int64) error {
+	// Set timeout for queries
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Delete last message from chat with id = chatID
+	_, err := s.db.ExecContext(ctx,
+		"DELETE FROM messages where id = (SELECT MAX(id) FROM messages WHERE chat_id = ? AND role = 'model');", chatID)
+	if err != nil {
+		return fmt.Errorf("failed to delete last message from chat: %w", err)
+	}
+
+	return nil
+}
+
+func (s *Storage) UpdateChatTitle(chatID int64, newTitle string) error {
+	// Set timeout for queries
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Update title of chat in database
+	_, err := s.db.ExecContext(ctx, "UPDATE chats SET title = ? WHERE id = ?", newTitle, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
