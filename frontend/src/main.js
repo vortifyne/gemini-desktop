@@ -75,6 +75,14 @@ const locales = {
         deleteChatConfirm: "Are you sure? All messages in this chat will be lost permanently.",
         btnCancel: "Cancel",
         btnDelete: "Delete",
+        tabAppearance: "Appearance",
+        tabShortcuts: "Hotkeys",
+        hotkeyNewChat: "New Chat",
+        hotkeySearch: "Search Chats",
+        hotkeySidebar: "Toggle Sidebar",
+        hotkeyMock: "Toggle Mock Mode",
+        hotkeyExport: "Export Chat",
+        hotkeyEsc: "Close Modals / Reset Search",
     },
     ru: {
         authTitle: "Авторизация",
@@ -146,6 +154,14 @@ const locales = {
         deleteChatConfirm: "Вы уверены? Все сообщения из этого чата будут навсегда удалены.",
         btnCancel: "Отмена",
         btnDelete: "Удалить",
+        tabAppearance: "Внешний вид",
+        tabShortcuts: "Горячие клавиши",
+        hotkeyNewChat: "Новый чат",
+        hotkeySearch: "Поиск по чатам",
+        hotkeySidebar: "Свернуть / развернуть сайдбар",
+        hotkeyMock: "Включить / выключить Mock Mode",
+        hotkeyExport: "Экспортировать чат",
+        hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
     },
     zh: {
         authTitle: "身份验证",
@@ -217,6 +233,14 @@ const locales = {
         deleteChatConfirm: "您确定吗？此对话中的所有消息都将永久丢失。",
         btnCancel: "取消",
         btnDelete: "删除",
+        tabAppearance: "外观",
+        tabShortcuts: "快捷键",
+        hotkeyNewChat: "新建对话",
+        hotkeySearch: "搜索对话",
+        hotkeySidebar: "切换侧边栏",
+        hotkeyMock: "切换模拟模式",
+        hotkeyExport: "导出对话",
+        hotkeyEsc: "关闭弹窗 / 重置搜索",
     },
     ja: {
         authTitle: "認証",
@@ -284,10 +308,18 @@ const locales = {
         chatExportedJson: "チャットをJSONでエクスポートしました",
         selectExportChat: "エクスポートするチャットを選択してください",
         savedStatus: "保存済み",
-        deleteChatTitle: "チャットを削除しますか？",
+        deleteChatTitle: "チャット tool 削除しますか？",
         deleteChatConfirm: "本当によろしいですか？このチャットのすべてのメッセージが永久に失われます。",
         btnCancel: "キャンセル",
         btnDelete: "削除",
+        tabAppearance: "外観",
+        tabShortcuts: "ショートカット",
+        hotkeyNewChat: "新しいチャット",
+        hotkeySearch: "チャット検索",
+        hotkeySidebar: "サイドバー切り替え",
+        hotkeyMock: "モックモード切り替え",
+        hotkeyExport: "チャットのエクスポート",
+        hotkeyEsc: "モーダルを閉じる / 検索リセット",
     },
     ko: {
         authTitle: "인증",
@@ -359,6 +391,14 @@ const locales = {
         deleteChatConfirm: "정말 진행하시겠습니까? 이 채팅의 모든 메시지가 영구적으로 삭제됩니다.",
         btnCancel: "취소",
         btnDelete: "삭제",
+        tabAppearance: "모양",
+        tabShortcuts: "단축키",
+        hotkeyNewChat: "새 채팅",
+        hotkeySearch: "채팅 검색",
+        hotkeySidebar: "사이드바 토글",
+        hotkeyMock: "모의 모드 토글",
+        hotkeyExport: "채팅 내보내기",
+        hotkeyEsc: "모달 닫기 / 검색 초기화",
     },
     es: {
         authTitle: "Autenticación",
@@ -430,6 +470,14 @@ const locales = {
         deleteChatConfirm: "¿Estás seguro? Todos los mensajes de este chat se perderán permanentemente.",
         btnCancel: "Cancelar",
         btnDelete: "Eliminar",
+        tabAppearance: "Apariencia",
+        tabShortcuts: "Atajos de teclado",
+        hotkeyNewChat: "Nuevo chat",
+        hotkeySearch: "Buscar chats",
+        hotkeySidebar: "Alternar barra lateral",
+        hotkeyMock: "Alternar modo simulado",
+        hotkeyExport: "Exportar chat",
+        hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
     },
     de: {
         authTitle: "Authentifizierung",
@@ -501,6 +549,14 @@ const locales = {
         deleteChatConfirm: "Bist du sicher? Alle Nachrichten in diesem Chat gehen dauerhaft verloren.",
         btnCancel: "Abbrechen",
         btnDelete: "Löschen",
+        tabAppearance: "Erscheinungsbild",
+        tabShortcuts: "Tastenkombinationen",
+        hotkeyNewChat: "Neuer Chat",
+        hotkeySearch: "Chats suchen",
+        hotkeySidebar: "Seitenleiste umschalten",
+        hotkeyMock: "Mock-Modus umschalten",
+        hotkeyExport: "Chat exportieren",
+        hotkeyEsc: "Modals schließen / Suche zurücksetzen",
     },
     fr: {
         authTitle: "Authentification",
@@ -572,6 +628,14 @@ const locales = {
         deleteChatConfirm: "Êtes-vous sûr ? Tous les messages de ce chat seront définitivement perdus.",
         btnCancel: "Annuler",
         btnDelete: "Supprimer",
+        tabAppearance: "Apparence",
+        tabShortcuts: "Raccourcis",
+        hotkeyNewChat: "Nouveau chat",
+        hotkeySearch: "Rechercher des chats",
+        hotkeySidebar: "Basculer la barre latérale",
+        hotkeyMock: "Basculer le mode fictif",
+        hotkeyExport: "Exporter le chat",
+        hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -643,6 +707,14 @@ const locales = {
         deleteChatConfirm: "Tem certeza? Todas as mensagens neste chat serão perdidas permanentemente.",
         btnCancel: "Cancelar",
         btnDelete: "Excluir",
+        tabAppearance: "Aparência",
+        tabShortcuts: "Atalhos",
+        hotkeyNewChat: "Novo Chat",
+        hotkeySearch: "Pesquisar chats",
+        hotkeySidebar: "Alternar barra lateral",
+        hotkeyMock: "Alternar modo simulado",
+        hotkeyExport: "Exportar chat",
+        hotkeyEsc: "Fechar modais / Redefinir pesquisa",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -714,6 +786,14 @@ const locales = {
         deleteChatConfirm: "क्या आप निश्चित हैं? इस चैट के सभी संदेश स्थायी रूप से खो जाएंगे।",
         btnCancel: "रद्द करें",
         btnDelete: "हटाएं",
+        tabAppearance: "दिखावट",
+        tabShortcuts: "शॉर्टकट्स",
+        hotkeyNewChat: "नया चैट",
+        hotkeySearch: "चैट खोजें",
+        hotkeySidebar: "साइडबार बदलें",
+        hotkeyMock: "मॉक मोड बदलें",
+        hotkeyExport: "चैट निर्यात करें",
+        hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
     },
     it: {
         authTitle: "Autenticazione",
@@ -785,6 +865,14 @@ const locales = {
         deleteChatConfirm: "Sei sicuro? Tutti i messaggi in questa chat andranno persi in modo permanente.",
         btnCancel: "Annulla",
         btnDelete: "Elimina",
+        tabAppearance: "Aspetto",
+        tabShortcuts: "Scorciatoie",
+        hotkeyNewChat: "Nuova chat",
+        hotkeySearch: "Cerca chat",
+        hotkeySidebar: "Mostra/Nascondi barra laterale",
+        hotkeyMock: "Attiva/Disattiva Modalità Mock",
+        hotkeyExport: "Esporta chat",
+        hotkeyEsc: "Chiudi modali / Ripristina ricerca",
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -856,6 +944,14 @@ const locales = {
         deleteChatConfirm: "Czy na pewno? Wszystkie wiadomości w tym czacie zostaną trwale utracone.",
         btnCancel: "Anuluj",
         btnDelete: "Usuń",
+        tabAppearance: "Wygląd",
+        tabShortcuts: "Skróty klawiszowe",
+        hotkeyNewChat: "Nowy czat",
+        hotkeySearch: "Szukaj czatów",
+        hotkeySidebar: "Przełącz панель boczną",
+        hotkeyMock: "Przełącz Tryb Mock",
+        hotkeyExport: "Eksportuj czat",
+        hotkeyEsc: "Zamknij okna / Resetuj szukanie",
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -927,6 +1023,14 @@ const locales = {
         deleteChatConfirm: "Emin misiniz? Bu sohbetteki tüm mesajlar kalıcı olarak kaybolacak.",
         btnCancel: "İptal",
         btnDelete: "Sil",
+        tabAppearance: "Görünüm",
+        tabShortcuts: "Kısayollar",
+        hotkeyNewChat: "Yeni Sohbet",
+        hotkeySearch: "Sohbet Ara",
+        hotkeySidebar: "Yan Paneli Değiştir",
+        hotkeyMock: "Mock Modunu Değiştir",
+        hotkeyExport: "Sohbeti Dışa Aktar",
+        hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
     }
 };
 
@@ -1070,6 +1174,10 @@ const DOM = {
 
     settingsModal: document.getElementById('settings-modal'),
     btnCloseSettingsModal: document.getElementById('btn-close-settings-modal'),
+    tabBtnAppearance: document.getElementById('tab-btn-appearance'),
+    tabBtnShortcuts: document.getElementById('tab-btn-shortcuts'),
+    tabContentAppearance: document.getElementById('tab-content-appearance'),
+    tabContentShortcuts: document.getElementById('tab-content-shortcuts'),
     codeThemeSelect: document.getElementById('code-theme-select'),
     languageSelect: document.getElementById('language-select'),
 
@@ -1388,6 +1496,22 @@ DOM.settingsModal.addEventListener('click', (e) => {
         DOM.settingsModal.classList.add('hidden');
     }
 });
+
+if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts) {
+    DOM.tabBtnAppearance.addEventListener('click', () => {
+        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabContentAppearance.classList.remove('hidden');
+        DOM.tabContentShortcuts.classList.add('hidden');
+    });
+
+    DOM.tabBtnShortcuts.addEventListener('click', () => {
+        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabContentShortcuts.classList.remove('hidden');
+        DOM.tabContentAppearance.classList.add('hidden');
+    });
+}
 
 document.querySelectorAll('.btn-accent-color').forEach(btn => {
     btn.onclick = () => {
@@ -1973,7 +2097,7 @@ function renderChatList() {
             btn.innerHTML = `
         <div class="flex items-center justify-between w-full">
           <div class="flex items-center gap-2 truncate max-w-[170px]">
-            ${tagObj ? `<span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
+            ${tagObj ? `<span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${tagObj.color};" title="${tagObj.name || ''}"></span>` : ''}
             ${isPinned ? `<svg class="w-3.5 h-3.5 text-accent shrink-0 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>` : ''}
             <span class="truncate">${title}</span>
           </div>
@@ -2151,7 +2275,7 @@ function processCodeBlocks(container) {
       <div class="flex items-center gap-3">
         <button class="btn-toggle-raw hover:text-zinc-100 transition-colors">Raw</button>
         <button class="btn-copy-code flex items-center gap-1.5 hover:text-zinc-100 transition-colors">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
           <span>${t('copyCode')}</span>
         </button>
       </div>
@@ -2207,7 +2331,6 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const wrapper = document.createElement('div');
     wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
 
-    const htmlContent = marked.parse(content);
     const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
     const isStarred = state.starredMessages.some(s => s.id === msgId);
 
@@ -2238,7 +2361,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
         <div class="flex items-center gap-2">
           <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>${t('copyText')}</span>
           </button>
           <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
