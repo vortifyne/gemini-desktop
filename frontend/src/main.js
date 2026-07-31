@@ -266,7 +266,7 @@ const locales = {
         customTag: "カスタムタグ",
         tagNamePlaceholder: "タグ名...",
         saveBtn: "保存",
-        resetBtn: "リсет",
+        resetBtn: "リセット",
         settingsTitle: "外観設定",
         accentColorLabel: "アクセントカラー",
         codeThemeLabel: "コードハイライトテーマ",
@@ -1487,7 +1487,7 @@ DOM.searchChatInput.addEventListener('input', (e) => {
     renderChatList();
 });
 
-DOM.messagesContainer.addEventListener('scroll', () => {
+function updateChatProgress() {
     const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
     const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
 
@@ -1495,6 +1495,10 @@ DOM.messagesContainer.addEventListener('scroll', () => {
     if (progressBar) {
         progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
     }
+}
+
+DOM.messagesContainer.addEventListener('scroll', () => {
+    updateChatProgress();
 
     const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
     if (distanceToBottom > 200) {
@@ -2110,6 +2114,8 @@ function renderChatList() {
             renderChatGroup(groups[grpName], grpName);
         }
     });
+
+    updateChatProgress();
 }
 
 async function selectChat(chatId) {
