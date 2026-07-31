@@ -90,8 +90,9 @@ html, body {
 
 #messages-container {
     scroll-behavior: auto;
-    transform: translateZ(0);
-    will-change: scroll-position;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    -webkit-overflow-scrolling: touch;
     contain: layout style paint;
 }
 
