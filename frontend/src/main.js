@@ -17,8 +17,6 @@ const locales = {
         newChatBtn: "New Chat",
         logoutBtn: "Change API Key",
         selectChatTitle: "Select or create a chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Mock Mode",
         askPlaceholder: "Ask anything...",
         disclaimer: "Gemini may display inaccurate info. Double-check important facts.",
@@ -96,8 +94,6 @@ const locales = {
         newChatBtn: "Новый чат",
         logoutBtn: "Сменить API-ключ",
         selectChatTitle: "Выберите или создайте чат",
-        online: "Онлайн",
-        offline: "Офлайн",
         mockMode: "Mock Mode",
         askPlaceholder: "Спроси о чём угодно...",
         disclaimer: "Gemini может допускать ошибки. Проверяйте важную информацию.",
@@ -175,8 +171,6 @@ const locales = {
         newChatBtn: "新建对话",
         logoutBtn: "更改 API 密钥",
         selectChatTitle: "选择或新建对话",
-        online: "在线",
-        offline: "离线",
         mockMode: "模拟模式",
         askPlaceholder: "输入任何问题...",
         disclaimer: "Gemini 可能会提供不准确的信息，请核对重要事实。",
@@ -254,8 +248,6 @@ const locales = {
         newChatBtn: "新しいチャット",
         logoutBtn: "APIキーを変更",
         selectChatTitle: "チャットを選択または作成",
-        online: "オンライン",
-        offline: "オフライン",
         mockMode: "モックモード",
         askPlaceholder: "何でも質問してください...",
         disclaimer: "Geminiは不正確な情報を表示する可能性があります。重要な事実を確認してください。",
@@ -333,8 +325,6 @@ const locales = {
         newChatBtn: "새 채팅",
         logoutBtn: "API 키 변경",
         selectChatTitle: "채팅을 선택하거나 생성하세요",
-        online: "온라인",
-        offline: "오프라인",
         mockMode: "모의 모드",
         askPlaceholder: "무엇이든 물어보세요...",
         disclaimer: "Gemini는 부정확한 정보를 표시할 수 있습니다. 중요 정보를 확인하세요.",
@@ -412,8 +402,6 @@ const locales = {
         newChatBtn: "Nuevo chat",
         logoutBtn: "Cambiar clave API",
         selectChatTitle: "Selecciona o crea un chat",
-        online: "En línea",
-        offline: "Desconectado",
         mockMode: "Modo simulado",
         askPlaceholder: "Pregunta lo que quieras...",
         disclaimer: "Gemini puede cometer errores. Verifica la información importante.",
@@ -491,8 +479,6 @@ const locales = {
         newChatBtn: "Neuer Chat",
         logoutBtn: "API-Schlüssel ändern",
         selectChatTitle: "Wähle oder erstelle einen Chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Mock-Modus",
         askPlaceholder: "Frage irgendetwas...",
         disclaimer: "Gemini kann Fehler machen. Überprüfe wichtige Informationen.",
@@ -570,8 +556,6 @@ const locales = {
         newChatBtn: "Nouveau chat",
         logoutBtn: "Changer de clé API",
         selectChatTitle: "Sélectionnez ou créez un chat",
-        online: "En ligne",
-        offline: "Hors ligne",
         mockMode: "Mode fictif",
         askPlaceholder: "Posez n'importe quelle question...",
         disclaimer: "Gemini peut afficher des informations inexactes. Vérifiez les faits importants.",
@@ -649,8 +633,6 @@ const locales = {
         newChatBtn: "Novo Chat",
         logoutBtn: "Alterar Chave API",
         selectChatTitle: "Selecione ou crie um chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Modo Simulado",
         askPlaceholder: "Pergunte qualquer coisa...",
         disclaimer: "O Gemini pode exibir informações imprecisas. Verifique fatos importantes.",
@@ -728,8 +710,6 @@ const locales = {
         newChatBtn: "नया चैट",
         logoutBtn: "API कुंजी बदलें",
         selectChatTitle: "एक चैट चुनें या नया बनाएं",
-        online: "ऑनलाइन",
-        offline: "ऑफ़लाइन",
         mockMode: "मॉक मोड",
         askPlaceholder: "कुछ भी पूछें...",
         disclaimer: "Gemini गलत जानकारी दे सकता है। महत्वपूर्ण तथ्यों की जाँच करें।",
@@ -807,8 +787,6 @@ const locales = {
         newChatBtn: "Nuova chat",
         logoutBtn: "Cambia chiave API",
         selectChatTitle: "Seleziona o crea una chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Modalità Mock",
         askPlaceholder: "Chiedi qualsiasi cosa...",
         disclaimer: "Gemini può commettere errori. Verifica le informazioni importanti.",
@@ -886,8 +864,6 @@ const locales = {
         newChatBtn: "Nowy czat",
         logoutBtn: "Zmień klucz API",
         selectChatTitle: "Wybierz lub utwórz czat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Tryb Mock",
         askPlaceholder: "Zapytaj o cokolwiek...",
         disclaimer: "Gemini może popełniać błędy. Sprawdzaj ważne informacje.",
@@ -965,8 +941,6 @@ const locales = {
         newChatBtn: "Yeni Sohbet",
         logoutBtn: "API Anahtarını Değiştir",
         selectChatTitle: "Bir sohbet seçin veya oluşturun",
-        online: "Çevrimiçi",
-        offline: "Çevrimdışı",
         mockMode: "Mock Modu",
         askPlaceholder: "İstediğinizi sorun...",
         disclaimer: "Gemini hata yapabilir. Önemli bilgileri kontrol edin.",
@@ -1395,12 +1369,7 @@ function applyFormatting(before, after = '') {
 }
 
 function updateNetStatus() {
-    if (navigator.onLine) {
-        DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full';
-        DOM.netStatusText.textContent = t('online');
-    } else {
-        DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-full';
-        DOM.netStatusText.textContent = t('offline');
+    if (!navigator.onLine) {
         showToast(t('netLost'), 'error');
     }
 }
