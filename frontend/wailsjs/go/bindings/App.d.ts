@@ -4,6 +4,10 @@ import {database} from '../models';
 
 export function CreateChat(arg1:string):Promise<number>;
 
+export function DeleteChat(arg1:number):Promise<void>;
+
+export function DeleteLastResponse(arg1:number):Promise<void>;
+
 export function GetChats():Promise<Array<database.Chat>>;
 
 export function GetMessages(arg1:number):Promise<Array<database.Message>>;
@@ -11,3 +15,5 @@ export function GetMessages(arg1:number):Promise<Array<database.Message>>;
 export function SendMessageToAI(arg1:number,arg2:string):Promise<string>;
 
 export function SetApiKey(arg1:string):Promise<boolean>;
+
+export function UpdateChatTitle(arg1:number,arg2:string):Promise<void>;
