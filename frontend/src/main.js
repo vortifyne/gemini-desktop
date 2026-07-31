@@ -1031,6 +1031,33 @@ const state = {
     language: localStorage.getItem('language') || 'en',
 };
 
+function formatResponseTime(ms) {
+    if (ms == null) return null;
+    let val = 0;
+    if (typeof ms === 'number') {
+        val = ms;
+    } else if (typeof ms === 'string') {
+        if (ms.endsWith(' s.') || ms.endsWith(' m.') || ms.endsWith(' h.')) return ms;
+        if (ms.endsWith('s')) val = parseFloat(ms) * 1000;
+        else if (ms.endsWith('ms')) val = parseFloat(ms);
+        else val = parseFloat(ms);
+    }
+
+    if (isNaN(val)) return ms;
+
+    if (val < 60000) {
+        return (val / 1000).toFixed(2) + ' s.';
+    } else if (val < 3600000) {
+        const m = Math.floor(val / 60000);
+        const s = Math.floor((val % 60000) / 1000);
+        return `${m}.${s.toString().padStart(2, '0')} m.`;
+    } else {
+        const h = Math.floor(val / 3600000);
+        const m = Math.floor((val % 3600000) / 60000);
+        return `${h}.${m.toString().padStart(2, '0')} h.`;
+    }
+}
+
 const mockResponses = [
     `Yes, I completely agree with your approach! This is the most efficient technical solution. How else can I help you?`,
 
@@ -2161,7 +2188,7 @@ async function loadMessages(chatId) {
             msg.role || msg.Role,
             msg.content || msg.Content,
             msg.created_at || msg.CreatedAt,
-            msg.duration || msg.Duration || null,
+            formatResponseTime(msg.duration || msg.Duration || null),
             false,
             false
         ));
@@ -2293,7 +2320,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     const renderFooter = () => `
       <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
-        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">⚡ ${duration}</span>` : '<span></span>'}
+        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
         <span>${timeStr}</span>
       </div>
     `;
@@ -2511,7 +2538,8 @@ async function handleSendMessage() {
             return;
         }
 
-        const duration = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+        const durationMs = Date.now() - startTime;
+        const duration = formatResponseTime(durationMs);
 
         removeLoaderUI(loaderId);
         state.currentLoaderId = null;
