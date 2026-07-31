@@ -219,3 +219,12 @@ html, body {
 .animate-pulse-fast {
     animation: pulse-fast 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.animate-rotate-glow {
+    animation: rotateGlow 6s linear infinite;
+}

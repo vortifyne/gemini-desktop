@@ -177,12 +177,17 @@
         </header>
 
         <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text">
-            <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-zinc-500">
-                <div class="w-16 h-16 mb-4 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-zinc-500 select-none">
+                <div class="relative flex items-center justify-center mb-6">
+                    <div class="absolute w-24 h-24 rounded-full bg-[conic-gradient(from_0deg,_#6366f1,_#a855f7,_#ec4899,_#3b82f6,_#6366f1)] opacity-60 blur-xl animate-rotate-glow"></div>
+                    <div class="relative w-16 h-16 rounded-2xl bg-zinc-900/90 border border-zinc-700/50 flex items-center justify-center shadow-2xl backdrop-blur-md">
+                        <svg class="w-8 h-8 text-indigo-400 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z"/>
+                        </svg>
+                    </div>
                 </div>
-                <h3 class="text-lg font-medium text-zinc-300 mb-1" data-i18n="emptyStateTitle">How can I help?</h3>
-                <p class="text-sm max-w-sm" data-i18n="emptyStateDesc">Create a new chat on the left or select an existing one to start a conversation.</p>
+                <h3 class="text-xl font-semibold text-zinc-200 mb-1.5 tracking-tight" data-i18n="emptyStateTitle">How can I help?</h3>
+                <p class="text-xs max-w-sm text-zinc-400 leading-relaxed" data-i18n="emptyStateDesc">Create a new chat on the left or select an existing one to start a conversation.</p>
             </div>
         </div>
 
@@ -193,37 +198,28 @@
         </button>
 
         <div class="p-4 bg-zinc-950">
-            <div class="max-w-4xl mx-auto">
-                <form id="message-form" class="relative flex flex-col bg-zinc-900 border border-zinc-800 rounded-2xl p-2 focus-within:border-zinc-700 transition-colors shadow-lg" onsubmit="return false;">
-                    <div class="flex items-center gap-1 mb-1.5 px-1">
-                        <button type="button" id="fmt-bold" class="p-1 px-2 text-xs font-bold text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Bold">B</button>
-                        <button type="button" id="fmt-italic" class="p-1 px-2 text-xs italic text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Italic">I</button>
-                        <button type="button" id="fmt-code" class="p-1 px-2 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="Code">&lt;/&gt;</button>
-                        <button type="button" id="fmt-list" class="p-1 px-2 text-xs font-mono text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded transition-colors" title="List">- [ ]</button>
-                    </div>
-
-                    <div class="flex items-end gap-2">
-                        <textarea
-                                id="message-input"
-                                rows="1"
-                                placeholder="Ask anything..."
-                                data-i18n-placeholder="askPlaceholder"
-                                class="flex-1 bg-transparent px-3 py-1.5 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-48 custom-scrollbar text-sm leading-relaxed"
-                        ></textarea>
-                        <button
-                                type="submit"
-                                id="btn-send"
-                                disabled
-                                class="p-2.5 bg-accent bg-accent-hover disabled:opacity-40 disabled:hover:bg-accent text-white rounded-xl transition-all duration-150 shrink-0 shadow-md"
-                                title="Send"
-                        >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
-                            </svg>
-                        </button>
-                    </div>
+            <div class="max-w-3xl mx-auto">
+                <form id="message-form" class="relative flex items-center bg-zinc-900 border border-zinc-800/80 rounded-full px-5 py-2 focus-within:border-zinc-700 transition-all shadow-xl gap-3" onsubmit="return false;">
+                    <textarea
+                            id="message-input"
+                            rows="1"
+                            placeholder="Ask anything..."
+                            data-i18n-placeholder="askPlaceholder"
+                            class="flex-1 bg-transparent py-1 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-36 custom-scrollbar text-sm leading-relaxed"
+                    ></textarea>
+                    <button
+                            type="submit"
+                            id="btn-send"
+                            disabled
+                            class="w-8 h-8 p-1.5 bg-accent bg-accent-hover disabled:opacity-30 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center"
+                            title="Send"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V5m0 0l-6 6m6-6l6 6"/>
+                        </svg>
+                    </button>
                 </form>
-                <div class="flex items-center justify-between text-[10px] text-zinc-600 mt-2 px-1">
+                <div class="flex items-center justify-between text-[10px] text-zinc-600 mt-2 px-3">
                     <span data-i18n="disclaimer">Gemini may display inaccurate info. Double-check important facts.</span>
                     <span id="char-counter" class="font-mono transition-all duration-150">0 chars</span>
                 </div>

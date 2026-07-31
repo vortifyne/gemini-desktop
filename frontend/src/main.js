@@ -1171,11 +1171,6 @@ const DOM = {
     charCounter: document.getElementById('char-counter'),
     btnSend: document.getElementById('btn-send'),
 
-    fmtBold: document.getElementById('fmt-bold'),
-    fmtItalic: document.getElementById('fmt-italic'),
-    fmtCode: document.getElementById('fmt-code'),
-    fmtList: document.getElementById('fmt-list'),
-
     toast: document.getElementById('toast'),
     toastBox: document.getElementById('toast-box'),
     toastIconInfo: document.getElementById('toast-icon-info'),
@@ -1348,26 +1343,6 @@ function applyUiScale() {
     localStorage.setItem('uiScale', state.uiScale);
 }
 
-function applyFormatting(before, after = '') {
-    const input = DOM.messageInput;
-    const start = input.selectionStart;
-    const end = input.selectionEnd;
-    const val = input.value;
-    const selected = val.substring(start, end);
-
-    const replacement = before + selected + after;
-    input.value = val.substring(0, start) + replacement + val.substring(end);
-
-    input.focus();
-    if (selected.length > 0) {
-        input.setSelectionRange(start, start + replacement.length);
-    } else {
-        input.setSelectionRange(start + before.length, start + before.length);
-    }
-
-    input.dispatchEvent(new Event('input'));
-}
-
 function updateNetStatus() {
     if (!navigator.onLine) {
         showToast(t('netLost'), 'error');
@@ -1495,11 +1470,6 @@ DOM.codeThemeSelect.addEventListener('change', (e) => {
 DOM.languageSelect.addEventListener('change', (e) => {
     applyLanguage(e.target.value);
 });
-
-DOM.fmtBold.addEventListener('click', () => applyFormatting('**', '**'));
-DOM.fmtItalic.addEventListener('click', () => applyFormatting('*', '*'));
-DOM.fmtCode.addEventListener('click', () => applyFormatting('`', '`'));
-DOM.fmtList.addEventListener('click', () => applyFormatting('- '));
 
 DOM.btnToggleSidebar.addEventListener('click', () => {
     DOM.sidebar.classList.toggle('collapsed');
@@ -1864,18 +1834,18 @@ DOM.btnExportJson.addEventListener('click', async () => {
 function updateSendButtonUI() {
     if (state.isSending) {
         DOM.btnSend.disabled = false;
-        DOM.btnSend.className = 'p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
-      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <rect x="6" y="6" width="12" height="12" rx="2"/>
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+        <rect x="6" y="6" width="12" height="12" rx="1.5"/>
       </svg>
     `;
         DOM.btnSend.title = t('genStopped');
     } else {
-        DOM.btnSend.className = 'p-2.5 bg-accent bg-accent-hover disabled:opacity-40 disabled:hover:bg-accent text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-accent bg-accent-hover disabled:opacity-30 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V5m0 0l-6 6m6-6l6 6"/>
       </svg>
     `;
         DOM.btnSend.title = 'Send';
