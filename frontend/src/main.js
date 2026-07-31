@@ -266,7 +266,7 @@ const locales = {
         customTag: "カスタムタグ",
         tagNamePlaceholder: "タグ名...",
         saveBtn: "保存",
-        resetBtn: "リセット",
+        resetBtn: "リсет",
         settingsTitle: "外観設定",
         accentColorLabel: "アクセントカラー",
         codeThemeLabel: "コードハイライトテーマ",
@@ -370,7 +370,7 @@ const locales = {
         genStopped: "생성이 중지되었습니다",
         continueGen: "생성 계속하기...",
         mockEnabled: "모의 모드 활성화됨: Gemini API로 요청을 보내지 않습니다",
-        mockDisabled: "모의 모드 비활성화됨: Gemini API 사용 중",
+        mockDisabled: "모의 모드 비사용 중: Gemini API 사용 중",
         starredAdded: "메시지가 북마크에 추가되었습니다",
         starredRemoved: "메시지가 북마크에서 제거되었습니다",
         chatExportedMd: "채팅이 Markdown으로 내보내졌습니다",
@@ -683,7 +683,7 @@ const locales = {
         starredRemoved: "Mensagem removida dos favoritos",
         chatExportedMd: "Chat exportado para Markdown",
         chatExportedJson: "Chat exportado para JSON",
-        selectExportChat: "Selecione um chat para exportar",
+        selectExportChat: "Seleziona un chat para exportar",
         savedStatus: "Salvo",
         deleteChatTitle: "Excluir chat?",
         deleteChatConfirm: "Tem certeza? Todas as mensagens neste chat serão perdidas permanentemente.",
@@ -720,12 +720,12 @@ const locales = {
         downloadJson: "JSON के रूप में डाउनलोड करें (.json)",
         starredTitle: "सहेजे गए संदेश",
         noStarred: "कोई सहेजा गया संदेश नहीं है",
-        tagTitle: "चैट टैग",
+        tagTitle: "चैट टैг",
         presets: "प्रिसेट",
         work: "काम",
         study: "पढ़ाई",
         important: "महत्वपूर्ण",
-        customTag: "कस्टम टैग",
+        customTag: "कस्टम टैг",
         tagNamePlaceholder: "टैग का नाम...",
         saveBtn: "सहेजें",
         resetBtn: "रीसेट करें",
@@ -834,7 +834,7 @@ const locales = {
         mockEnabled: "Modalità Mock attivata: le richieste non vengono inviate all'API Gemini",
         mockDisabled: "Modalità Mock disattivata: utilizzo dell'API Gemini",
         starredAdded: "Messaggio aggiunto ai segnalibri",
-        starredRemoved: "Messaggio rimosso dai segnalibri",
+        starredRemoved: "Messaggio rimmosso dai segnalibri",
         chatExportedMd: "Chat esportata in Markdown",
         chatExportedJson: "Chat esportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
@@ -907,7 +907,7 @@ const locales = {
         msgLoadError: "Błąd ładowania wiadomości",
         aiError: "Błąd odbierania odpowiedzi od AI",
         genStopped: "Generowanie zatrzymane",
-        continueGen: "Kontynuuj generowanie...",
+        continueGen: "Kontнувuj generowanie...",
         mockEnabled: "Tryb Mock włączony: zapytania nie są wysyłane do API Gemini",
         mockDisabled: "Tryb Mock wyłączony: używanie API Gemini",
         starredAdded: "Wiadomość dodana do zakładek",
@@ -1111,8 +1111,6 @@ const DOM = {
     sidebar: document.getElementById('sidebar'),
     btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
     mockModeToggle: document.getElementById('mock-mode-toggle'),
-    netStatus: document.getElementById('net-status'),
-    netStatusText: document.getElementById('net-status-text'),
     searchChatInput: document.getElementById('search-chat-input'),
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
@@ -1197,11 +1195,11 @@ function showToast(message, type = 'info', duration = 5000) {
     DOM.toastMessage.textContent = message;
 
     if (type === 'error') {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconError.classList.remove('hidden');
         DOM.toastIconInfo.classList.add('hidden');
     } else {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-4 py-3 rounded-xl shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconInfo.classList.remove('hidden');
         DOM.toastIconError.classList.add('hidden');
     }
@@ -1443,15 +1441,15 @@ DOM.settingsModal.addEventListener('click', (e) => {
 
 if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts) {
     DOM.tabBtnAppearance.addEventListener('click', () => {
-        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentAppearance.classList.remove('hidden');
         DOM.tabContentShortcuts.classList.add('hidden');
     });
 
     DOM.tabBtnShortcuts.addEventListener('click', () => {
-        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentShortcuts.classList.remove('hidden');
         DOM.tabContentAppearance.classList.add('hidden');
     });
@@ -1548,13 +1546,19 @@ function startRenameTitle() {
     const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
     if (!currentChat) return;
 
+    DOM.currentChatTitleContainer.classList.add('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.remove('border-transparent');
+
     DOM.currentChatTitle.classList.add('hidden');
     DOM.chatTitlePencil.classList.add('hidden');
     DOM.chatTitleInput.classList.remove('hidden');
 
     DOM.chatTitleInput.value = currentChat.title || currentChat.Title || '';
-    DOM.chatTitleInput.focus();
-    DOM.chatTitleInput.select();
+
+    requestAnimationFrame(() => {
+        DOM.chatTitleInput.focus();
+        DOM.chatTitleInput.select();
+    });
 }
 
 async function finishRenameTitle() {
@@ -1564,6 +1568,9 @@ async function finishRenameTitle() {
 
     const newTitle = DOM.chatTitleInput.value.trim();
     const oldTitle = currentChat.title || currentChat.Title || '';
+
+    DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.add('border-transparent');
 
     DOM.chatTitleInput.classList.add('hidden');
     DOM.currentChatTitle.classList.remove('hidden');
@@ -1594,8 +1601,10 @@ DOM.currentChatTitleContainer.addEventListener('click', (e) => {
 DOM.chatTitleInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         e.preventDefault();
-        finishRenameTitle();
+        DOM.chatTitleInput.blur();
     } else if (e.key === 'Escape') {
+        DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+        DOM.currentChatTitleContainer.classList.add('border-transparent');
         DOM.chatTitleInput.classList.add('hidden');
         DOM.currentChatTitle.classList.remove('hidden');
         DOM.chatTitlePencil.classList.remove('hidden');
@@ -1739,18 +1748,18 @@ function renderStarredMessages() {
 
     state.starredMessages.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'bg-zinc-950 border border-zinc-800 rounded-xl p-3 space-y-2 text-xs text-zinc-200 select-text';
+        div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text';
         div.innerHTML = `
-      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1">
+      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
         <span>${item.chatTitle || 'Chat'}</span>
         <span>${formatMessageTime(item.createdAt)}</span>
       </div>
       <div class="markdown-body">${marked.parse(item.content)}</div>
       <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
-        <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors" title="${t('copyText')}">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+        <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors rounded-full" title="${t('copyText')}">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
         </button>
-        <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors" title="Remove Bookmark">
+        <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors rounded-full" title="Remove Bookmark">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
         </button>
       </div>
@@ -2027,7 +2036,7 @@ function renderChatList() {
             const isPinned = state.pinnedChatIds.includes(id);
 
             const btn = document.createElement('button');
-            btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex flex-col gap-1 group ${
+            btn.className = `w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-all flex flex-col gap-1 group ${
                 isActive
                     ? 'bg-accent-alpha text-accent border border-accent'
                     : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
@@ -2041,10 +2050,10 @@ function renderChatList() {
             <span class="truncate">${title}</span>
           </div>
           <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="Tag">
+            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="Tag">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
             </button>
-            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
+            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
               <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-accent' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
             </button>
           </div>
@@ -2285,29 +2294,29 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-      <div class="user-avatar w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
+      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
       <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
-        <div class="user-msg-bubble px-4 py-3 rounded-2xl select-text relative group transition-all duration-200 border ${
+        <div class="user-msg-bubble px-5 py-3.5 select-text relative group transition-all duration-200 border ${
         isUser
-            ? 'bg-accent border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
-            : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-tl-none markdown-body shadow-sm'
+            ? 'bg-accent border-transparent text-white rounded-[22px] rounded-tr-md markdown-body markdown-user shadow-sm'
+            : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-[22px] rounded-tl-md markdown-body shadow-sm'
     }">
           <div class="markdown-text-body"></div>
         </div>
 
         <div class="flex items-center gap-2">
-          <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
+          <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-2 py-0.5 rounded-full">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
             <span>${t('copyText')}</span>
           </button>
-          <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
+          <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded-full ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
             <svg class="w-3.5 h-3.5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
           ${(!isUser && isAborted) ? `
-            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-1 py-0.5 rounded">
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-2 py-0.5 rounded-full">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               <span>${t('continueGen')}</span>
             </button>
@@ -2364,7 +2373,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
         starBtn.onclick = () => {
             toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content, createdAt, role });
             const nowStarred = state.starredMessages.some(s => s.id === msgId);
-            starBtn.className = `btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${nowStarred ? 'text-amber-400' : ''}`;
+            starBtn.className = `btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded-full ${nowStarred ? 'text-amber-400' : ''}`;
             const svg = starBtn.querySelector('svg');
             if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
         };
@@ -2391,10 +2400,10 @@ function appendLoaderUI() {
 
     wrapper.innerHTML = `
     <div class="flex gap-3 max-w-3xl flex-row">
-      <div class="w-8 h-8 rounded-xl bg-zinc-800 text-accent border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
+      <div class="w-8 h-8 rounded-full bg-zinc-800 text-accent border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
         AI
       </div>
-      <div class="px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1.5">
+      <div class="px-5 py-3.5 rounded-[22px] rounded-tl-md bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1.5">
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>

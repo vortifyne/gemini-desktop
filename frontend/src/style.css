@@ -172,7 +172,7 @@ html, body {
 .markdown-body pre {
     margin-top: 0.875rem;
     margin-bottom: 0.875rem;
-    border-radius: 0.75rem;
+    border-radius: 1.25rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background-color: #282c34;
@@ -220,11 +220,22 @@ html, body {
     animation: pulse-fast 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes sparkContourPulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.8))
+        drop-shadow(0 0 20px rgba(168, 85, 247, 0.5));
+    }
+    33% {
+        filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.9))
+        drop-shadow(0 0 24px rgba(245, 158, 11, 0.6));
+    }
+    66% {
+        filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.9))
+        drop-shadow(0 0 24px rgba(16, 185, 129, 0.6));
+    }
 }
 
-.animate-rotate-glow {
-    animation: rotateGlow 6s linear infinite;
+.spark-contour-glow {
+    animation: sparkContourPulse 6s ease-in-out infinite;
+    overflow: visible !important;
 }
