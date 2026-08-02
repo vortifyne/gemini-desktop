@@ -177,19 +177,13 @@
 
         <div id="messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar select-text relative z-0">
             <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-zinc-500 select-none">
-                <div class="relative flex items-center justify-center mb-8 spark-contour-glow">
+                <div class="relative flex items-center justify-center mb-8">
                     <svg class="w-20 h-20 overflow-visible" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="gemini-contour-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#6366f1">
-                                    <animate attributeName="stop-color" values="#6366f1;#ec4899;#10b981;#06b6d4;#6366f1" dur="7s" repeatCount="indefinite" />
-                                </stop>
-                                <stop offset="50%" stop-color="#a855f7">
-                                    <animate attributeName="stop-color" values="#a855f7;#f59e0b;#ec4899;#6366f1;#a855f7" dur="7s" repeatCount="indefinite" />
-                                </stop>
-                                <stop offset="100%" stop-color="#ec4899">
-                                    <animate attributeName="stop-color" values="#ec4899;#06b6d4;#6366f1;#f59e0b;#ec4899" dur="7s" repeatCount="indefinite" />
-                                </stop>
+                                <stop offset="0%" stop-color="#6366f1" />
+                                <stop offset="50%" stop-color="#a855f7" />
+                                <stop offset="100%" stop-color="#ec4899" />
                             </linearGradient>
                         </defs>
                         <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4772 12 22C12 16.4772 16.4772 12 22 12C16.4772 12 12 7.52285 12 2Z"
