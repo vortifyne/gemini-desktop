@@ -2200,6 +2200,8 @@ async function selectChat(chatId) {
 
     renderChatList();
 
+    DOM.messagesContainer.innerHTML = '';
+
     DOM.messageInput.value = state.drafts[chatId] || '';
     DOM.messageInput.style.height = 'auto';
     if (DOM.messageInput.value) {
@@ -2563,14 +2565,15 @@ DOM.messageForm.addEventListener('submit', (e) => {
 });
 
 async function triggerAIGeneration(prompt, isRegenerate = false) {
+    const targetChatId = state.activeChatId;
     const loaderId = appendLoaderUI();
     state.currentLoaderId = loaderId;
     const startTime = Date.now();
 
     try {
         const aiResponse = isRegenerate
-            ? await AppAPI.regenerateResponse(state.activeChatId, prompt)
-            : await AppAPI.sendMessageToAI(state.activeChatId, prompt);
+            ? await AppAPI.regenerateResponse(targetChatId, prompt)
+            : await AppAPI.sendMessageToAI(targetChatId, prompt);
 
         if (state.isAborted) {
             state.isAborted = false;
@@ -2580,20 +2583,25 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
         const durationMs = Date.now() - startTime;
         const duration = formatResponseTime(durationMs);
 
-        removeLoaderUI(loaderId);
-        state.currentLoaderId = null;
-
-        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true, true);
-    } catch (err) {
-        if (!state.isAborted) {
+        if (state.activeChatId === targetChatId) {
             removeLoaderUI(loaderId);
             state.currentLoaderId = null;
-            showToast(t('aiError'), 'error');
+            appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true, true);
+        }
+    } catch (err) {
+        if (!state.isAborted) {
+            if (state.activeChatId === targetChatId) {
+                removeLoaderUI(loaderId);
+                state.currentLoaderId = null;
+                showToast(t('aiError'), 'error');
+            }
             console.error(err);
         }
     } finally {
         state.isSending = false;
-        state.currentLoaderId = null;
+        if (state.activeChatId === targetChatId) {
+            state.currentLoaderId = null;
+        }
         updateSendButtonUI();
     }
 }
