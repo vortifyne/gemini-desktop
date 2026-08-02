@@ -7,7 +7,7 @@
 **An unofficial, lightweight, privacy-focused desktop client for Google Gemini API.**  
 Built with Go, Wails v2, SQLite, and Vanilla JS.
 
-[![Latest Release](https://img.shields.org/github/v1/release/vortifyne/gemini-client?color=6366f1&label=Release&style=flat-square)](https://github.com/vortifyne/gemini-client/releases)
+[![Latest Release](https://img.shields.org/github/v1/release/vortifyne/gemini-client?color=6366f1&label=Release&style=flat-square)](https://github.com/vortifyne/gemini-desktop/releases)
 [![Go Version](https://img.shields.org/badge/Go-1.21%2B-00ADD8?style=flat-square&logo=go)](https://golang.org)
 [![License](https://img.shields.org/badge/License-MIT-emerald?style=flat-square)](LICENSE)
 

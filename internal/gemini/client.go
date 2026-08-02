@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/google/generative-ai-go/genai"
@@ -59,7 +60,11 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) SendMessage(promt string) (string, error) {
+func (c *Client) SendMessage(prompt string) (string, error) {
+	if strings.TrimSpace(prompt) == "" {
+		return "", errors.New("prompt cannot be empty")
+	}
+
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
@@ -77,7 +82,7 @@ func (c *Client) SendMessage(promt string) (string, error) {
 
 	// Choose generative model and try to get response from it
 	genModel := client.GenerativeModel("gemini-3.6-flash")
-	resp, err := genModel.GenerateContent(ctx, genai.Text(promt))
+	resp, err := genModel.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
 		return "", fmt.Errorf("failed to get response from generative model: %w", err)
 	}

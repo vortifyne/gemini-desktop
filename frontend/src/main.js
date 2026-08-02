@@ -17,8 +17,6 @@ const locales = {
         newChatBtn: "New Chat",
         logoutBtn: "Change API Key",
         selectChatTitle: "Select or create a chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Mock Mode",
         askPlaceholder: "Ask anything...",
         disclaimer: "Gemini may display inaccurate info. Double-check important facts.",
@@ -83,6 +81,7 @@ const locales = {
         hotkeyMock: "Toggle Mock Mode",
         hotkeyExport: "Export Chat",
         hotkeyEsc: "Close Modals / Reset Search",
+        regenerate: "Regenerate response",
     },
     ru: {
         authTitle: "Авторизация",
@@ -96,8 +95,6 @@ const locales = {
         newChatBtn: "Новый чат",
         logoutBtn: "Сменить API-ключ",
         selectChatTitle: "Выберите или создайте чат",
-        online: "Онлайн",
-        offline: "Офлайн",
         mockMode: "Mock Mode",
         askPlaceholder: "Спроси о чём угодно...",
         disclaimer: "Gemini может допускать ошибки. Проверяйте важную информацию.",
@@ -162,6 +159,7 @@ const locales = {
         hotkeyMock: "Включить / выключить Mock Mode",
         hotkeyExport: "Экспортировать чат",
         hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
+        regenerate: "Перегенерировать ответ",
     },
     zh: {
         authTitle: "身份验证",
@@ -175,8 +173,6 @@ const locales = {
         newChatBtn: "新建对话",
         logoutBtn: "更改 API 密钥",
         selectChatTitle: "选择或新建对话",
-        online: "在线",
-        offline: "离线",
         mockMode: "模拟模式",
         askPlaceholder: "输入任何问题...",
         disclaimer: "Gemini 可能会提供不准确的信息，请核对重要事实。",
@@ -241,6 +237,7 @@ const locales = {
         hotkeyMock: "切换模拟模式",
         hotkeyExport: "导出对话",
         hotkeyEsc: "关闭弹窗 / 重置搜索",
+        regenerate: "重新生成响应",
     },
     ja: {
         authTitle: "認証",
@@ -254,8 +251,6 @@ const locales = {
         newChatBtn: "新しいチャット",
         logoutBtn: "APIキーを変更",
         selectChatTitle: "チャットを選択または作成",
-        online: "オンライン",
-        offline: "オフライン",
         mockMode: "モックモード",
         askPlaceholder: "何でも質問してください...",
         disclaimer: "Geminiは不正確な情報を表示する可能性があります。重要な事実を確認してください。",
@@ -320,6 +315,7 @@ const locales = {
         hotkeyMock: "モックモード切り替え",
         hotkeyExport: "チャットのエクスポート",
         hotkeyEsc: "モーダルを閉じる / 検索リセット",
+        regenerate: "応答を再生成する",
     },
     ko: {
         authTitle: "인증",
@@ -333,8 +329,6 @@ const locales = {
         newChatBtn: "새 채팅",
         logoutBtn: "API 키 변경",
         selectChatTitle: "채팅을 선택하거나 생성하세요",
-        online: "온라인",
-        offline: "오프라인",
         mockMode: "모의 모드",
         askPlaceholder: "무엇이든 물어보세요...",
         disclaimer: "Gemini는 부정확한 정보를 표시할 수 있습니다. 중요 정보를 확인하세요.",
@@ -360,7 +354,7 @@ const locales = {
         languageLabel: "인터페이스 언어",
         preview: "미리보기:",
         previewCodeTitle: "코드 미리보기:",
-        copyText: "텍스트 복사",
+        copyText: "텍스트 복 복사",
         copied: "복사됨!",
         copyCode: "코드 복사",
         pinnedGroup: "고정됨",
@@ -380,7 +374,7 @@ const locales = {
         genStopped: "생성이 중지되었습니다",
         continueGen: "생성 계속하기...",
         mockEnabled: "모의 모드 활성화됨: Gemini API로 요청을 보내지 않습니다",
-        mockDisabled: "모의 모드 비활성화됨: Gemini API 사용 중",
+        mockDisabled: "모의 모드 비사용 중: Gemini API 사용 중",
         starredAdded: "메시지가 북마크에 추가되었습니다",
         starredRemoved: "메시지가 북마크에서 제거되었습니다",
         chatExportedMd: "채팅이 Markdown으로 내보내졌습니다",
@@ -399,6 +393,7 @@ const locales = {
         hotkeyMock: "모의 모드 토글",
         hotkeyExport: "채팅 내보내기",
         hotkeyEsc: "모달 닫기 / 검색 초기화",
+        regenerate: "응답 다시 생성",
     },
     es: {
         authTitle: "Autenticación",
@@ -412,8 +407,6 @@ const locales = {
         newChatBtn: "Nuevo chat",
         logoutBtn: "Cambiar clave API",
         selectChatTitle: "Selecciona o crea un chat",
-        online: "En línea",
-        offline: "Desconectado",
         mockMode: "Modo simulado",
         askPlaceholder: "Pregunta lo que quieras...",
         disclaimer: "Gemini puede cometer errores. Verifica la información importante.",
@@ -478,6 +471,7 @@ const locales = {
         hotkeyMock: "Alternar modo simulado",
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
+        regenerate: "Regenerar respuesta",
     },
     de: {
         authTitle: "Authentifizierung",
@@ -491,8 +485,6 @@ const locales = {
         newChatBtn: "Neuer Chat",
         logoutBtn: "API-Schlüssel ändern",
         selectChatTitle: "Wähle oder erstelle einen Chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Mock-Modus",
         askPlaceholder: "Frage irgendetwas...",
         disclaimer: "Gemini kann Fehler machen. Überprüfe wichtige Informationen.",
@@ -557,6 +549,7 @@ const locales = {
         hotkeyMock: "Mock-Modus umschalten",
         hotkeyExport: "Chat exportieren",
         hotkeyEsc: "Modals schließen / Suche zurücksetzen",
+        regenerate: "Antwort neu generieren",
     },
     fr: {
         authTitle: "Authentification",
@@ -570,8 +563,6 @@ const locales = {
         newChatBtn: "Nouveau chat",
         logoutBtn: "Changer de clé API",
         selectChatTitle: "Sélectionnez ou créez un chat",
-        online: "En ligne",
-        offline: "Hors ligne",
         mockMode: "Mode fictif",
         askPlaceholder: "Posez n'importe quelle question...",
         disclaimer: "Gemini peut afficher des informations inexactes. Vérifiez les faits importants.",
@@ -636,6 +627,7 @@ const locales = {
         hotkeyMock: "Basculer le mode fictif",
         hotkeyExport: "Exporter le chat",
         hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
+        regenerate: "Régénérer la réponse",
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -643,14 +635,12 @@ const locales = {
         apiKeyLabel: "Chave API",
         loginBtn: "Entrar",
         checking: "Verificando...",
-        unofficialClient: "CLIENTE NÃO OFICIAL",
+        unofficialClient: "CLIENT NÃO OFICIAL",
         createdForEnthusiasts: "Criado por entusiasta para entusiastas",
         searchPlaceholder: "Pesquisar chats... (Ctrl+F)",
         newChatBtn: "Novo Chat",
         logoutBtn: "Alterar Chave API",
         selectChatTitle: "Selecione ou crie um chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Modo Simulado",
         askPlaceholder: "Pergunte qualquer coisa...",
         disclaimer: "O Gemini pode exibir informações imprecisas. Verifique fatos importantes.",
@@ -701,7 +691,7 @@ const locales = {
         starredRemoved: "Mensagem removida dos favoritos",
         chatExportedMd: "Chat exportado para Markdown",
         chatExportedJson: "Chat exportado para JSON",
-        selectExportChat: "Selecione um chat para exportar",
+        selectExportChat: "Seleziona un chat para exportar",
         savedStatus: "Salvo",
         deleteChatTitle: "Excluir chat?",
         deleteChatConfirm: "Tem certeza? Todas as mensagens neste chat serão perdidas permanentemente.",
@@ -715,6 +705,7 @@ const locales = {
         hotkeyMock: "Alternar modo simulado",
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Fechar modais / Redefinir pesquisa",
+        regenerate: "Regenerar resposta",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -728,8 +719,6 @@ const locales = {
         newChatBtn: "नया चैट",
         logoutBtn: "API कुंजी बदलें",
         selectChatTitle: "एक चैट चुनें या नया बनाएं",
-        online: "ऑनलाइन",
-        offline: "ऑफ़लाइन",
         mockMode: "मॉक मोड",
         askPlaceholder: "कुछ भी पूछें...",
         disclaimer: "Gemini गलत जानकारी दे सकता है। महत्वपूर्ण तथ्यों की जाँच करें।",
@@ -740,12 +729,12 @@ const locales = {
         downloadJson: "JSON के रूप में डाउनलोड करें (.json)",
         starredTitle: "सहेजे गए संदेश",
         noStarred: "कोई सहेजा गया संदेश नहीं है",
-        tagTitle: "चैट टैग",
+        tagTitle: "चैट टैг",
         presets: "प्रिसेट",
         work: "काम",
         study: "पढ़ाई",
         important: "महत्वपूर्ण",
-        customTag: "कस्टम टैग",
+        customTag: "कस्टम टैг",
         tagNamePlaceholder: "टैग का नाम...",
         saveBtn: "सहेजें",
         resetBtn: "रीसेट करें",
@@ -794,6 +783,7 @@ const locales = {
         hotkeyMock: "मॉक मोड बदलें",
         hotkeyExport: "चैट निर्यात करें",
         hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
+        regenerate: "प्रतिक्रिया पुन: उत्पन्न करें",
     },
     it: {
         authTitle: "Autenticazione",
@@ -807,8 +797,6 @@ const locales = {
         newChatBtn: "Nuova chat",
         logoutBtn: "Cambia chiave API",
         selectChatTitle: "Seleziona o crea una chat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Modalità Mock",
         askPlaceholder: "Chiedi qualsiasi cosa...",
         disclaimer: "Gemini può commettere errori. Verifica le informazioni importanti.",
@@ -856,9 +844,9 @@ const locales = {
         mockEnabled: "Modalità Mock attivata: le richieste non vengono inviate all'API Gemini",
         mockDisabled: "Modalità Mock disattivata: utilizzo dell'API Gemini",
         starredAdded: "Messaggio aggiunto ai segnalibri",
-        starredRemoved: "Messaggio rimosso dai segnalibri",
+        starredRemoved: "Messaggio rimmosso dai segnalibri",
         chatExportedMd: "Chat esportata in Markdown",
-        chatExportedJson: "Chat esportata in JSON",
+        chatExportedJson: "Chat exportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
         savedStatus: "Salvato",
         deleteChatTitle: "Eliminare la chat?",
@@ -873,6 +861,7 @@ const locales = {
         hotkeyMock: "Attiva/Disattiva Modalità Mock",
         hotkeyExport: "Esporta chat",
         hotkeyEsc: "Chiudi modali / Ripristina ricerca",
+        regenerate: "Rigenera risposta",
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -886,8 +875,6 @@ const locales = {
         newChatBtn: "Nowy czat",
         logoutBtn: "Zmień klucz API",
         selectChatTitle: "Wybierz lub utwórz czat",
-        online: "Online",
-        offline: "Offline",
         mockMode: "Tryb Mock",
         askPlaceholder: "Zapytaj o cokolwiek...",
         disclaimer: "Gemini może popełniać błędy. Sprawdzaj ważne informacje.",
@@ -931,7 +918,7 @@ const locales = {
         msgLoadError: "Błąd ładowania wiadomości",
         aiError: "Błąd odbierania odpowiedzi od AI",
         genStopped: "Generowanie zatrzymane",
-        continueGen: "Kontynuuj generowanie...",
+        continueGen: "Kontнувuj generowanie...",
         mockEnabled: "Tryb Mock włączony: zapytania nie są wysyłane do API Gemini",
         mockDisabled: "Tryb Mock wyłączony: używanie API Gemini",
         starredAdded: "Wiadomość dodana do zakładek",
@@ -952,6 +939,7 @@ const locales = {
         hotkeyMock: "Przełącz Tryb Mock",
         hotkeyExport: "Eksportuj czat",
         hotkeyEsc: "Zamknij okna / Resetuj szukanie",
+        regenerate: "Wygeneruj ponownie odpowiedź",
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -965,8 +953,6 @@ const locales = {
         newChatBtn: "Yeni Sohbet",
         logoutBtn: "API Anahtarını Değiştir",
         selectChatTitle: "Bir sohbet seçin veya oluşturun",
-        online: "Çevrimiçi",
-        offline: "Çevrimdışı",
         mockMode: "Mock Modu",
         askPlaceholder: "İstediğinizi sorun...",
         disclaimer: "Gemini hata yapabilir. Önemli bilgileri kontrol edin.",
@@ -1031,6 +1017,7 @@ const locales = {
         hotkeyMock: "Mock Modunu Değiştir",
         hotkeyExport: "Sohbeti Dışa Aktar",
         hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
+        regenerate: "Yanıtı yeniden oluştur",
     }
 };
 
@@ -1055,7 +1042,35 @@ const state = {
     accentName: localStorage.getItem('accentName') || 'indigo',
     codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
     language: localStorage.getItem('language') || 'en',
+    lastUserPrompt: '',
 };
+
+function formatResponseTime(ms) {
+    if (ms == null) return null;
+    let val = 0;
+    if (typeof ms === 'number') {
+        val = ms;
+    } else if (typeof ms === 'string') {
+        if (ms.endsWith(' s.') || ms.endsWith(' m.') || ms.endsWith(' h.')) return ms;
+        if (ms.endsWith('s')) val = parseFloat(ms) * 1000;
+        else if (ms.endsWith('ms')) val = parseFloat(ms);
+        else val = parseFloat(ms);
+    }
+
+    if (isNaN(val)) return ms;
+
+    if (val < 60000) {
+        return (val / 1000).toFixed(2) + ' s.';
+    } else if (val < 3600000) {
+        const m = Math.floor(val / 60000);
+        const s = Math.floor((val % 60000) / 1000);
+        return `${m}.${s.toString().padStart(2, '0')} m.`;
+    } else {
+        const h = Math.floor(val / 3600000);
+        const m = Math.floor((val % 3600000) / 60000);
+        return `${h}.${m.toString().padStart(2, '0')} h.`;
+    }
+}
 
 const mockResponses = [
     `Yes, I completely agree with your approach! This is the most efficient technical solution. How else can I help you?`,
@@ -1124,6 +1139,26 @@ const AppAPI = {
         }
         console.warn('[Wails] Running in mock mode');
         return key && key.trim().length >= 5;
+    },
+    deleteLastResponse: async (chatId) => {
+        if (window.go?.bindings?.App?.DeleteLastResponse) {
+            return await window.go.bindings.App.DeleteLastResponse(chatId);
+        }
+        console.warn('[Wails] Running in mock mode for DeleteLastResponse');
+        return true;
+    },
+    regenerateResponse: async (chatId, prompt) => {
+        if (state.isMockMode) {
+            await new Promise((res) => setTimeout(res, 1000));
+            const randomIndex = Math.floor(Math.random() * mockResponses.length);
+            return mockResponses[randomIndex];
+        }
+        if (window.go?.bindings?.App?.RegenerateResponse) {
+            return await window.go.bindings.App.RegenerateResponse(chatId, prompt);
+        }
+        console.warn('[Wails] Running in mock mode for RegenerateResponse');
+        await new Promise((res) => setTimeout(res, 1500));
+        return `Это тестовый регенерированный ответ от **ИИ** (без Go-бэкенда).`;
     }
 };
 
@@ -1137,8 +1172,6 @@ const DOM = {
     sidebar: document.getElementById('sidebar'),
     btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
     mockModeToggle: document.getElementById('mock-mode-toggle'),
-    netStatus: document.getElementById('net-status'),
-    netStatusText: document.getElementById('net-status-text'),
     searchChatInput: document.getElementById('search-chat-input'),
     chatList: document.getElementById('chat-list'),
     btnNewChat: document.getElementById('btn-new-chat'),
@@ -1197,11 +1230,6 @@ const DOM = {
     charCounter: document.getElementById('char-counter'),
     btnSend: document.getElementById('btn-send'),
 
-    fmtBold: document.getElementById('fmt-bold'),
-    fmtItalic: document.getElementById('fmt-italic'),
-    fmtCode: document.getElementById('fmt-code'),
-    fmtList: document.getElementById('fmt-list'),
-
     toast: document.getElementById('toast'),
     toastBox: document.getElementById('toast-box'),
     toastIconInfo: document.getElementById('toast-icon-info'),
@@ -1228,11 +1256,11 @@ function showToast(message, type = 'info', duration = 5000) {
     DOM.toastMessage.textContent = message;
 
     if (type === 'error') {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconError.classList.remove('hidden');
         DOM.toastIconInfo.classList.add('hidden');
     } else {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-4 py-3 rounded-xl shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconInfo.classList.remove('hidden');
         DOM.toastIconError.classList.add('hidden');
     }
@@ -1374,33 +1402,8 @@ function applyUiScale() {
     localStorage.setItem('uiScale', state.uiScale);
 }
 
-function applyFormatting(before, after = '') {
-    const input = DOM.messageInput;
-    const start = input.selectionStart;
-    const end = input.selectionEnd;
-    const val = input.value;
-    const selected = val.substring(start, end);
-
-    const replacement = before + selected + after;
-    input.value = val.substring(0, start) + replacement + val.substring(end);
-
-    input.focus();
-    if (selected.length > 0) {
-        input.setSelectionRange(start, start + replacement.length);
-    } else {
-        input.setSelectionRange(start + before.length, start + before.length);
-    }
-
-    input.dispatchEvent(new Event('input'));
-}
-
 function updateNetStatus() {
-    if (navigator.onLine) {
-        DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full';
-        DOM.netStatusText.textContent = t('online');
-    } else {
-        DOM.netStatus.className = 'flex items-center gap-1.5 text-xs font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-full';
-        DOM.netStatusText.textContent = t('offline');
+    if (!navigator.onLine) {
         showToast(t('netLost'), 'error');
     }
 }
@@ -1499,15 +1502,15 @@ DOM.settingsModal.addEventListener('click', (e) => {
 
 if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts) {
     DOM.tabBtnAppearance.addEventListener('click', () => {
-        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentAppearance.classList.remove('hidden');
         DOM.tabContentShortcuts.classList.add('hidden');
     });
 
     DOM.tabBtnShortcuts.addEventListener('click', () => {
-        DOM.tabBtnShortcuts.className = 'px-3 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnAppearance.className = 'px-3 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentShortcuts.classList.remove('hidden');
         DOM.tabContentAppearance.classList.add('hidden');
     });
@@ -1527,11 +1530,6 @@ DOM.languageSelect.addEventListener('change', (e) => {
     applyLanguage(e.target.value);
 });
 
-DOM.fmtBold.addEventListener('click', () => applyFormatting('**', '**'));
-DOM.fmtItalic.addEventListener('click', () => applyFormatting('*', '*'));
-DOM.fmtCode.addEventListener('click', () => applyFormatting('`', '`'));
-DOM.fmtList.addEventListener('click', () => applyFormatting('- '));
-
 DOM.btnToggleSidebar.addEventListener('click', () => {
     DOM.sidebar.classList.toggle('collapsed');
 });
@@ -1550,7 +1548,7 @@ DOM.searchChatInput.addEventListener('input', (e) => {
     renderChatList();
 });
 
-DOM.messagesContainer.addEventListener('scroll', () => {
+function updateChatProgress() {
     const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
     const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
 
@@ -1558,6 +1556,10 @@ DOM.messagesContainer.addEventListener('scroll', () => {
     if (progressBar) {
         progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
     }
+}
+
+DOM.messagesContainer.addEventListener('scroll', () => {
+    updateChatProgress();
 
     const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
     if (distanceToBottom > 200) {
@@ -1609,13 +1611,19 @@ function startRenameTitle() {
     const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
     if (!currentChat) return;
 
+    DOM.currentChatTitleContainer.classList.add('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.remove('border-transparent');
+
     DOM.currentChatTitle.classList.add('hidden');
     DOM.chatTitlePencil.classList.add('hidden');
     DOM.chatTitleInput.classList.remove('hidden');
 
     DOM.chatTitleInput.value = currentChat.title || currentChat.Title || '';
-    DOM.chatTitleInput.focus();
-    DOM.chatTitleInput.select();
+
+    requestAnimationFrame(() => {
+        DOM.chatTitleInput.focus();
+        DOM.chatTitleInput.select();
+    });
 }
 
 async function finishRenameTitle() {
@@ -1625,6 +1633,9 @@ async function finishRenameTitle() {
 
     const newTitle = DOM.chatTitleInput.value.trim();
     const oldTitle = currentChat.title || currentChat.Title || '';
+
+    DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.add('border-transparent');
 
     DOM.chatTitleInput.classList.add('hidden');
     DOM.currentChatTitle.classList.remove('hidden');
@@ -1655,8 +1666,10 @@ DOM.currentChatTitleContainer.addEventListener('click', (e) => {
 DOM.chatTitleInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         e.preventDefault();
-        finishRenameTitle();
+        DOM.chatTitleInput.blur();
     } else if (e.key === 'Escape') {
+        DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+        DOM.currentChatTitleContainer.classList.add('border-transparent');
         DOM.chatTitleInput.classList.add('hidden');
         DOM.currentChatTitle.classList.remove('hidden');
         DOM.chatTitlePencil.classList.remove('hidden');
@@ -1800,26 +1813,34 @@ function renderStarredMessages() {
 
     state.starredMessages.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'bg-zinc-950 border border-zinc-800 rounded-xl p-3 space-y-2 text-xs text-zinc-200 select-text';
+        div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text';
         div.innerHTML = `
-      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1">
+      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
         <span>${item.chatTitle || 'Chat'}</span>
         <span>${formatMessageTime(item.createdAt)}</span>
       </div>
       <div class="markdown-body">${marked.parse(item.content)}</div>
-      <div class="flex items-center justify-end gap-2 pt-1 border-t border-zinc-800/40">
-        <button class="btn-copy-star-text p-1 text-zinc-500 hover:text-zinc-200 transition-colors" title="${t('copyText')}">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
+      <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
+        <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
         </button>
-        <button class="btn-unstar-item p-1 text-amber-400 hover:text-rose-400 transition-colors" title="Remove Bookmark">
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
         </button>
       </div>
     `;
 
-        div.querySelector('.btn-copy-star-text').onclick = async () => {
-            await navigator.clipboard.writeText(item.content);
-            showToast(t('copied'), 'info');
+        div.querySelector('.btn-copy-star-text').onclick = async function() {
+            try {
+                await navigator.clipboard.writeText(item.content);
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                }, 2000);
+            } catch (err) {
+                console.error('Copy error:', err);
+            }
         };
 
         div.querySelector('.btn-unstar-item').onclick = () => {
@@ -1895,18 +1916,18 @@ DOM.btnExportJson.addEventListener('click', async () => {
 function updateSendButtonUI() {
     if (state.isSending) {
         DOM.btnSend.disabled = false;
-        DOM.btnSend.className = 'p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
-      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <rect x="6" y="6" width="12" height="12" rx="2"/>
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+        <rect x="6" y="6" width="12" height="12" rx="1.5"/>
       </svg>
     `;
         DOM.btnSend.title = t('genStopped');
     } else {
-        DOM.btnSend.className = 'p-2.5 bg-accent bg-accent-hover disabled:opacity-40 disabled:hover:bg-accent text-white rounded-xl transition-all duration-150 shrink-0 shadow-md';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-accent bg-accent-hover disabled:opacity-30 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9-7-9-7-9 7 9 7zm0 0v-8"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V5m0 0l-6 6m6-6l6 6"/>
       </svg>
     `;
         DOM.btnSend.title = 'Send';
@@ -2020,7 +2041,7 @@ async function createNewChat(title = 'New Chat') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}`, created_at: new Date().toISOString() };
+        const newChat = { id: chatId, title: title, created_at: new Date().toISOString() };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
@@ -2088,7 +2109,7 @@ function renderChatList() {
             const isPinned = state.pinnedChatIds.includes(id);
 
             const btn = document.createElement('button');
-            btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all flex flex-col gap-1 group ${
+            btn.className = `w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-all flex flex-col gap-1 group ${
                 isActive
                     ? 'bg-accent-alpha text-accent border border-accent'
                     : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
@@ -2102,10 +2123,10 @@ function renderChatList() {
             <span class="truncate">${title}</span>
           </div>
           <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="Tag">
+            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="Tag">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
             </button>
-            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
+            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
               <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-accent' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
             </button>
           </div>
@@ -2162,6 +2183,8 @@ function renderChatList() {
             renderChatGroup(groups[grpName], grpName);
         }
     });
+
+    updateChatProgress();
 }
 
 async function selectChat(chatId) {
@@ -2176,6 +2199,8 @@ async function selectChat(chatId) {
     }
 
     renderChatList();
+
+    DOM.messagesContainer.innerHTML = '';
 
     DOM.messageInput.value = state.drafts[chatId] || '';
     DOM.messageInput.style.height = 'auto';
@@ -2203,14 +2228,24 @@ async function loadMessages(chatId) {
             return;
         }
 
-        messages.forEach(msg => appendMessageUI(
-            msg.role || msg.Role,
-            msg.content || msg.Content,
-            msg.created_at || msg.CreatedAt,
-            msg.duration || msg.Duration || null,
-            false,
-            false
-        ));
+        messages.forEach((msg, idx) => {
+            const role = msg.role || msg.Role;
+            const content = msg.content || msg.Content;
+            if (role === 'user') {
+                state.lastUserPrompt = content;
+            }
+            const isLastInChat = idx === messages.length - 1;
+
+            appendMessageUI(
+                role,
+                content,
+                msg.created_at || msg.CreatedAt,
+                formatResponseTime(msg.duration || msg.Duration || null),
+                false,
+                false,
+                isLastInChat
+            );
+        });
         scrollToBottom(false);
     } catch (err) {
         showToast(t('msgLoadError'), 'error');
@@ -2245,44 +2280,33 @@ function processCodeBlocks(container) {
 
         const rawCodeText = code.innerText || code.textContent;
 
-        const lines = rawCodeText.split('\n');
-        if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
-        const lineNumsHtml = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
-
         const codeWrapper = document.createElement('div');
-        codeWrapper.className = 'flex overflow-x-auto p-4 font-mono text-xs leading-relaxed';
-
-        const lineNumsDiv = document.createElement('div');
-        lineNumsDiv.className = 'select-none pr-3 border-r border-zinc-800/80 text-zinc-600 text-right shrink-0 font-mono';
-        lineNumsDiv.innerHTML = lineNumsHtml;
+        codeWrapper.className = 'overflow-x-auto p-4 font-mono text-sm leading-relaxed custom-scrollbar';
 
         const codeContentDiv = document.createElement('div');
-        codeContentDiv.className = 'pl-3 flex-1 overflow-x-auto';
+        codeContentDiv.className = 'min-w-full';
         codeContentDiv.appendChild(code.cloneNode(true));
 
         const rawTextArea = document.createElement('textarea');
-        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-xs p-3 focus:outline-none resize-y hidden';
+        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-sm p-4 focus:outline-none resize-y hidden custom-scrollbar';
         rawTextArea.value = rawCodeText;
         rawTextArea.readOnly = true;
 
-        codeWrapper.appendChild(lineNumsDiv);
         codeWrapper.appendChild(codeContentDiv);
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800 text-xs text-zinc-400 font-mono select-none';
+        header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800/80 text-xs text-zinc-400 font-mono select-none';
         header.innerHTML = `
       <span>${lang}</span>
-      <div class="flex items-center gap-3">
-        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors">Raw</button>
-        <button class="btn-copy-code flex items-center gap-1.5 hover:text-zinc-100 transition-colors">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
-          <span>${t('copyCode')}</span>
+      <div class="flex items-center gap-1">
+        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors px-2 py-1">Raw</button>
+        <button class="btn-copy-code p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700/50 transition-all rounded-full flex items-center justify-center" title="${t('copyCode')}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
         </button>
       </div>
     `;
 
         const copyBtn = header.querySelector('.btn-copy-code');
-        const copyText = copyBtn.querySelector('span');
         const toggleRawBtn = header.querySelector('.btn-toggle-raw');
 
         let isRaw = false;
@@ -2302,12 +2326,13 @@ function processCodeBlocks(container) {
             }
         };
 
-        copyBtn.onclick = async () => {
+        copyBtn.onclick = async function() {
             try {
                 await navigator.clipboard.writeText(rawCodeText);
-                copyText.textContent = t('copied');
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
-                    copyText.textContent = t('copyCode');
+                    this.innerHTML = originalHTML;
                 }, 2000);
             } catch (err) {
                 console.error('Copy error:', err);
@@ -2321,7 +2346,7 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false, isLastInChat = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -2329,7 +2354,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const isUser = role === 'user';
     const timeStr = formatMessageTime(createdAt);
     const wrapper = document.createElement('div');
-    wrapper.className = `flex gap-4 ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
+    wrapper.className = `flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in mb-4`;
 
     const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
     const isStarred = state.starredMessages.some(s => s.id === msgId);
@@ -2338,38 +2363,42 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Chat') : 'Chat';
 
     const renderFooter = () => `
-      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-indigo-200' : 'text-zinc-500'} mt-1.5 select-none font-mono leading-none">
-        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">⚡ ${duration}</span>` : '<span></span>'}
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
+        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
         <span>${timeStr}</span>
       </div>
     `;
 
     wrapper.innerHTML = `
-    <div class="flex gap-3 max-w-3xl ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-      <div class="user-avatar w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold text-white shadow-sm ${isUser ? 'bg-accent' : 'bg-zinc-800 text-accent border border-zinc-700/50'}">
+    <div class="flex gap-4 max-w-4xl w-full group ${isUser ? 'flex-row-reverse' : 'flex-row'}">
+      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold text-white shadow-sm mt-0.5 ${isUser ? 'bg-zinc-700' : 'bg-transparent border border-zinc-700/80 text-accent'}">
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
-      <div class="flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}">
-        <div class="user-msg-bubble px-4 py-3 rounded-2xl select-text relative group transition-all duration-200 border ${
+      <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
+        <div class="select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-accent border-transparent hover:border-zinc-300/80 text-white rounded-tr-none markdown-body markdown-user shadow-sm'
-            : 'bg-zinc-900 border-zinc-800/80 hover-border-accent text-zinc-200 rounded-tl-none markdown-body shadow-sm'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto'
+            : 'text-zinc-200 markdown-body w-full'
     }">
-          <div class="markdown-text-body"></div>
+          <div class="markdown-text-body break-words w-full"></div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button class="btn-copy-msg flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors px-1 py-0.5 rounded">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 01-2-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z"/></svg>
-            <span>${t('copyText')}</span>
+        <div class="flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button class="btn-copy-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
           </button>
-          <button class="btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
-            <svg class="w-3.5 h-3.5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          <button class="btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
+            <svg class="w-5 h-5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
+          ${(!isUser && isLastInChat) ? `
+          <button class="btn-regenerate-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('regenerate')}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+          </button>
+          ` : ''}
           ${(!isUser && isAborted) ? `
-            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 transition-colors px-1 py-0.5 rounded">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 hover:bg-zinc-800/60 transition-all px-3 py-1.5 rounded-full">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               <span>${t('continueGen')}</span>
             </button>
           ` : ''}
@@ -2406,13 +2435,13 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
     if (copyMsgBtn) {
-        const copyMsgSpan = copyMsgBtn.querySelector('span');
-        copyMsgBtn.onclick = async () => {
+        copyMsgBtn.onclick = async function() {
             try {
                 await navigator.clipboard.writeText(content);
-                copyMsgSpan.textContent = t('copied');
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
-                    copyMsgSpan.textContent = t('copyText');
+                    this.innerHTML = originalHTML;
                 }, 2000);
             } catch (err) {
                 console.error('Copy message error:', err);
@@ -2425,9 +2454,29 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
         starBtn.onclick = () => {
             toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content, createdAt, role });
             const nowStarred = state.starredMessages.some(s => s.id === msgId);
-            starBtn.className = `btn-star-msg p-1 text-zinc-500 hover:text-amber-400 transition-colors rounded ${nowStarred ? 'text-amber-400' : ''}`;
+            starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
             const svg = starBtn.querySelector('svg');
             if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
+        };
+    }
+
+    const regenerateBtn = wrapper.querySelector('.btn-regenerate-msg');
+    if (regenerateBtn) {
+        regenerateBtn.onclick = async () => {
+            if (state.isSending || !state.lastUserPrompt) return;
+
+            state.isSending = true;
+            updateSendButtonUI();
+
+            try {
+                wrapper.remove();
+                await triggerAIGeneration(state.lastUserPrompt, true);
+            } catch (err) {
+                state.isSending = false;
+                updateSendButtonUI();
+                showToast(t('aiError'), 'error');
+                console.error('Regenerate error:', err);
+            }
         };
     }
 
@@ -2448,14 +2497,14 @@ function appendLoaderUI() {
     const loaderId = `loader-${Date.now()}`;
     const wrapper = document.createElement('div');
     wrapper.id = loaderId;
-    wrapper.className = 'flex gap-4 justify-start animate-fade-in';
+    wrapper.className = 'flex w-full justify-start animate-fade-in mb-4';
 
     wrapper.innerHTML = `
-    <div class="flex gap-3 max-w-3xl flex-row">
-      <div class="w-8 h-8 rounded-xl bg-zinc-800 text-accent border border-zinc-700/50 flex items-center justify-center shrink-0 text-xs font-bold">
+    <div class="flex gap-4 max-w-4xl w-full flex-row">
+      <div class="w-8 h-8 rounded-full bg-transparent border border-zinc-700/80 text-accent flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">
         AI
       </div>
-      <div class="px-4 py-3 rounded-2xl rounded-tl-none bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1.5">
+      <div class="py-2 text-zinc-400 flex items-center gap-1.5 w-full">
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>
@@ -2515,6 +2564,48 @@ DOM.messageForm.addEventListener('submit', (e) => {
     }
 });
 
+async function triggerAIGeneration(prompt, isRegenerate = false) {
+    const targetChatId = state.activeChatId;
+    const loaderId = appendLoaderUI();
+    state.currentLoaderId = loaderId;
+    const startTime = Date.now();
+
+    try {
+        const aiResponse = isRegenerate
+            ? await AppAPI.regenerateResponse(targetChatId, prompt)
+            : await AppAPI.sendMessageToAI(targetChatId, prompt);
+
+        if (state.isAborted) {
+            state.isAborted = false;
+            return;
+        }
+
+        const durationMs = Date.now() - startTime;
+        const duration = formatResponseTime(durationMs);
+
+        if (state.activeChatId === targetChatId) {
+            removeLoaderUI(loaderId);
+            state.currentLoaderId = null;
+            appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true, true);
+        }
+    } catch (err) {
+        if (!state.isAborted) {
+            if (state.activeChatId === targetChatId) {
+                removeLoaderUI(loaderId);
+                state.currentLoaderId = null;
+                showToast(t('aiError'), 'error');
+            }
+            console.error(err);
+        }
+    } finally {
+        state.isSending = false;
+        if (state.activeChatId === targetChatId) {
+            state.currentLoaderId = null;
+        }
+        updateSendButtonUI();
+    }
+}
+
 async function handleSendMessage() {
     if (state.isSending) {
         state.isAborted = true;
@@ -2541,39 +2632,12 @@ async function handleSendMessage() {
     state.isSending = true;
     state.isAborted = false;
     state.wasLastAborted = false;
+    state.lastUserPrompt = text;
     updateSendButtonUI();
 
-    appendMessageUI('user', text);
+    appendMessageUI('user', text, new Date().toISOString(), null, false, false, false);
 
-    const loaderId = appendLoaderUI();
-    state.currentLoaderId = loaderId;
-    const startTime = Date.now();
-
-    try {
-        const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, text);
-
-        if (state.isAborted) {
-            state.isAborted = false;
-            return;
-        }
-
-        const duration = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-
-        removeLoaderUI(loaderId);
-        state.currentLoaderId = null;
-        appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true);
-    } catch (err) {
-        if (!state.isAborted) {
-            removeLoaderUI(loaderId);
-            state.currentLoaderId = null;
-            showToast(t('aiError'), 'error');
-            console.error(err);
-        }
-    } finally {
-        state.isSending = false;
-        state.currentLoaderId = null;
-        updateSendButtonUI();
-    }
+    await triggerAIGeneration(text);
 }
 
 autoLoginWithSavedKey();
