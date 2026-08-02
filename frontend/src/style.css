@@ -270,3 +270,36 @@ html, body {
     position: relative;
     overflow: visible !important;
 }
+
+.prompt-marker-dot {
+    position: absolute;
+    right: 2px;
+    width: 8px;
+    height: 24px;
+    border-radius: 9999px;
+    background-color: var(--accent-color);
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    transform: translateY(-50%);
+}
+
+.prompt-marker-dot:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+    cursor: pointer;
+}
+
+.prompt-marker-tooltip {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+.prompt-marker-dot:hover .prompt-marker-tooltip {
+    opacity: 1;
+}
