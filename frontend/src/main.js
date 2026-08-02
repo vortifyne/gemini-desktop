@@ -2041,7 +2041,7 @@ async function createNewChat(title = 'New Chat') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: `${title} #${state.chats.length + 1}`, created_at: new Date().toISOString() };
+        const newChat = { id: chatId, title: title, created_at: new Date().toISOString() };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
