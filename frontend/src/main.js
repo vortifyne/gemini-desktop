@@ -1146,6 +1146,19 @@ const AppAPI = {
         }
         console.warn('[Wails] Running in mock mode for DeleteLastResponse');
         return true;
+    },
+    regenerateResponse: async (chatId, prompt) => {
+        if (state.isMockMode) {
+            await new Promise((res) => setTimeout(res, 1000));
+            const randomIndex = Math.floor(Math.random() * mockResponses.length);
+            return mockResponses[randomIndex];
+        }
+        if (window.go?.bindings?.App?.RegenerateResponse) {
+            return await window.go.bindings.App.RegenerateResponse(chatId, prompt);
+        }
+        console.warn('[Wails] Running in mock mode for RegenerateResponse');
+        await new Promise((res) => setTimeout(res, 1500));
+        return `Это тестовый регенерированный ответ от **ИИ** (без Go-бэкенда).`;
     }
 };
 
@@ -2454,9 +2467,8 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             updateSendButtonUI();
 
             try {
-                await AppAPI.deleteLastResponse(state.activeChatId);
                 wrapper.remove();
-                await triggerAIGeneration(state.lastUserPrompt);
+                await triggerAIGeneration(state.lastUserPrompt, true);
             } catch (err) {
                 state.isSending = false;
                 updateSendButtonUI();
@@ -2550,13 +2562,15 @@ DOM.messageForm.addEventListener('submit', (e) => {
     }
 });
 
-async function triggerAIGeneration(prompt) {
+async function triggerAIGeneration(prompt, isRegenerate = false) {
     const loaderId = appendLoaderUI();
     state.currentLoaderId = loaderId;
     const startTime = Date.now();
 
     try {
-        const aiResponse = await AppAPI.sendMessageToAI(state.activeChatId, prompt);
+        const aiResponse = isRegenerate
+            ? await AppAPI.regenerateResponse(state.activeChatId, prompt)
+            : await AppAPI.sendMessageToAI(state.activeChatId, prompt);
 
         if (state.isAborted) {
             state.isAborted = false;

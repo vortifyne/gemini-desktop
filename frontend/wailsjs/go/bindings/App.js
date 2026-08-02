@@ -10,16 +10,16 @@ export function DeleteChat(arg1) {
   return window['go']['bindings']['App']['DeleteChat'](arg1);
 }
 
-export function DeleteLastResponse(arg1) {
-  return window['go']['bindings']['App']['DeleteLastResponse'](arg1);
-}
-
 export function GetChats() {
   return window['go']['bindings']['App']['GetChats']();
 }
 
 export function GetMessages(arg1) {
   return window['go']['bindings']['App']['GetMessages'](arg1);
+}
+
+export function RegenerateResponse(arg1, arg2) {
+  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2);
 }
 
 export function SendMessageToAI(arg1, arg2) {
