@@ -214,13 +214,13 @@
 
         <div class="p-4 bg-zinc-950">
             <div class="max-w-3xl mx-auto">
-                <form id="message-form" class="relative flex items-center bg-zinc-900 border border-zinc-800/80 rounded-full px-5 py-2.5 focus-within:border-zinc-700 transition-all shadow-xl gap-3" onsubmit="return false;">
+                <form id="message-form" class="relative flex items-center bg-zinc-900 border border-zinc-800/80 rounded-3xl px-5 py-2.5 focus-within:border-zinc-700 transition-all shadow-xl gap-3" onsubmit="return false;">
                     <textarea
                             id="message-input"
                             rows="1"
                             placeholder="Ask anything..."
                             data-i18n-placeholder="askPlaceholder"
-                            class="flex-1 bg-transparent py-1 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-36 custom-scrollbar text-sm leading-relaxed"
+                            class="flex-1 bg-transparent py-1 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-36 custom-scrollbar text-sm leading-relaxed min-w-0 break-words [overflow-wrap:anywhere]"
                     ></textarea>
                     <button
                             type="submit"
