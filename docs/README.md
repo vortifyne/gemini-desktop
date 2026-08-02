@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../build/appicon.png" width="96" height="96" alt="Gemini Desktop Logo">
+  <img src="../assets/icon.png" width="96" height="96" alt="Gemini Desktop Logo">
 
 
 # Gemini Desktop
@@ -29,6 +29,7 @@ Built with Go, Wails v2, SQLite, and Vanilla JS.
 
 <p align="center">
   <img src="../assets/auth.png" width="48%" alt="Auth Screen" />
+  <img src="../assets/main.png" width="48%" alt="Main Screen" />
   <img src="../assets/chat.png" width="48%" alt="Chat Interface" />
 </p>
 
