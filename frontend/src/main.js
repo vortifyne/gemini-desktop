@@ -1223,6 +1223,7 @@ const DOM = {
     btnRemoveTag: document.getElementById('btn-remove-tag'),
 
     messagesContainer: document.getElementById('messages-container'),
+    scrollbarMarkersTrack: document.getElementById('scrollbar-markers-track'),
     btnScrollBottom: document.getElementById('btn-scroll-bottom'),
     emptyState: document.getElementById('empty-state'),
     messageForm: document.getElementById('message-form'),
@@ -1421,6 +1422,51 @@ document.addEventListener('click', (e) => {
             window.open(url, '_blank');
         }
     }
+});
+
+let markersDebounceTimer = null;
+function debouncedRenderScrollbarMarkers() {
+    if (markersDebounceTimer) clearTimeout(markersDebounceTimer);
+    markersDebounceTimer = setTimeout(renderScrollbarMarkers, 150);
+}
+
+function renderScrollbarMarkers() {
+    if (!DOM.scrollbarMarkersTrack) return;
+    DOM.scrollbarMarkersTrack.innerHTML = '';
+    if (!state.activeChatId) return;
+
+    const scrollHeight = DOM.messagesContainer.scrollHeight;
+    if (scrollHeight === 0) return;
+
+    const userMessages = DOM.messagesContainer.querySelectorAll('[data-role="user"]');
+
+    userMessages.forEach(msgEl => {
+        const rawContent = decodeURIComponent(msgEl.getAttribute('data-raw-content') || '');
+        let promptText = rawContent.replace(/\n/g, ' ').trim();
+        const displayTxt = promptText.length > 45 ? promptText.substring(0, 45) + '...' : promptText;
+
+        const pct = (msgEl.offsetTop / scrollHeight) * 100;
+
+        const dot = document.createElement('div');
+        dot.className = 'prompt-marker-dot';
+        dot.style.top = `${pct}%`;
+
+        dot.innerHTML = `
+            <div class="prompt-marker-tooltip bg-zinc-900 border border-zinc-700/80 rounded-xl p-2 shadow-2xl text-[11px] text-zinc-200 max-w-[220px] truncate">
+                ${displayTxt.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+            </div>
+        `;
+
+        dot.onclick = () => {
+            msgEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        DOM.scrollbarMarkersTrack.appendChild(dot);
+    });
+}
+
+window.addEventListener('resize', () => {
+    debouncedRenderScrollbarMarkers();
 });
 
 window.addEventListener('keydown', (e) => {
@@ -1728,6 +1774,7 @@ DOM.btnConfirmDeleteChat.addEventListener('click', async () => {
             DOM.currentChatTitle.textContent = t('selectChatTitle');
             DOM.messagesContainer.innerHTML = '';
             DOM.messagesContainer.appendChild(DOM.emptyState);
+            if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
         }
 
         triggerSavedStatus();
@@ -1975,6 +2022,7 @@ DOM.btnLogout.addEventListener('click', () => {
     DOM.authScreen.classList.remove('hidden');
     DOM.apiKeyInput.value = '';
     DOM.messageInput.value = '';
+    if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
 });
 
 async function autoLoginWithSavedKey() {
@@ -2201,6 +2249,7 @@ async function selectChat(chatId) {
     renderChatList();
 
     DOM.messagesContainer.innerHTML = '';
+    if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
 
     DOM.messageInput.value = state.drafts[chatId] || '';
     DOM.messageInput.style.height = 'auto';
@@ -2247,6 +2296,7 @@ async function loadMessages(chatId) {
             );
         });
         scrollToBottom(false);
+        debouncedRenderScrollbarMarkers();
     } catch (err) {
         showToast(t('msgLoadError'), 'error');
         console.error(err);
@@ -2356,6 +2406,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const wrapper = document.createElement('div');
     wrapper.className = `flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in mb-4`;
 
+    wrapper.setAttribute('data-role', role);
+    if (isUser) {
+        wrapper.setAttribute('data-raw-content', encodeURIComponent(content));
+    }
+
     const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
     const isStarred = state.starredMessages.some(s => s.id === msgId);
 
@@ -2414,6 +2469,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
         processCodeBlocks(textBody);
         scrollToBottom(true);
         triggerSavedStatus();
+        debouncedRenderScrollbarMarkers();
     };
 
     if (isTypewriter && !isUser) {
@@ -2470,6 +2526,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
             try {
                 wrapper.remove();
+                debouncedRenderScrollbarMarkers();
                 await triggerAIGeneration(state.lastUserPrompt, true);
             } catch (err) {
                 state.isSending = false;
@@ -2533,7 +2590,14 @@ DOM.btnNewChat.addEventListener('click', () => createNewChat());
 
 DOM.messageInput.addEventListener('input', () => {
     DOM.messageInput.style.height = 'auto';
-    DOM.messageInput.style.height = `${Math.min(DOM.messageInput.scrollHeight, 192)}px`;
+    const newHeight = `${Math.min(DOM.messageInput.scrollHeight, 192)}px`;
+    if (DOM.messageInput.style.height !== newHeight) {
+        DOM.messageInput.style.height = newHeight;
+        debouncedRenderScrollbarMarkers();
+    } else {
+        DOM.messageInput.style.height = newHeight;
+    }
+
     if (!state.isSending) {
         DOM.btnSend.disabled = !DOM.messageInput.value.trim();
     }
