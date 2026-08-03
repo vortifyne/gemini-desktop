@@ -2433,10 +2433,10 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
         <div class="select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
             : 'text-zinc-200 markdown-body w-full'
     }">
-          <div class="markdown-text-body break-words w-full"></div>
+          <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
         </div>
 
         <div class="flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
