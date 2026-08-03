@@ -1167,6 +1167,7 @@ const DOM = {
     chatScreen: document.getElementById('chat-screen'),
     authForm: document.getElementById('auth-form'),
     apiKeyInput: document.getElementById('api-key-input'),
+    btnToggleApiKey: document.getElementById('btn-toggle-api-key'),
     btnLogin: document.getElementById('btn-login'),
 
     sidebar: document.getElementById('sidebar'),
@@ -2009,6 +2010,23 @@ DOM.authForm.addEventListener('submit', async (e) => {
         DOM.btnLogin.disabled = false;
         DOM.btnLogin.classList.remove('opacity-75');
         DOM.btnLogin.innerHTML = `<span>${t('loginBtn')}</span>`;
+    }
+});
+
+DOM.btnToggleApiKey.addEventListener('click', () => {
+    const isPassword = DOM.apiKeyInput.type === 'password';
+
+    DOM.apiKeyInput.type = isPassword ? 'text' : 'password';
+
+    const iconOpen = DOM.btnToggleApiKey.querySelector('#icon-eye-open');
+    const iconClosed = DOM.btnToggleApiKey.querySelector('#icon-eye-closed');
+
+    if (isPassword) {
+        iconOpen.classList.add('hidden');
+        iconClosed.classList.remove('hidden');
+    } else {
+        iconOpen.classList.remove('hidden');
+        iconClosed.classList.add('hidden');
     }
 });
 
