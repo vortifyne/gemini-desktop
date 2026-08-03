@@ -1320,7 +1320,7 @@ function applyLanguage(lang) {
     });
 
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.dataset.i18nTitle;
+        const key = el.dataset.i18title;
         if (locales[lang]?.[key]) {
             el.title = locales[lang][key];
         }
@@ -2749,7 +2749,12 @@ async function handleSendMessage() {
     }
 
     const text = DOM.messageInput.value.trim();
-    if (!text || !state.activeChatId) return;
+    if (!text) return;
+
+    if (state.activeChatId === null) {
+        await createNewChat();
+        if (state.activeChatId === null) return;
+    }
 
     delete state.drafts[state.activeChatId];
     DOM.messageInput.value = '';
