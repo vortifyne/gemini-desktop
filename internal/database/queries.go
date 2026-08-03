@@ -27,18 +27,35 @@ func (s *Storage) CreateChat(title string) (int64, error) {
 	return lastInserted, nil
 }
 
-func (s *Storage) SaveMessage(chatID int64, role, content string) error {
+func (s *Storage) SaveMessages(chatID int64, msgs ...MessageItem) error {
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Insert message in the table
-	_, err := s.db.ExecContext(
-		ctx,
-		"INSERT INTO messages (chat_id, role, content) VALUES (?, ?, ?)",
-		chatID, role, content)
+	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return fmt.Errorf("SaveMessage.ExecContext(): %w", err)
+		return fmt.Errorf("failed to create transaction: %w", err)
+	}
+	defer func() {
+		_ = tx.Rollback()
+	}()
+
+	stmt, err := tx.PrepareContext(ctx, "INSERT INTO messages (chat_id, role, content) VALUES (?, ?, ?)")
+	if err != nil {
+		return fmt.Errorf("failed to prepare context: %w", err)
+	}
+	defer func() {
+		_ = stmt.Close()
+	}()
+
+	for _, msg := range msgs {
+		if _, err := stmt.ExecContext(ctx, chatID, msg.Role, msg.Content); err != nil {
+			return fmt.Errorf("SaveMessages.ExecContext (role=%s): %w", msg.Role, err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("SaveMessages.Commit: %w", err)
 	}
 
 	return nil
