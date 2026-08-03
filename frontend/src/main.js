@@ -1167,6 +1167,7 @@ const DOM = {
     chatScreen: document.getElementById('chat-screen'),
     authForm: document.getElementById('auth-form'),
     apiKeyInput: document.getElementById('api-key-input'),
+    btnToggleApiKey: document.getElementById('btn-toggle-api-key'),
     btnLogin: document.getElementById('btn-login'),
 
     sidebar: document.getElementById('sidebar'),
@@ -1432,20 +1433,31 @@ function debouncedRenderScrollbarMarkers() {
 
 function renderScrollbarMarkers() {
     if (!DOM.scrollbarMarkersTrack) return;
-    DOM.scrollbarMarkersTrack.innerHTML = '';
-    if (!state.activeChatId) return;
+
+    if (!state.activeChatId) {
+        DOM.scrollbarMarkersTrack.innerHTML = '';
+        return;
+    }
 
     const scrollHeight = DOM.messagesContainer.scrollHeight;
     if (scrollHeight === 0) return;
 
     const userMessages = DOM.messagesContainer.querySelectorAll('[data-role="user"]');
 
-    userMessages.forEach(msgEl => {
-        const rawContent = decodeURIComponent(msgEl.getAttribute('data-raw-content') || '');
+    const markersData = Array.from(userMessages).map(msgEl => ({
+        el: msgEl,
+        top: msgEl.offsetTop,
+        rawContent: msgEl.getAttribute('data-raw-content') || ''
+    }));
+
+    const fragment = document.createDocumentFragment();
+
+    markersData.forEach(data => {
+        const rawContent = decodeURIComponent(data.rawContent);
         let promptText = rawContent.replace(/\n/g, ' ').trim();
         const displayTxt = promptText.length > 45 ? promptText.substring(0, 45) + '...' : promptText;
 
-        const pct = (msgEl.offsetTop / scrollHeight) * 100;
+        const pct = (data.top / scrollHeight) * 100;
 
         const dot = document.createElement('div');
         dot.className = 'prompt-marker-dot';
@@ -1458,11 +1470,14 @@ function renderScrollbarMarkers() {
         `;
 
         dot.onclick = () => {
-            msgEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            data.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
-        DOM.scrollbarMarkersTrack.appendChild(dot);
+        fragment.appendChild(dot);
     });
+
+    DOM.scrollbarMarkersTrack.innerHTML = '';
+    DOM.scrollbarMarkersTrack.appendChild(fragment);
 }
 
 window.addEventListener('resize', () => {
@@ -1594,24 +1609,19 @@ DOM.searchChatInput.addEventListener('input', (e) => {
     renderChatList();
 });
 
-function updateChatProgress() {
-    const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
-    const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
-
-    const progressBar = document.getElementById('active-chat-progress');
-    if (progressBar) {
-        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-    }
-}
-
+let isScrollTicking = false;
 DOM.messagesContainer.addEventListener('scroll', () => {
-    updateChatProgress();
-
-    const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
-    if (distanceToBottom > 200) {
-        DOM.btnScrollBottom.classList.remove('hidden');
-    } else {
-        DOM.btnScrollBottom.classList.add('hidden');
+    if (!isScrollTicking) {
+        window.requestAnimationFrame(() => {
+            const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
+            if (distanceToBottom > 200) {
+                DOM.btnScrollBottom.classList.remove('hidden');
+            } else {
+                DOM.btnScrollBottom.classList.add('hidden');
+            }
+            isScrollTicking = false;
+        });
+        isScrollTicking = true;
     }
 });
 
@@ -2012,6 +2022,23 @@ DOM.authForm.addEventListener('submit', async (e) => {
     }
 });
 
+DOM.btnToggleApiKey.addEventListener('click', () => {
+    const isPassword = DOM.apiKeyInput.type === 'password';
+
+    DOM.apiKeyInput.type = isPassword ? 'text' : 'password';
+
+    const iconOpen = DOM.btnToggleApiKey.querySelector('#icon-eye-open');
+    const iconClosed = DOM.btnToggleApiKey.querySelector('#icon-eye-closed');
+
+    if (isPassword) {
+        iconOpen.classList.add('hidden');
+        iconClosed.classList.remove('hidden');
+    } else {
+        iconOpen.classList.remove('hidden');
+        iconClosed.classList.add('hidden');
+    }
+});
+
 DOM.btnLogout.addEventListener('click', () => {
     state.apiKey = null;
     state.activeChatId = null;
@@ -2179,11 +2206,6 @@ function renderChatList() {
             </button>
           </div>
         </div>
-        ${isActive ? `
-          <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
-            <div id="active-chat-progress" class="h-full bg-accent transition-all duration-75" style="width: 0%;"></div>
-          </div>
-        ` : ''}
       `;
 
             btn.onclick = () => selectChat(id);
@@ -2231,8 +2253,6 @@ function renderChatList() {
             renderChatGroup(groups[grpName], grpName);
         }
     });
-
-    updateChatProgress();
 }
 
 async function selectChat(chatId) {
@@ -2433,10 +2453,10 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
         <div class="select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
             : 'text-zinc-200 markdown-body w-full'
     }">
-          <div class="markdown-text-body break-words w-full"></div>
+          <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
         </div>
 
         <div class="flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -2484,7 +2504,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             }
             textBody.innerHTML = marked.parse(content.substring(0, idx));
             scrollToBottom(true);
-        }, 12);
+        }, 16);
     } else {
         finalizeMessage();
     }

@@ -9,13 +9,13 @@
 *.db-wal
 
 # Go
-*.exe
-*.exe~
+build/bin/*.exe
+build/bin/*.out
+build/bin/*.exe~
 *.dll
 *.so
 *.dylib
 *.test
-*.out
 go.work
 
 # JetBrains
@@ -52,6 +52,7 @@ fabric.properties
 # Frontend
 frontend/dist
 frontend/node_modules
+frontend/src/output.css
 build/bin
 
 .env
