@@ -1,6 +1,8 @@
 package database
 
-import "time"
+import (
+	"time"
+)
 
 type Chat struct {
 	ID        int64
@@ -14,4 +16,9 @@ type Message struct {
 	Role      string
 	Content   string
 	CreatedAt time.Time
+}
+
+type MessageItem struct {
+	Role    string
+	Content string
 }

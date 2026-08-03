@@ -71,14 +71,13 @@ func (a *App) SendMessageToAI(chatID int64, prompt string) (string, error) {
 		return "", fmt.Errorf("failed to get response: %w", err)
 	}
 
-	// Save user prompt
-	if err := a.storage.SaveMessage(chatID, "user", prompt); err != nil {
-		return "", fmt.Errorf("failed to save user message in database: %w", err)
-	}
+	err = a.storage.SaveMessages(
+		chatID,
+		database.MessageItem{Role: "user", Content: prompt},
+		database.MessageItem{Role: "model", Content: resp})
 
-	// Save generative model response
-	if err := a.storage.SaveMessage(chatID, "model", resp); err != nil {
-		return "", fmt.Errorf("failed to save response in database: %w", err)
+	if err != nil {
+		return "", fmt.Errorf("failed to save messages in database: %w", err)
 	}
 
 	return resp, nil
@@ -134,7 +133,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt string) (string, error) {
 	if err := a.storage.DeleteLastResponse(chatID); err != nil {
 		return "", fmt.Errorf("failed to delete last response: %w", err)
 	}
-	if err := a.storage.SaveMessage(chatID, "model", resp); err != nil {
+	if err := a.storage.SaveMessages(chatID, database.MessageItem{Role: "model", Content: resp}); err != nil {
 		return "", fmt.Errorf("failed to save response in database: %w", err)
 	}
 
