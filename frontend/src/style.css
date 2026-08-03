@@ -99,12 +99,6 @@ html, body {
     overflow-anchor: none;
 }
 
-#active-chat-progress {
-    transition: transform 150ms ease-out;
-    transform-origin: left center;
-    will-change: transform;
-}
-
 #btn-scroll-bottom {
     transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -1609,22 +1609,10 @@ DOM.searchChatInput.addEventListener('input', (e) => {
     renderChatList();
 });
 
-function updateChatProgress() {
-    const progressBar = document.getElementById('active-chat-progress');
-    if (!progressBar) return;
-
-    const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
-    const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
-
-    const scale = Math.min(1, Math.max(0, pct / 100));
-    progressBar.style.transform = `scaleX(${scale})`;
-}
-
 let isScrollTicking = false;
 DOM.messagesContainer.addEventListener('scroll', () => {
     if (!isScrollTicking) {
         window.requestAnimationFrame(() => {
-            updateChatProgress();
             const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
             if (distanceToBottom > 200) {
                 DOM.btnScrollBottom.classList.remove('hidden');
@@ -2197,11 +2185,9 @@ function renderChatList() {
 
             const btn = document.createElement('button');
             btn.className = `w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-all flex flex-col gap-1 group ${
-                isActive ? `
-          <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
-            <div id="active-chat-progress" class="h-full w-full bg-accent transition-all duration-75" style="transform: scaleX(0);"></div>
-          </div>
-        ` : ''
+                isActive
+                    ? 'bg-accent-alpha text-accent border border-accent'
+                    : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
             }`;
 
             btn.innerHTML = `
@@ -2220,11 +2206,6 @@ function renderChatList() {
             </button>
           </div>
         </div>
-        ${isActive ? `
-          <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
-            <div id="active-chat-progress" class="h-full bg-accent transition-all duration-75" style="width: 0%;"></div>
-          </div>
-        ` : ''}
       `;
 
             btn.onclick = () => selectChat(id);
@@ -2272,8 +2253,6 @@ function renderChatList() {
             renderChatGroup(groups[grpName], grpName);
         }
     });
-
-    updateChatProgress();
 }
 
 async function selectChat(chatId) {

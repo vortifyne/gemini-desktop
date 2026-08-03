@@ -9,13 +9,13 @@
 *.db-wal
 
 # Go
-*.exe
-*.exe~
+build/bin/*.exe
+build/bin/*.out
+build/bin/*.exe~
 *.dll
 *.so
 *.dylib
 *.test
-*.out
 go.work
 
 # JetBrains
