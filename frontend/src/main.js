@@ -1287,7 +1287,12 @@ function showToast(message, type = 'info', duration = 5000) {
 
     toastTimer = setTimeout(() => {
         DOM.toast.classList.remove('translate-y-0', 'opacity-100');
-        DOM.toast.classList.add('translate-y-20', 'opacity-0');
+        DOM.toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+
+        if (DOM.toastBox) {
+            DOM.toastBox.onclick = null;
+            DOM.toastBox.classList.remove('cursor-pointer', 'hover:border-indigo-500');
+        }
     }, duration);
 }
 
@@ -2093,15 +2098,17 @@ async function autoLoginWithSavedKey() {
 function setupUpdateListener() {
     if (window.runtime?.EventsOn) {
         window.runtime.EventsOn("update-available", (release) => {
-            const newVersion = release.TagName || release.tag_name || "v0.2.0";
-            const releaseUrl = release.HtmlUrl || release.html_url;
+            const newVersion = release.tag_name || release.TagName || "v0.2.0";
+            const releaseUrl = release.html_url || release.HtmlUrl;
 
             const messageText = t('updateAvailable').replace('{version}', newVersion);
 
             showToast(messageText, 'info', 10000);
 
             if (DOM.toastBox && releaseUrl) {
+                DOM.toast.classList.remove('pointer-events-none');
                 DOM.toastBox.classList.add('cursor-pointer', 'hover:border-indigo-500', 'transition-colors');
+
                 DOM.toastBox.onclick = () => {
                     if (window.runtime?.BrowserOpenURL) {
                         window.runtime.BrowserOpenURL(releaseUrl);
