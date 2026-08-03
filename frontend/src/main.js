@@ -2094,7 +2094,7 @@ function setupUpdateListener() {
     if (window.runtime?.EventsOn) {
         window.runtime.EventsOn("update-available", (release) => {
             const newVersion = release.TagName || release.tag_name || "v0.2.0";
-            const releaseUrl = release.HTMLURL || release.html_url;
+            const releaseUrl = release.HtmlUrl || release.html_url;
 
             const messageText = t('updateAvailable').replace('{version}', newVersion);
 
@@ -2116,7 +2116,6 @@ function setupUpdateListener() {
 
 async function initChatApp() {
     try {
-        setupUpdateListener();
         applyLanguage(state.language);
         applyAccentColor(state.accentName);
         applyCodeTheme(state.codeTheme);
@@ -2762,4 +2761,5 @@ async function handleSendMessage() {
     await triggerAIGeneration(text);
 }
 
+setupUpdateListener();
 autoLoginWithSavedKey();
