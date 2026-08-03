@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root, html[data-accent="indigo"] {
     --accent-color: #6366f1;
     --accent-hover: #4f46e5;
@@ -90,14 +94,15 @@ html, body {
 
 #messages-container {
     scroll-behavior: auto;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
     -webkit-overflow-scrolling: touch;
-    contain: layout style paint;
+    contain: layout style;
+    overflow-anchor: none;
 }
 
 #active-chat-progress {
-    transition: width 150ms ease-out;
+    transition: transform 150ms ease-out;
+    transform-origin: left center;
+    will-change: transform;
 }
 
 #btn-scroll-bottom {
@@ -105,7 +110,6 @@ html, body {
 }
 
 #btn-scroll-bottom.hidden {
-    display: flex !important;
     opacity: 0;
     transform: translateY(12px) scale(0.9);
     pointer-events: none;
@@ -212,11 +216,10 @@ html, body {
 .markdown-body pre {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border-radius: 1.5rem; /* Капсульный вид блока с кодом */
+    border-radius: 1.5rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background-color: #18181b;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .markdown-body pre code {
@@ -282,7 +285,7 @@ html, body {
     border-radius: 9999px;
     background-color: var(--accent-color);
     opacity: 0.6;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     pointer-events: auto;
     transform: translateY(-50%);
 }
@@ -300,7 +303,7 @@ html, body {
     transform: translateY(-50%);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .prompt-marker-dot:hover .prompt-marker-tooltip {

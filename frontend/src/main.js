@@ -1433,20 +1433,31 @@ function debouncedRenderScrollbarMarkers() {
 
 function renderScrollbarMarkers() {
     if (!DOM.scrollbarMarkersTrack) return;
-    DOM.scrollbarMarkersTrack.innerHTML = '';
-    if (!state.activeChatId) return;
+
+    if (!state.activeChatId) {
+        DOM.scrollbarMarkersTrack.innerHTML = '';
+        return;
+    }
 
     const scrollHeight = DOM.messagesContainer.scrollHeight;
     if (scrollHeight === 0) return;
 
     const userMessages = DOM.messagesContainer.querySelectorAll('[data-role="user"]');
 
-    userMessages.forEach(msgEl => {
-        const rawContent = decodeURIComponent(msgEl.getAttribute('data-raw-content') || '');
+    const markersData = Array.from(userMessages).map(msgEl => ({
+        el: msgEl,
+        top: msgEl.offsetTop,
+        rawContent: msgEl.getAttribute('data-raw-content') || ''
+    }));
+
+    const fragment = document.createDocumentFragment();
+
+    markersData.forEach(data => {
+        const rawContent = decodeURIComponent(data.rawContent);
         let promptText = rawContent.replace(/\n/g, ' ').trim();
         const displayTxt = promptText.length > 45 ? promptText.substring(0, 45) + '...' : promptText;
 
-        const pct = (msgEl.offsetTop / scrollHeight) * 100;
+        const pct = (data.top / scrollHeight) * 100;
 
         const dot = document.createElement('div');
         dot.className = 'prompt-marker-dot';
@@ -1459,11 +1470,14 @@ function renderScrollbarMarkers() {
         `;
 
         dot.onclick = () => {
-            msgEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            data.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         };
 
-        DOM.scrollbarMarkersTrack.appendChild(dot);
+        fragment.appendChild(dot);
     });
+
+    DOM.scrollbarMarkersTrack.innerHTML = '';
+    DOM.scrollbarMarkersTrack.appendChild(fragment);
 }
 
 window.addEventListener('resize', () => {
@@ -1596,23 +1610,30 @@ DOM.searchChatInput.addEventListener('input', (e) => {
 });
 
 function updateChatProgress() {
+    const progressBar = document.getElementById('active-chat-progress');
+    if (!progressBar) return;
+
     const scrollHeight = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.clientHeight;
     const pct = scrollHeight > 0 ? (DOM.messagesContainer.scrollTop / scrollHeight) * 100 : 0;
 
-    const progressBar = document.getElementById('active-chat-progress');
-    if (progressBar) {
-        progressBar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-    }
+    const scale = Math.min(1, Math.max(0, pct / 100));
+    progressBar.style.transform = `scaleX(${scale})`;
 }
 
+let isScrollTicking = false;
 DOM.messagesContainer.addEventListener('scroll', () => {
-    updateChatProgress();
-
-    const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
-    if (distanceToBottom > 200) {
-        DOM.btnScrollBottom.classList.remove('hidden');
-    } else {
-        DOM.btnScrollBottom.classList.add('hidden');
+    if (!isScrollTicking) {
+        window.requestAnimationFrame(() => {
+            updateChatProgress();
+            const distanceToBottom = DOM.messagesContainer.scrollHeight - DOM.messagesContainer.scrollTop - DOM.messagesContainer.clientHeight;
+            if (distanceToBottom > 200) {
+                DOM.btnScrollBottom.classList.remove('hidden');
+            } else {
+                DOM.btnScrollBottom.classList.add('hidden');
+            }
+            isScrollTicking = false;
+        });
+        isScrollTicking = true;
     }
 });
 
@@ -2176,9 +2197,11 @@ function renderChatList() {
 
             const btn = document.createElement('button');
             btn.className = `w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-all flex flex-col gap-1 group ${
-                isActive
-                    ? 'bg-accent-alpha text-accent border border-accent'
-                    : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
+                isActive ? `
+          <div class="h-0.5 bg-zinc-800/80 w-full overflow-hidden rounded-full mt-0.5">
+            <div id="active-chat-progress" class="h-full w-full bg-accent transition-all duration-75" style="transform: scaleX(0);"></div>
+          </div>
+        ` : ''
             }`;
 
             btn.innerHTML = `
@@ -2502,7 +2525,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             }
             textBody.innerHTML = marked.parse(content.substring(0, idx));
             scrollToBottom(true);
-        }, 12);
+        }, 16);
     } else {
         finalizeMessage();
     }
