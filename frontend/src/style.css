@@ -138,6 +138,9 @@ html, body {
     word-break: break-word;
     overflow-wrap: anywhere;
     max-width: 100%;
+
+    content-visibility: auto;
+    contain-intrinsic-size: 0 80px;
 }
 
 .markdown-body p {
