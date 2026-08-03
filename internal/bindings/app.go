@@ -63,7 +63,10 @@ func (a *App) SendMessageToAI(chatID int64, prompt string) (string, error) {
 	}
 
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(prompt)
+	resp, err := a.aiClient.SendMessage(prompt, func(chunk string) error {
+		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
+		return nil
+	})
 	if err != nil {
 		return "", fmt.Errorf("failed to get response: %w", err)
 	}
@@ -114,7 +117,10 @@ func (a *App) RegenerateResponse(chatID int64, prompt string) (string, error) {
 	}
 
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(prompt)
+	resp, err := a.aiClient.SendMessage(prompt, func(chunk string) error {
+		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
+		return nil
+	})
 	if err != nil {
 		return "", fmt.Errorf("failed to regenerate response: %w", err)
 	}

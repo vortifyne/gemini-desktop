@@ -303,7 +303,7 @@ const locales = {
         starredAdded: "メッセージをブックマークに追加しました",
         starredRemoved: "メッセージをブックマークから削除しました",
         chatExportedMd: "チャットをMarkdownでエクスポートしました",
-        chatExportedJson: "チャットをJSONでエクスポートしました",
+        chatExportedJson: "チャット tool JSONでエクスポートしました",
         selectExportChat: "エクスポートするチャットを選択してください",
         savedStatus: "保存済み",
         deleteChatTitle: "チャット tool 削除しますか？",
@@ -623,7 +623,7 @@ const locales = {
         selectExportChat: "Sélectionnez un chat à exporter",
         savedStatus: "Enregistré",
         deleteChatTitle: "Supprimer le chat ?",
-        deleteChatConfirm: "Êtes-vous sûr ? Tous les messages de ce chat seront définitivement perdus.",
+        deleteChatConfirm: "Êtes-vous sûr ? Tous les messages de ce chat будут навсегда удалены.",
         btnCancel: "Annuler",
         btnDelete: "Supprimer",
         tabAppearance: "Apparence",
@@ -2355,7 +2355,6 @@ async function loadMessages(chatId) {
                 msg.created_at || msg.CreatedAt,
                 formatResponseTime(msg.duration || msg.Duration || null),
                 false,
-                false,
                 isLastInChat
             );
         });
@@ -2460,7 +2459,31 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isTypewriter = false, isLastInChat = false) {
+function appendEmptyAIMessageUI(createdAt = new Date().toISOString()) {
+    return appendMessageUI('assistant', '', createdAt, null, false, true);
+}
+
+function updateAIMessageContent(wrapper, content, duration = null) {
+    if (!wrapper) return;
+    wrapper.setAttribute('data-raw-content', encodeURIComponent(content || ''));
+    const textBody = wrapper.querySelector('.markdown-text-body');
+    if (!textBody) return;
+
+    const isUser = wrapper.getAttribute('data-role') === 'user';
+    const createdAt = wrapper.getAttribute('data-created-at') || new Date().toISOString();
+    const timeStr = formatMessageTime(createdAt);
+
+    const renderFooter = () => `
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
+        ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
+        <span>${timeStr}</span>
+      </div>
+    `;
+
+    textBody.innerHTML = marked.parse(content) + renderFooter();
+}
+
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -2471,11 +2494,10 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     wrapper.className = `flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in mb-4`;
 
     wrapper.setAttribute('data-role', role);
-    if (isUser) {
-        wrapper.setAttribute('data-raw-content', encodeURIComponent(content));
-    }
+    wrapper.setAttribute('data-created-at', createdAt);
+    wrapper.setAttribute('data-raw-content', encodeURIComponent(content || ''));
 
-    const msgId = `${state.activeChatId}_${createdAt}_${content.substring(0, 20)}`;
+    const msgId = `${state.activeChatId}_${createdAt}_${(content || '').substring(0, 20)}`;
     const isStarred = state.starredMessages.some(s => s.id === msgId);
 
     const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
@@ -2536,28 +2558,14 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
         debouncedRenderScrollbarMarkers();
     };
 
-    if (isTypewriter && !isUser) {
-        let idx = 0;
-        const step = Math.max(2, Math.floor(content.length / 80));
-        const timer = setInterval(() => {
-            idx += step;
-            if (idx >= content.length || state.isAborted) {
-                clearInterval(timer);
-                finalizeMessage();
-                return;
-            }
-            textBody.innerHTML = marked.parse(content.substring(0, idx));
-            scrollToBottom(true);
-        }, 16);
-    } else {
-        finalizeMessage();
-    }
+    finalizeMessage();
 
     const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
     if (copyMsgBtn) {
         copyMsgBtn.onclick = async function() {
             try {
-                await navigator.clipboard.writeText(content);
+                const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
+                await navigator.clipboard.writeText(currentRaw);
                 const originalHTML = this.innerHTML;
                 this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
@@ -2572,7 +2580,8 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     const starBtn = wrapper.querySelector('.btn-star-msg');
     if (starBtn) {
         starBtn.onclick = () => {
-            toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content, createdAt, role });
+            const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
+            toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content: currentRaw, createdAt, role });
             const nowStarred = state.starredMessages.some(s => s.id === msgId);
             starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
             const svg = starBtn.querySelector('svg');
@@ -2612,6 +2621,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     DOM.messagesContainer.appendChild(wrapper);
     scrollToBottom(true);
+    return wrapper;
 }
 
 function appendLoaderUI() {
@@ -2698,6 +2708,26 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
     state.currentLoaderId = loaderId;
     const startTime = Date.now();
 
+    let streamedContent = "";
+    let aiMsgWrapper = null;
+
+    if (window.runtime?.EventsOn) {
+        window.runtime.EventsOn("ai-stream-chunk", (chunk) => {
+            streamedContent += chunk;
+
+            if (!aiMsgWrapper && state.activeChatId === targetChatId) {
+                removeLoaderUI(loaderId);
+                state.currentLoaderId = null;
+                aiMsgWrapper = appendEmptyAIMessageUI();
+            }
+
+            if (aiMsgWrapper && state.activeChatId === targetChatId) {
+                updateAIMessageContent(aiMsgWrapper, streamedContent);
+                scrollToBottom(true);
+            }
+        });
+    }
+
     try {
         const aiResponse = isRegenerate
             ? await AppAPI.regenerateResponse(targetChatId, prompt)
@@ -2710,11 +2740,19 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
 
         const durationMs = Date.now() - startTime;
         const duration = formatResponseTime(durationMs);
+        const finalContent = streamedContent || aiResponse;
 
         if (state.activeChatId === targetChatId) {
-            removeLoaderUI(loaderId);
-            state.currentLoaderId = null;
-            appendMessageUI('assistant', aiResponse, new Date().toISOString(), duration, false, true, true);
+            if (!aiMsgWrapper) {
+                removeLoaderUI(loaderId);
+                state.currentLoaderId = null;
+                aiMsgWrapper = appendMessageUI('assistant', finalContent, new Date().toISOString(), duration, false, true);
+            } else {
+                updateAIMessageContent(aiMsgWrapper, finalContent, duration);
+                processCodeBlocks(aiMsgWrapper);
+                triggerSavedStatus();
+                debouncedRenderScrollbarMarkers();
+            }
         }
     } catch (err) {
         if (!state.isAborted) {
@@ -2726,6 +2764,9 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
             console.error(err);
         }
     } finally {
+        if (window.runtime?.EventsOff) {
+            window.runtime.EventsOff("ai-stream-chunk");
+        }
         state.isSending = false;
         if (state.activeChatId === targetChatId) {
             state.currentLoaderId = null;
@@ -2768,7 +2809,7 @@ async function handleSendMessage() {
     state.lastUserPrompt = text;
     updateSendButtonUI();
 
-    appendMessageUI('user', text, new Date().toISOString(), null, false, false, false);
+    appendMessageUI('user', text, new Date().toISOString(), null, false, false);
 
     await triggerAIGeneration(text);
 }

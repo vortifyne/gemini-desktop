@@ -76,7 +76,7 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) SendMessage(prompt string) (string, error) {
+func (c *Client) SendMessage(prompt string, onChunk func(string) error) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
@@ -87,26 +87,34 @@ func (c *Client) SendMessage(prompt string) (string, error) {
 
 	// Choose generative model and try to get response from it
 	genModel := c.gClient.GenerativeModel("gemini-3.6-flash")
-	resp, err := genModel.GenerateContent(ctx, genai.Text(prompt))
-	if err != nil {
-		return "", fmt.Errorf("failed to get response from generative model: %w", err)
-	}
-	if len(resp.Candidates) == 0 { // Check if model even give any response
-		log.Println("gemini returned no candidates")
-		return "", errors.New("gemini returned no candidates")
+	it := genModel.GenerateContentStream(ctx, genai.Text(prompt))
+	var fullText strings.Builder
+
+	for {
+		resp, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return "", fmt.Errorf("error in stream: %w", err)
+		}
+		if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+			continue
+		}
+
+		for _, part := range resp.Candidates[0].Content.Parts {
+			if textPart, ok := part.(genai.Text); ok {
+				chunk := string(textPart)
+				fullText.WriteString(chunk)
+
+				if onChunk != nil {
+					if err := onChunk(chunk); err != nil {
+						return "", err
+					}
+				}
+			}
+		}
 	}
 
-	// Check if content is empty
-	candidate := resp.Candidates[0]
-	if candidate.Content == nil || len(candidate.Content.Parts) == 0 {
-		return "", fmt.Errorf("gemini returned empty content")
-	}
-
-	// Extract text from content of response
-	// TODO(Feature): think about extracting not just a text but images, URLs. For now return "" because it wasn't a text
-	if textPart, ok := resp.Candidates[0].Content.Parts[0].(genai.Text); ok {
-		return string(textPart), nil
-	}
-
-	return "", fmt.Errorf("unexpected content type in response")
+	return fullText.String(), nil
 }
