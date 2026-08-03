@@ -16,11 +16,27 @@ import (
 )
 
 type Client struct {
-	apiKey string
+	apiKey  string
+	gClient *genai.Client
 }
 
-func NewGeminiClient(apiKey string) *Client {
-	return &Client{apiKey}
+func NewGeminiClient(apiKey string) (*Client, error) {
+	// Create new client with API key
+	gClient, err := genai.NewClient(context.Background(), option.WithAPIKey(apiKey))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create client: %v", err)
+	}
+
+	// Warmup TCP/TLS socket with Google
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		defer cancel()
+
+		it := gClient.ListModels(ctx)
+		_, _ = it.Next()
+	}()
+
+	return &Client{apiKey, gClient}, nil
 }
 
 func CheckGeminiKeyLive(apiKey string) (bool, error) {
@@ -69,26 +85,15 @@ func (c *Client) SendMessage(prompt string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	// Create client
-	client, err := genai.NewClient(ctx, option.WithAPIKey(c.apiKey))
-	if err != nil {
-		return "", fmt.Errorf("failed to send message: %w", err)
-	}
-	defer func() {
-		if err := client.Close(); err != nil {
-			log.Printf("failed to close client while sending message: %v\n", err)
-		}
-	}()
-
 	// Choose generative model and try to get response from it
-	genModel := client.GenerativeModel("gemini-3.6-flash")
+	genModel := c.gClient.GenerativeModel("gemini-3.6-flash")
 	resp, err := genModel.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
 		return "", fmt.Errorf("failed to get response from generative model: %w", err)
 	}
 	if len(resp.Candidates) == 0 { // Check if model even give any response
 		log.Println("gemini returned no candidates")
-		return "", nil
+		return "", errors.New("gemini returned no candidates")
 	}
 
 	// Check if content is empty

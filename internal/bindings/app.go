@@ -87,7 +87,12 @@ func (a *App) SetApiKey(apiKey string) (bool, error) {
 		return false, err
 	}
 
-	a.aiClient = gemini.NewGeminiClient(apiKey)
+	client, err := gemini.NewGeminiClient(apiKey)
+	if err != nil {
+		return false, fmt.Errorf("failed to init gemini client: %w", err)
+	}
+	a.aiClient = client
+
 	return true, nil
 }
 
