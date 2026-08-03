@@ -52,6 +52,7 @@ fabric.properties
 # Frontend
 frontend/dist
 frontend/node_modules
+frontend/src/output.css
 build/bin
 
 .env
