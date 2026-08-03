@@ -2,12 +2,17 @@ package bindings
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"strings"
+	"time"
 
 	"github.com/vortifyne/gemini-desktop/internal/database"
 	"github.com/vortifyne/gemini-desktop/internal/gemini"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -15,6 +20,11 @@ type App struct {
 	ctx      context.Context
 	storage  *database.Storage
 	aiClient *gemini.Client
+}
+
+type ReleaseInfo struct {
+	TagName string `json:"tag_name"`
+	HtmlUrl string `json:"html_url"`
 }
 
 // NewApp creates a new App application struct
@@ -26,6 +36,7 @@ func NewApp(storage *database.Storage, client *gemini.Client) *App {
 // so we can call the runtime methods
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+	go a.CheckForUpdates()
 }
 
 func (a *App) CreateChat(title string) (int64, error) {
@@ -76,7 +87,12 @@ func (a *App) SetApiKey(apiKey string) (bool, error) {
 		return false, err
 	}
 
-	a.aiClient = gemini.NewGeminiClient(apiKey)
+	client, err := gemini.NewGeminiClient(apiKey)
+	if err != nil {
+		return false, fmt.Errorf("failed to init gemini client: %w", err)
+	}
+	a.aiClient = client
+
 	return true, nil
 }
 
@@ -117,4 +133,45 @@ func (a *App) RegenerateResponse(chatID int64, prompt string) (string, error) {
 	}
 
 	return resp, nil
+}
+
+func (a *App) CheckForUpdates() {
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	client := &http.Client{Timeout: 30 * time.Second}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.github.com/repos/vortifyne/gemini-desktop/releases/latest", nil)
+	if err != nil {
+		log.Printf("Can't create request: %v", err)
+		return
+	}
+	req.Header.Set("User-Agent", "Gemini-Desktop-App")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Printf("Can't send request to URL: %v", err)
+		return
+	}
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Can't close resp.Body: %v", err)
+			return
+		}
+	}()
+
+	if resp.StatusCode != http.StatusOK {
+		log.Printf("Github returned status: %d", resp.StatusCode)
+		return
+	}
+
+	var release ReleaseInfo
+	if err := json.NewDecoder(resp.Body).Decode(&release); err != nil {
+		log.Printf("failed to decode release json: %v", err)
+		return
+	}
+
+	const currentVersion = "v0.2.0"
+	if release.TagName != currentVersion {
+		runtime.EventsEmit(a.ctx, "update-available", release)
+	}
 }

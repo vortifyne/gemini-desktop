@@ -82,6 +82,7 @@ const locales = {
         hotkeyExport: "Export Chat",
         hotkeyEsc: "Close Modals / Reset Search",
         regenerate: "Regenerate response",
+        updateAvailable: "New update {version} is available! Click to download.",
     },
     ru: {
         authTitle: "Авторизация",
@@ -160,6 +161,7 @@ const locales = {
         hotkeyExport: "Экспортировать чат",
         hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
         regenerate: "Перегенерировать ответ",
+        updateAvailable: "Доступно новое обновление {version}! Нажмите, чтобы скачать.",
     },
     zh: {
         authTitle: "身份验证",
@@ -238,6 +240,7 @@ const locales = {
         hotkeyExport: "导出对话",
         hotkeyEsc: "关闭弹窗 / 重置搜索",
         regenerate: "重新生成响应",
+        updateAvailable: "新版本 {version} 已发布！点击下载。"
     },
     ja: {
         authTitle: "認証",
@@ -316,6 +319,7 @@ const locales = {
         hotkeyExport: "チャットのエクスポート",
         hotkeyEsc: "モーダルを閉じる / 検索リセット",
         regenerate: "応答を再生成する",
+        updateAvailable: "新バージョン {version} が利用可能です！クリックしてダウンロード。"
     },
     ko: {
         authTitle: "인증",
@@ -394,6 +398,7 @@ const locales = {
         hotkeyExport: "채팅 내보내기",
         hotkeyEsc: "모달 닫기 / 검색 초기화",
         regenerate: "응답 다시 생성",
+        updateAvailable: "새 버전 {version}을(를) 이용할 수 있습니다! 다운로드하려면 클릭하세요."
     },
     es: {
         authTitle: "Autenticación",
@@ -472,6 +477,7 @@ const locales = {
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
         regenerate: "Regenerar respuesta",
+        updateAvailable: "¡Nueva versión {version} disponible! Haz clic para descargar."
     },
     de: {
         authTitle: "Authentifizierung",
@@ -550,6 +556,7 @@ const locales = {
         hotkeyExport: "Chat exportieren",
         hotkeyEsc: "Modals schließen / Suche zurücksetzen",
         regenerate: "Antwort neu generieren",
+        updateAvailable: "Neue Version {version} verfügbar! Klicke zum Herunterladen."
     },
     fr: {
         authTitle: "Authentification",
@@ -628,6 +635,7 @@ const locales = {
         hotkeyExport: "Exporter le chat",
         hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
         regenerate: "Régénérer la réponse",
+        updateAvailable: "Nouvelle version {version} disponible ! Cliquez pour télécharger."
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -706,6 +714,7 @@ const locales = {
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Fechar modais / Redefinir pesquisa",
         regenerate: "Regenerar resposta",
+        updateAvailable: "Nova versão {version} disponível! Clique para baixar.",
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -784,6 +793,7 @@ const locales = {
         hotkeyExport: "चैट निर्यात करें",
         hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
         regenerate: "प्रतिक्रिया पुन: उत्पन्न करें",
+        updateAvailable: "नया संस्करण {version} उपलब्ध है! डाउनलोड करने के लिए क्लिक करें।"
     },
     it: {
         authTitle: "Autenticazione",
@@ -862,6 +872,7 @@ const locales = {
         hotkeyExport: "Esporta chat",
         hotkeyEsc: "Chiudi modali / Ripristina ricerca",
         regenerate: "Rigenera risposta",
+        updateAvailable: "Nuova versione {version} disponibile! Clicca per scaricare."
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -940,6 +951,7 @@ const locales = {
         hotkeyExport: "Eksportuj czat",
         hotkeyEsc: "Zamknij okna / Resetuj szukanie",
         regenerate: "Wygeneruj ponownie odpowiedź",
+        updateAvailable: "Nowa wersja {version} jest dostępna! Kliknij, aby pobrać."
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1018,6 +1030,7 @@ const locales = {
         hotkeyExport: "Sohbeti Dışa Aktar",
         hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
         regenerate: "Yanıtı yeniden oluştur",
+        updateAvailable: "Yeni sürüm {version} mevcut! İndirmek için tıklayın."
     }
 };
 
@@ -1274,7 +1287,12 @@ function showToast(message, type = 'info', duration = 5000) {
 
     toastTimer = setTimeout(() => {
         DOM.toast.classList.remove('translate-y-0', 'opacity-100');
-        DOM.toast.classList.add('translate-y-20', 'opacity-0');
+        DOM.toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+
+        if (DOM.toastBox) {
+            DOM.toastBox.onclick = null;
+            DOM.toastBox.classList.remove('cursor-pointer', 'hover:border-indigo-500');
+        }
     }, duration);
 }
 
@@ -1302,7 +1320,7 @@ function applyLanguage(lang) {
     });
 
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.dataset.i18nTitle;
+        const key = el.dataset.i18title;
         if (locales[lang]?.[key]) {
             el.title = locales[lang][key];
         }
@@ -2077,6 +2095,32 @@ async function autoLoginWithSavedKey() {
     }
 }
 
+function setupUpdateListener() {
+    if (window.runtime?.EventsOn) {
+        window.runtime.EventsOn("update-available", (release) => {
+            const newVersion = release.tag_name || release.TagName || "v0.2.0";
+            const releaseUrl = release.html_url || release.HtmlUrl;
+
+            const messageText = t('updateAvailable').replace('{version}', newVersion);
+
+            showToast(messageText, 'info', 10000);
+
+            if (DOM.toastBox && releaseUrl) {
+                DOM.toast.classList.remove('pointer-events-none');
+                DOM.toastBox.classList.add('cursor-pointer', 'hover:border-indigo-500', 'transition-colors');
+
+                DOM.toastBox.onclick = () => {
+                    if (window.runtime?.BrowserOpenURL) {
+                        window.runtime.BrowserOpenURL(releaseUrl);
+                    } else {
+                        window.open(releaseUrl, '_blank');
+                    }
+                };
+            }
+        });
+    }
+}
+
 async function initChatApp() {
     try {
         applyLanguage(state.language);
@@ -2705,7 +2749,12 @@ async function handleSendMessage() {
     }
 
     const text = DOM.messageInput.value.trim();
-    if (!text || !state.activeChatId) return;
+    if (!text) return;
+
+    if (state.activeChatId === null) {
+        await createNewChat();
+        if (state.activeChatId === null) return;
+    }
 
     delete state.drafts[state.activeChatId];
     DOM.messageInput.value = '';
@@ -2724,4 +2773,5 @@ async function handleSendMessage() {
     await triggerAIGeneration(text);
 }
 
+setupUpdateListener();
 autoLoginWithSavedKey();
