@@ -54,4 +54,86 @@ func TestChatCRUD(t *testing.T) {
 	if extractedMsgs[1].Role != "model" {
 		t.Fatalf("extractedMsgs[1] role incorrect: %s", extractedMsgs[1].Role)
 	}
+
+	// Extract all created chats
+	extractedChats, err := storage.GetChats()
+	if err != nil {
+		t.Fatalf("GetChats failed to test: %v", err)
+	}
+	if len(extractedChats) != 1 {
+		t.Fatalf("incorrect extracted chat count: %v", err)
+	}
+
+	// Update chat title
+	newTitle := "updated chat title"
+	if err := storage.UpdateChatTitle(chatId, newTitle); err != nil {
+		t.Fatalf("UpdateChatTitle returned error: %v", err)
+	}
+
+	extractedChats, err = storage.GetChats()
+	if err != nil {
+		t.Fatalf("GetChats after title update failed: %v", err)
+	}
+	if extractedChats[0].Title != newTitle {
+		t.Fatalf("UpdateChatTitle mismatch. Expected: %s, Got: %s", newTitle, extractedChats[0].Title)
+	}
+
+	// Test sort by DESC in GetChats()
+	chatId2, err := storage.CreateChat("test chat 2")
+	if err != nil {
+		t.Fatalf("CreateChat for second chat failed: %v", err)
+	}
+
+	extractedChats, err = storage.GetChats()
+	if err != nil {
+		t.Fatalf("GetChats failed: %v", err)
+	}
+	if len(extractedChats) != 2 {
+		t.Fatalf("Expected 2 chats, got %d", len(extractedChats))
+	}
+	if extractedChats[0].ID != chatId2 {
+		t.Fatalf("GetChats sorting order incorrect: expected chat ID %d first, got %d", chatId2, extractedChats[0].ID)
+	}
+
+	// Last response deletion test
+	if err := storage.DeleteLastResponse(chatId); err != nil {
+		t.Fatalf("DeleteLastResponse returned error: %v", err)
+	}
+
+	extractedMsgs, err = storage.GetMessages(chatId)
+	if err != nil {
+		t.Fatalf("GetMessages after DeleteLastResponse failed: %v", err)
+	}
+	if len(extractedMsgs) != 1 {
+		t.Fatalf("Expected 1 message left after DeleteLastResponse, got %d", len(extractedMsgs))
+	}
+	if extractedMsgs[0].Role != "user" {
+		t.Fatalf("Remaining message role should be 'user', got '%s'", extractedMsgs[0].Role)
+	}
+
+	// Delete all chat
+	if err := storage.DeleteChat(chatId); err != nil {
+		t.Fatalf("DeleteChat returned error: %v", err)
+	}
+
+	// Check if one chat left
+	extractedChats, err = storage.GetChats()
+	if err != nil {
+		t.Fatalf("GetChats after DeleteChat failed: %v", err)
+	}
+	if len(extractedChats) != 1 {
+		t.Fatalf("Expected 1 chat remaining after deletion, got %d", len(extractedChats))
+	}
+	if extractedChats[0].ID != chatId2 {
+		t.Fatalf("Expected remaining chat ID to be %d, got %d", chatId2, extractedChats[0].ID)
+	}
+
+	// Check orphans after chat deletion
+	deletedChatMsgs, err := storage.GetMessages(chatId)
+	if err != nil {
+		t.Fatalf("GetMessages for deleted chat failed: %v", err)
+	}
+	if len(deletedChatMsgs) != 0 {
+		t.Fatalf("Expected 0 messages for deleted chat, got %d", len(deletedChatMsgs))
+	}
 }
