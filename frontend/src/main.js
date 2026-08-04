@@ -1499,6 +1499,7 @@ const state = {
     currentTagChatId: null,
     searchQuery: '',
     drafts: {},
+    pendingAttachments: [],
     isSending: false,
     isAborted: false,
     wasLastAborted: false,
@@ -1614,14 +1615,19 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for GetMessages');
         return [];
     },
-    sendMessageToAI: async (chatId, text, systemPrompt = '', modelName = 'gemini-1.5-flash') => {
+    sendMessageToAI: async (chatId, prompt, systemPrompt = '', modelName = 'gemini-1.5-flash', attachments = []) => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.SendMessageToAI) {
-            return await window.go.bindings.App.SendMessageToAI(chatId, text, systemPrompt, modelName);
+            const param = {
+                prompt: prompt,
+                system_prompt: systemPrompt,
+                model_name: modelName
+            };
+            return await window.go.bindings.App.SendMessageToAI(chatId, param, attachments);
         }
         console.warn('[Wails] Running in mock mode for SendMessageToAI');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1641,14 +1647,19 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for DeleteLastResponse');
         return true;
     },
-    regenerateResponse: async (chatId, prompt, systemPrompt = '', modelName = 'gemini-1.5-flash') => {
+    regenerateResponse: async (chatId, prompt, systemPrompt = '', modelName = 'gemini-1.5-flash', attachments = []) => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.RegenerateResponse) {
-            return await window.go.bindings.App.RegenerateResponse(chatId, prompt, systemPrompt, modelName);
+            const param = {
+                prompt: prompt,
+                system_prompt: systemPrompt,
+                model_name: modelName
+            };
+            return await window.go.bindings.App.RegenerateResponse(chatId, param, attachments);
         }
         console.warn('[Wails] Running in mock mode for RegenerateResponse');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1776,6 +1787,14 @@ const DOM = {
     charCounter: document.getElementById('char-counter'),
     btnSend: document.getElementById('btn-send'),
 
+    fileInput: document.getElementById('file-input'),
+    btnAttachFile: document.getElementById('btn-attach-file'),
+    attachmentsPreviewContainer: document.getElementById('attachments-preview-container'),
+    filePreviewModal: document.getElementById('file-preview-modal'),
+    btnCloseFilePreview: document.getElementById('btn-close-file-preview'),
+    previewFilename: document.getElementById('preview-filename'),
+    filePreviewBody: document.getElementById('file-preview-body'),
+
     toast: document.getElementById('toast'),
     toastBox: document.getElementById('toast-box'),
     toastIconInfo: document.getElementById('toast-icon-info'),
@@ -1829,6 +1848,148 @@ function showToast(message, type = 'info', duration = 5000) {
 
 function t(key) {
     return locales[state.language]?.[key] || locales.en[key] || key;
+}
+
+function openFilePreview(att) {
+    if (!DOM.filePreviewModal) return;
+
+    DOM.previewFilename.textContent = att.file_name;
+    DOM.filePreviewBody.innerHTML = '';
+
+    const isImage = att.mime_type.startsWith('image/');
+
+    if (isImage) {
+        const img = document.createElement('img');
+        img.src = `data:${att.mime_type};base64,${att.data}`;
+        img.className = 'max-w-full max-h-[60vh] rounded-2xl object-contain shadow-lg border border-zinc-800';
+        DOM.filePreviewBody.appendChild(img);
+    } else {
+        // Декодируем Base64 в читаемый текст для кода/файлов
+        let textContent = '';
+        try {
+            const binaryString = atob(att.data);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            textContent = new TextDecoder('utf-8').decode(bytes);
+        } catch (e) {
+            textContent = 'Unable to preview binary file content.';
+        }
+
+        const pre = document.createElement('pre');
+        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-all';
+        const code = document.createElement('code');
+        code.textContent = textContent;
+        pre.appendChild(code);
+        DOM.filePreviewBody.appendChild(pre);
+
+        try {
+            hljs.highlightElement(code);
+        } catch (e) {
+            console.error('Preview highlight error:', e);
+        }
+    }
+
+    DOM.filePreviewModal.classList.remove('hidden');
+}
+
+if (DOM.btnCloseFilePreview) {
+    DOM.btnCloseFilePreview.addEventListener('click', () => {
+        DOM.filePreviewModal.classList.add('hidden');
+    });
+}
+
+if (DOM.filePreviewModal) {
+    DOM.filePreviewModal.addEventListener('click', (e) => {
+        if (e.target === DOM.filePreviewModal) {
+            DOM.filePreviewModal.classList.add('hidden');
+        }
+    });
+}
+
+function renderAttachmentsPreview() {
+    if (!DOM.attachmentsPreviewContainer) return;
+
+    if (state.pendingAttachments.length === 0) {
+        DOM.attachmentsPreviewContainer.classList.add('hidden');
+        DOM.attachmentsPreviewContainer.innerHTML = '';
+        return;
+    }
+
+    DOM.attachmentsPreviewContainer.classList.remove('hidden');
+    DOM.attachmentsPreviewContainer.innerHTML = '';
+
+    state.pendingAttachments.forEach((att, index) => {
+        const badge = document.createElement('div');
+        badge.className = 'inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-200 animate-fade-in shadow-md max-w-xs select-none cursor-pointer hover:border-zinc-700 hover:bg-zinc-800/80 transition-all';
+
+        const isImage = att.mime_type.startsWith('image/');
+        const iconSvg = isImage
+            ? `<svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`
+            : `<svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+
+        badge.innerHTML = `
+            ${iconSvg}
+            <span class="truncate max-w-[140px]" title="${att.file_name}">${att.file_name}</span>
+            <button type="button" class="btn-remove-att p-0.5 text-zinc-500 hover:text-rose-400 rounded-full transition-colors shrink-0" title="Remove">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        `;
+
+        badge.onclick = (e) => {
+            if (e.target.closest('.btn-remove-att')) return;
+            openFilePreview(att);
+        };
+
+        badge.querySelector('.btn-remove-att').onclick = (e) => {
+            e.stopPropagation();
+            state.pendingAttachments.splice(index, 1);
+            renderAttachmentsPreview();
+            updateSendButtonUI();
+        };
+
+        DOM.attachmentsPreviewContainer.appendChild(badge);
+    });
+}
+
+if (DOM.btnAttachFile && DOM.fileInput) {
+    DOM.btnAttachFile.addEventListener('click', () => {
+        DOM.fileInput.click();
+    });
+
+    DOM.fileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if (!files.length) return;
+
+        files.forEach(file => {
+            if (file.size > 20 * 1024 * 1024) {
+                showToast(`File ${file.name} is too large (>20MB)`, 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const result = event.target.result;
+                let base64Data = '';
+                if (typeof result === 'string' && result.includes(',')) {
+                    base64Data = result.split(',')[1];
+                }
+
+                state.pendingAttachments.push({
+                    file_name: file.name,
+                    mime_type: file.type || 'text/plain',
+                    data: base64Data
+                });
+
+                renderAttachmentsPreview();
+                updateSendButtonUI();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        DOM.fileInput.value = '';
+    });
 }
 
 function applyLanguage(lang) {
@@ -2793,7 +2954,9 @@ function updateSendButtonUI() {
       </svg>
     `;
         DOM.btnSend.title = 'Send';
-        DOM.btnSend.disabled = !DOM.messageInput.value.trim();
+        const hasText = DOM.messageInput.value.trim().length > 0;
+        const hasAttachments = state.pendingAttachments.length > 0;
+        DOM.btnSend.disabled = !hasText && !hasAttachments;
     }
 }
 
@@ -2836,12 +2999,12 @@ DOM.btnToggleApiKey.addEventListener('click', () => {
     const iconClosed = DOM.btnToggleApiKey.querySelector('#icon-eye-closed');
 
     if (isPassword) {
-        iconOpen.classList.add('hidden');
-        iconClosed.classList.remove('hidden');
-    } else {
-        iconOpen.classList.remove('hidden');
-        iconClosed.classList.add('hidden');
-    }
+            iconOpen.classList.add('hidden');
+            iconClosed.classList.remove('hidden');
+        } else {
+            iconOpen.classList.remove('hidden');
+            iconClosed.classList.add('hidden');
+        }
 });
 
 DOM.btnLogout.addEventListener('click', () => {
@@ -2849,6 +3012,7 @@ DOM.btnLogout.addEventListener('click', () => {
     state.activeChatId = null;
     state.chats = [];
     state.drafts = {};
+    state.pendingAttachments = [];
     localStorage.removeItem('gemini_api_key');
     DOM.chatScreen.classList.add('hidden');
     DOM.authScreen.classList.remove('hidden');
@@ -2857,6 +3021,7 @@ DOM.btnLogout.addEventListener('click', () => {
     if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
     if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
     if (DOM.modelSelect) DOM.modelSelect.value = 'gemini-1.5-flash';
+    renderAttachmentsPreview();
 });
 
 async function autoLoginWithSavedKey() {
@@ -3181,7 +3346,7 @@ async function selectChat(chatId) {
     if (DOM.messageInput.value) {
         DOM.messageInput.style.height = `${Math.min(DOM.messageInput.scrollHeight, 192)}px`;
     }
-    DOM.btnSend.disabled = !DOM.messageInput.value.trim() || state.isSending;
+    DOM.btnSend.disabled = !DOM.messageInput.value.trim() && state.pendingAttachments.length === 0 || state.isSending;
 
     const len = DOM.messageInput.value.length;
     DOM.charCounter.textContent = `${len} ${getCharWord(len)}`;
@@ -3619,7 +3784,7 @@ DOM.messageInput.addEventListener('input', () => {
     }
 
     if (!state.isSending) {
-        DOM.btnSend.disabled = !DOM.messageInput.value.trim();
+        updateSendButtonUI();
     }
 
     const len = DOM.messageInput.value.length;
@@ -3648,7 +3813,7 @@ DOM.messageForm.addEventListener('submit', (e) => {
     }
 });
 
-async function triggerAIGeneration(prompt, isRegenerate = false) {
+async function triggerAIGeneration(prompt, isRegenerate = false, attachments = []) {
     const targetChatId = state.activeChatId;
     const systemPrompt = DOM.systemPromptInput ? DOM.systemPromptInput.value.trim() : '';
     const selectedModel = DOM.modelSelect ? DOM.modelSelect.value : 'gemini-1.5-flash';
@@ -3679,8 +3844,8 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
 
     try {
         const aiResponse = isRegenerate
-            ? await AppAPI.regenerateResponse(targetChatId, prompt, systemPrompt, selectedModel)
-            : await AppAPI.sendMessageToAI(targetChatId, prompt, systemPrompt, selectedModel);
+            ? await AppAPI.regenerateResponse(targetChatId, prompt, systemPrompt, selectedModel, attachments)
+            : await AppAPI.sendMessageToAI(targetChatId, prompt, systemPrompt, selectedModel, attachments);
 
         if (state.isAborted) {
             state.isAborted = false;
@@ -3743,7 +3908,9 @@ async function handleSendMessage() {
     }
 
     const text = DOM.messageInput.value.trim();
-    if (!text) return;
+    const attachmentsToSend = [...state.pendingAttachments];
+
+    if (!text && attachmentsToSend.length === 0) return;
 
     if (state.activeChatId === null) {
         await createNewChat();
@@ -3754,6 +3921,9 @@ async function handleSendMessage() {
     DOM.messageInput.value = '';
     DOM.messageInput.style.height = 'auto';
 
+    state.pendingAttachments = [];
+    renderAttachmentsPreview();
+
     DOM.charCounter.textContent = `0 ${t('charCount')}`;
 
     state.isSending = true;
@@ -3762,9 +3932,10 @@ async function handleSendMessage() {
     state.lastUserPrompt = text;
     updateSendButtonUI();
 
-    appendMessageUI('user', text, new Date().toISOString(), null, false, false);
+    const displayContent = text || (attachmentsToSend.length > 0 ? `[Attached ${attachmentsToSend.length} file(s)]` : '');
+    appendMessageUI('user', displayContent, new Date().toISOString(), null, false, false);
 
-    await triggerAIGeneration(text);
+    await triggerAIGeneration(text, false, attachmentsToSend);
 }
 
 setupUpdateListener();

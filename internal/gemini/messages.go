@@ -13,8 +13,14 @@ import (
 )
 
 func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
-	if strings.TrimSpace(param.Prompt) == "" {
-		return "", errors.New("prompt cannot be empty")
+	if strings.TrimSpace(param.Prompt) == "" && len(attachments) == 0 {
+		return "", errors.New("prompt and attachments cannot both be empty")
+	}
+
+	// Защита от дурака: если имя модели пришло пустым, ставим дефолт
+	modelName := strings.TrimSpace(param.ModelName)
+	if modelName == "" {
+		modelName = "gemini-2.0-flash"
 	}
 
 	// Set timeout for queries
@@ -22,7 +28,7 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 	defer cancel()
 
 	// Choose generative model
-	genModel := c.gClient.GenerativeModel(param.ModelName)
+	genModel := c.gClient.GenerativeModel(modelName)
 
 	// Check if system prompt is set
 	if param.SystemPrompt != "" {
@@ -55,18 +61,25 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 		},
 	}
 
-	// Attachments
-	parts := []genai.Part{genai.Text(param.Prompt)}
+	// Attachments & Prompt assembly
+	parts := []genai.Part{}
+	if strings.TrimSpace(param.Prompt) != "" {
+		parts = append(parts, genai.Text(param.Prompt))
+	}
 
 	for _, att := range attachments {
+		mime := strings.ToLower(att.MimeType)
+
 		switch {
-		case strings.HasPrefix(att.MimeType, "image/"):
+		case strings.HasPrefix(mime, "image/"):
 			parts = append(parts, genai.Blob{
 				MIMEType: att.MimeType,
 				Data:     att.Data,
 			})
-		case att.MimeType == "text/plain":
-			parts = append(parts, genai.Text(string(att.Data)))
+		case strings.HasPrefix(mime, "text/") || mime == "application/json" || mime == "" || domain.IsTextFile(att.FileName):
+			fileContent := string(att.Data)
+			formattedText := fmt.Sprintf("\n\n--- Attached File: %s ---\n%s\n--- End of File ---", att.FileName, fileContent)
+			parts = append(parts, genai.Text(formattedText))
 		default:
 			parts = append(parts, genai.Blob{
 				MIMEType: att.MimeType,

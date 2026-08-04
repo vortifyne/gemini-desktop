@@ -27,10 +27,10 @@ export namespace domain {
 	    }
 	}
 	export class AIParameter {
-	    Prompt: string;
-	    SystemPrompt: string;
-	    ModelName: string;
-	    Cfg: ChatConfig;
+	    prompt: string;
+	    system_prompt: string;
+	    model_name: string;
+	    cfg: ChatConfig;
 	
 	    static createFrom(source: any = {}) {
 	        return new AIParameter(source);
@@ -38,10 +38,10 @@ export namespace domain {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Prompt = source["Prompt"];
-	        this.SystemPrompt = source["SystemPrompt"];
-	        this.ModelName = source["ModelName"];
-	        this.Cfg = this.convertValues(source["Cfg"], ChatConfig);
+	        this.prompt = source["prompt"];
+	        this.system_prompt = source["system_prompt"];
+	        this.model_name = source["model_name"];
+	        this.cfg = this.convertValues(source["cfg"], ChatConfig);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

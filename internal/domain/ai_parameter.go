@@ -1,9 +1,9 @@
 package domain
 
 type AIParameter struct {
-	Prompt       string
-	SystemPrompt string
-	ModelName    string
-	OnChunk      func(string) error
-	Cfg          ChatConfig
+	Prompt       string             `json:"prompt"`
+	SystemPrompt string             `json:"system_prompt"`
+	ModelName    string             `json:"model_name"`
+	OnChunk      func(string) error `json:"-"`
+	Cfg          ChatConfig         `json:"cfg"`
 }
