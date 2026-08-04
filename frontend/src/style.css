@@ -92,6 +92,25 @@ html, body {
     border-right-width: 0;
 }
 
+#right-sidebar {
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#right-sidebar.collapsed {
+    width: 0 !important;
+    opacity: 0;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+    border-left-width: 0;
+}
+
+#system-prompt-input {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+}
+
 #messages-container {
     scroll-behavior: auto;
     -webkit-overflow-scrolling: touch;

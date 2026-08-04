@@ -5,9 +5,10 @@ import (
 )
 
 type Chat struct {
-	ID        int64
-	Title     string
-	CreatedAt time.Time
+	ID           int64
+	Title        string
+	SystemPrompt string
+	CreatedAt    time.Time
 }
 
 type Message struct {

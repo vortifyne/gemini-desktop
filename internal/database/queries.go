@@ -108,7 +108,7 @@ func (s *Storage) GetChats() ([]Chat, error) {
 	// Get all chats by descendancy (new chats will be on top)
 	rows, err := s.db.QueryContext(
 		ctx,
-		"SELECT id, title, created_at FROM chats ORDER BY id DESC")
+		"SELECT id, title, system_prompt, created_at FROM chats ORDER BY id DESC")
 	if err != nil {
 		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
 	}
@@ -124,7 +124,7 @@ func (s *Storage) GetChats() ([]Chat, error) {
 	for rows.Next() {
 		var c Chat
 
-		if err := rows.Scan(&c.ID, &c.Title, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Title, &c.SystemPrompt, &c.CreatedAt); err != nil {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
 		}
 
@@ -193,6 +193,20 @@ func (s *Storage) UpdateChatTitle(chatID int64, newTitle string) error {
 
 	// Update title of chat in database
 	_, err := s.db.ExecContext(ctx, "UPDATE chats SET title = ? WHERE id = ?", newTitle, chatID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Storage) UpdateSystemPrompt(chatID int64, systemPrompt string) error {
+	// Set timeout for queries
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Update system prompt
+	_, err := s.db.ExecContext(ctx, "UPDATE chats SET system_prompt = ? WHERE id = ?", systemPrompt, chatID)
 	if err != nil {
 		return err
 	}

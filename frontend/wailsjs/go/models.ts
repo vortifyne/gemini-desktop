@@ -3,6 +3,7 @@ export namespace database {
 	export class Chat {
 	    ID: number;
 	    Title: string;
+	    SystemPrompt: string;
 	    // Go type: time
 	    CreatedAt: any;
 	
@@ -14,6 +15,7 @@ export namespace database {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.ID = source["ID"];
 	        this.Title = source["Title"];
+	        this.SystemPrompt = source["SystemPrompt"];
 	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
 	    }
 	

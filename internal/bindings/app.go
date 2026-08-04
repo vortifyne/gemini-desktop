@@ -57,13 +57,13 @@ func (a *App) GetMessages(chatID int64) ([]database.Message, error) {
 	return msgs, nil
 }
 
-func (a *App) SendMessageToAI(chatID int64, prompt string) (string, error) {
+func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt string) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(prompt, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
@@ -110,13 +110,13 @@ func (a *App) UpdateChatTitle(chatID int64, newTitle string) error {
 	return a.storage.UpdateChatTitle(chatID, newTitle)
 }
 
-func (a *App) RegenerateResponse(chatID int64, prompt string) (string, error) {
+func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt string) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(prompt, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
@@ -179,4 +179,8 @@ func (a *App) CheckForUpdates() {
 	if release.TagName != currentVersion {
 		runtime.EventsEmit(a.ctx, "update-available", release)
 	}
+}
+
+func (a *App) UpdateSystemPrompt(chatID int64, systemPrompt string) error {
+	return a.storage.UpdateSystemPrompt(chatID, systemPrompt)
 }
