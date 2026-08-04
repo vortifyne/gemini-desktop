@@ -5,11 +5,19 @@ import (
 )
 
 type Chat struct {
-	ID           int64
-	Title        string
-	SystemPrompt string
-	ModelName    string
-	CreatedAt    time.Time
+	ID                     int64
+	Title                  string
+	SystemPrompt           string
+	ModelName              string
+	Temperature            float32
+	TopP                   float32
+	TopK                   int
+	MaxOutputTokens        int
+	SafetyHateSpeech       string
+	SafetyHarassment       string
+	SafetyDangerousContent string
+	SafetySexuallyExplicit string
+	CreatedAt              time.Time
 }
 
 type Message struct {
@@ -23,4 +31,15 @@ type Message struct {
 type MessageItem struct {
 	Role    string
 	Content string
+}
+
+type ChatConfig struct {
+	Temperature            float32
+	TopP                   float32
+	TopK                   int
+	MaxOutputTokens        int
+	SafetyHateSpeech       string
+	SafetyHarassment       string
+	SafetyDangerousContent string
+	SafetySexuallyExplicit string
 }
