@@ -2476,7 +2476,7 @@ async function autoLoginWithSavedKey() {
 function setupUpdateListener() {
     if (window.runtime?.EventsOn) {
         window.runtime.EventsOn("update-available", (release) => {
-            const newVersion = release.tag_name || release.TagName || "v0.2.0";
+            const newVersion = release.tag_name || release.TagName || "v0.3.0";
             const releaseUrl = release.html_url || release.HtmlUrl;
 
             const messageText = t('updateAvailable').replace('{version}', newVersion);

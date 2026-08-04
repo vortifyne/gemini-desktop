@@ -79,7 +79,7 @@ func (a *App) CheckForUpdates() {
 		return
 	}
 
-	const currentVersion = "v0.2.0"
+	const currentVersion = "v0.3.0"
 	if release.TagName != currentVersion {
 		runtime.EventsEmit(a.ctx, "update-available", release)
 	}
