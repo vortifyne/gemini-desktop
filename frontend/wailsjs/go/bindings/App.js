@@ -22,6 +22,10 @@ export function GetMessages(arg1) {
   return window['go']['bindings']['App']['GetMessages'](arg1);
 }
 
+export function GetModels() {
+  return window['go']['bindings']['App']['GetModels']();
+}
+
 export function RegenerateResponse(arg1, arg2, arg3) {
   return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3);
 }
@@ -32,6 +36,10 @@ export function SendMessageToAI(arg1, arg2, arg3) {
 
 export function SetApiKey(arg1) {
   return window['go']['bindings']['App']['SetApiKey'](arg1);
+}
+
+export function UpdateChatModel(arg1, arg2) {
+  return window['go']['bindings']['App']['UpdateChatModel'](arg1, arg2);
 }
 
 export function UpdateChatTitle(arg1, arg2) {
