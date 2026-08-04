@@ -81,6 +81,7 @@ func (s *Storage) GetChats() ([]Chat, error) {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
 		}
 
+		c.ApplyDefaults()
 		chats = append(chats, c)
 	}
 
@@ -197,4 +198,31 @@ func (s *Storage) UpdateChatConfiguration(chatID int64, cfg ChatConfig) error {
 	}
 
 	return nil
+}
+
+func (c *Chat) ApplyDefaults() {
+	if c.Temperature == 0 {
+		c.Temperature = 0.7
+	}
+	if c.TopP == 0 {
+		c.TopP = 0.95
+	}
+	if c.TopK == 0 {
+		c.TopK = 40
+	}
+	if c.MaxOutputTokens == 0 {
+		c.MaxOutputTokens = 8192
+	}
+	if c.SafetyHateSpeech == "" {
+		c.SafetyHateSpeech = "NONE"
+	}
+	if c.SafetyHarassment == "" {
+		c.SafetyHarassment = "NONE"
+	}
+	if c.SafetyDangerousContent == "" {
+		c.SafetyDangerousContent = "NONE"
+	}
+	if c.SafetySexuallyExplicit == "" {
+		c.SafetySexuallyExplicit = "NONE"
+	}
 }

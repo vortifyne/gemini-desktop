@@ -1204,9 +1204,9 @@ const locales = {
         mockEnabled: "Modalità Mock attivata: le richieste non vengono inviate all'API Gemini",
         mockDisabled: "Modalità Mock disattivata: utilizzo dell'API Gemini",
         starredAdded: "Messaggio aggiunto ai segnalibri",
-        starredRemoved: "Messaggio rimmosso dai segnalibri",
+        starredRemoved: "Messaggio rimosso dai segnalibri",
         chatExportedMd: "Chat esportata in Markdown",
-        chatExportedJson: "Chat exportata in JSON",
+        chatExportedJson: "Chat esportata in JSON",
         selectExportChat: "Seleziona una chat da esportare",
         savedStatus: "Salvato",
         deleteChatTitle: "Eliminare la chat?",
@@ -1245,7 +1245,7 @@ const locales = {
         topKLabel: "Top K",
         maxTokensLabel: "Token max",
         safetyTitle: "Filtri di sicurezza",
-        safetyHate: "Initamento all'odio",
+        safetyHate: "Incitamento all'odio",
         safetyHarassment: "Molestie",
         safetyDangerous: "Contenuti pericolosi",
         safetyExplicit: "Contenuti espliciti",
@@ -1314,7 +1314,7 @@ const locales = {
         msgLoadError: "Błąd ładowania wiadomości",
         aiError: "Błąd odbierania odpowiedzi od AI",
         genStopped: "Generowanie zatrzymane",
-        continueGen: "Kontнувuj generowanie...",
+        continueGen: "Kontynuuj generowanie...",
         mockEnabled: "Tryb Mock włączony: zapytania nie są wysyłane do API Gemini",
         mockDisabled: "Tryb Mock wyłączony: używanie API Gemini",
         starredAdded: "Wiadomość dodana do zakładek",
@@ -1593,6 +1593,13 @@ const AppAPI = {
         }
         return true;
     },
+    updateChatConfiguration: async (chatId, config) => {
+        if (window.go?.bindings?.App?.UpdateChatConfiguration) {
+            return await window.go.bindings.App.UpdateChatConfiguration(chatId, config);
+        }
+        console.warn('[Wails] Running in mock mode for UpdateChatConfiguration');
+        return true;
+    },
     deleteChat: async (chatId) => {
         if (window.go?.bindings?.App?.DeleteChat) {
             return await window.go.bindings.App.DeleteChat(chatId);
@@ -1688,6 +1695,17 @@ const DOM = {
     btnHeaderToggleRightSidebar: document.getElementById('btn-header-toggle-right-sidebar'),
     systemPromptInput: document.getElementById('system-prompt-input'),
     modelSelect: document.getElementById('model-select'),
+
+    tempSlider: document.getElementById('temp-slider'),
+    tempVal: document.getElementById('temp-val'),
+    toppSlider: document.getElementById('topp-slider'),
+    toppVal: document.getElementById('topp-val'),
+    topkInput: document.getElementById('topk-input'),
+    maxTokensInput: document.getElementById('max-tokens-input'),
+    safetyHateSelect: document.getElementById('safety-hate-select'),
+    safetyHarassmentSelect: document.getElementById('safety-harassment-select'),
+    safetyDangerousSelect: document.getElementById('safety-dangerous-select'),
+    safetyExplicitSelect: document.getElementById('safety-explicit-select'),
 
     mockModeToggle: document.getElementById('mock-mode-toggle'),
     searchChatInput: document.getElementById('search-chat-input'),
@@ -2255,6 +2273,102 @@ if (DOM.modelSelect) {
         triggerSavedStatus();
     });
 }
+
+let chatConfigDebounceTimer = null;
+
+function getChatConfig(chat) {
+    if (!chat) {
+        return {
+            temperature: 0.7,
+            topP: 0.95,
+            topK: 40,
+            maxOutputTokens: 8192,
+            safetyHateSpeech: 'NONE',
+            safetyHarassment: 'NONE',
+            safetyDangerousContent: 'NONE',
+            safetySexuallyExplicit: 'NONE'
+        };
+    }
+    return {
+        temperature: chat.temperature ?? chat.Temperature ?? 0.7,
+        topP: chat.top_p ?? chat.topP ?? chat.TopP ?? 0.95,
+        topK: chat.top_k ?? chat.topK ?? chat.TopK ?? 40,
+        maxOutputTokens: chat.max_output_tokens ?? chat.maxOutputTokens ?? chat.MaxOutputTokens ?? 8192,
+        safetyHateSpeech: chat.safety_hate_speech ?? chat.safetyHateSpeech ?? chat.SafetyHateSpeech ?? 'NONE',
+        safetyHarassment: chat.safety_harassment ?? chat.safetyHarassment ?? chat.SafetyHarassment ?? 'NONE',
+        safetyDangerousContent: chat.safety_dangerous_content ?? chat.safetyDangerousContent ?? chat.SafetyDangerousContent ?? 'NONE',
+        safetySexuallyExplicit: chat.safety_sexually_explicit ?? chat.safetySexuallyExplicit ?? chat.SafetySexuallyExplicit ?? 'NONE'
+    };
+}
+
+function gatherCurrentConfigFromUI() {
+    return {
+        temperature: parseFloat(DOM.tempSlider?.value || 0.7),
+        top_p: parseFloat(DOM.toppSlider?.value || 0.95),
+        top_k: parseInt(DOM.topkInput?.value || 40, 10),
+        max_output_tokens: parseInt(DOM.maxTokensInput?.value || 8192, 10),
+        safety_hate_speech: DOM.safetyHateSelect?.value || 'NONE',
+        safety_harassment: DOM.safetyHarassmentSelect?.value || 'NONE',
+        safety_dangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
+        safety_sexually_explicit: DOM.safetyExplicitSelect?.value || 'NONE'
+    };
+}
+
+function saveChatConfiguration() {
+    if (!state.activeChatId) return;
+    const cfg = gatherCurrentConfigFromUI();
+
+    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+    if (currentChat) {
+        Object.assign(currentChat, cfg);
+        currentChat.Temperature = cfg.temperature;
+        currentChat.TopP = cfg.top_p;
+        currentChat.TopK = cfg.top_k;
+        currentChat.MaxOutputTokens = cfg.max_output_tokens;
+        currentChat.SafetyHateSpeech = cfg.safety_hate_speech;
+        currentChat.SafetyHarassment = cfg.safety_harassment;
+        currentChat.SafetyDangerousContent = cfg.safety_dangerous_content;
+        currentChat.SafetySexuallyExplicit = cfg.safety_sexually_explicit;
+    }
+
+    AppAPI.updateChatConfiguration(state.activeChatId, cfg);
+    triggerSavedStatus();
+}
+
+function triggerConfigSave() {
+    if (chatConfigDebounceTimer) clearTimeout(chatConfigDebounceTimer);
+    chatConfigDebounceTimer = setTimeout(saveChatConfiguration, 500);
+}
+
+if (DOM.tempSlider) {
+    DOM.tempSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value).toFixed(1);
+        if (DOM.tempVal) DOM.tempVal.textContent = val;
+        triggerConfigSave();
+    });
+}
+
+if (DOM.toppSlider) {
+    DOM.toppSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value).toFixed(2);
+        if (DOM.toppVal) DOM.toppVal.textContent = val;
+        triggerConfigSave();
+    });
+}
+
+if (DOM.topkInput) {
+    DOM.topkInput.addEventListener('input', () => triggerConfigSave());
+}
+
+if (DOM.maxTokensInput) {
+    DOM.maxTokensInput.addEventListener('input', () => triggerConfigSave());
+}
+
+[DOM.safetyHateSelect, DOM.safetyHarassmentSelect, DOM.safetyDangerousSelect, DOM.safetyExplicitSelect].forEach(select => {
+    if (select) {
+        select.addEventListener('change', () => triggerConfigSave());
+    }
+});
 
 if (DOM.closeBehaviorSelect) {
     DOM.closeBehaviorSelect.addEventListener('change', (e) => {
@@ -2867,7 +2981,21 @@ async function createNewChat(title = 'New Chat') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: title, created_at: new Date().toISOString(), system_prompt: '', model_name: 'gemini-1.5-flash' };
+        const newChat = {
+            id: chatId,
+            title: title,
+            created_at: new Date().toISOString(),
+            system_prompt: '',
+            model_name: 'gemini-1.5-flash',
+            temperature: 0.7,
+            top_p: 0.95,
+            top_k: 40,
+            max_output_tokens: 8192,
+            safety_hate_speech: 'NONE',
+            safety_harassment: 'NONE',
+            safety_dangerous_content: 'NONE',
+            safety_sexually_explicit: 'NONE'
+        };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
@@ -3024,6 +3152,24 @@ async function selectChat(chatId) {
     if (DOM.modelSelect) {
         DOM.modelSelect.value = currentChat?.model_name || currentChat?.ModelName || 'gemini-1.5-flash';
     }
+
+    const cfg = getChatConfig(currentChat);
+
+    if (DOM.tempSlider) {
+        DOM.tempSlider.value = cfg.temperature;
+        if (DOM.tempVal) DOM.tempVal.textContent = parseFloat(cfg.temperature).toFixed(1);
+    }
+    if (DOM.toppSlider) {
+        DOM.toppSlider.value = cfg.topP;
+        if (DOM.toppVal) DOM.toppVal.textContent = parseFloat(cfg.topP).toFixed(2);
+    }
+    if (DOM.topkInput) DOM.topkInput.value = cfg.topK;
+    if (DOM.maxTokensInput) DOM.maxTokensInput.value = cfg.maxOutputTokens;
+
+    if (DOM.safetyHateSelect) DOM.safetyHateSelect.value = cfg.safetyHateSpeech;
+    if (DOM.safetyHarassmentSelect) DOM.safetyHarassmentSelect.value = cfg.safetyHarassment;
+    if (DOM.safetyDangerousSelect) DOM.safetyDangerousSelect.value = cfg.safetyDangerousContent;
+    if (DOM.safetyExplicitSelect) DOM.safetyExplicitSelect.value = cfg.safetySexuallyExplicit;
 
     renderChatList();
 
