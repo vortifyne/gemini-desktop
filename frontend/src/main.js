@@ -1685,6 +1685,7 @@ const DOM = {
     rightSidebar: document.getElementById('right-sidebar'),
     btnToggleRightSidebar: document.getElementById('btn-toggle-right-sidebar'),
     btnShowRightSidebar: document.getElementById('btn-show-right-sidebar'),
+    btnHeaderToggleRightSidebar: document.getElementById('btn-header-toggle-right-sidebar'),
     systemPromptInput: document.getElementById('system-prompt-input'),
     modelSelect: document.getElementById('model-select'),
 
@@ -2210,6 +2211,10 @@ if (DOM.btnToggleRightSidebar) {
 
 if (DOM.btnShowRightSidebar) {
     DOM.btnShowRightSidebar.addEventListener('click', () => toggleRightSidebar(true));
+}
+
+if (DOM.btnHeaderToggleRightSidebar) {
+    DOM.btnHeaderToggleRightSidebar.addEventListener('click', () => toggleRightSidebar());
 }
 
 let systemPromptDebounceTimer = null;
