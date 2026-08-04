@@ -22,12 +22,12 @@ export function GetMessages(arg1) {
   return window['go']['bindings']['App']['GetMessages'](arg1);
 }
 
-export function RegenerateResponse(arg1, arg2) {
-  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2);
+export function RegenerateResponse(arg1, arg2, arg3) {
+  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3);
 }
 
-export function SendMessageToAI(arg1, arg2) {
-  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2);
+export function SendMessageToAI(arg1, arg2, arg3) {
+  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3);
 }
 
 export function SetApiKey(arg1) {
@@ -36,4 +36,8 @@ export function SetApiKey(arg1) {
 
 export function UpdateChatTitle(arg1, arg2) {
   return window['go']['bindings']['App']['UpdateChatTitle'](arg1, arg2);
+}
+
+export function UpdateSystemPrompt(arg1, arg2) {
+  return window['go']['bindings']['App']['UpdateSystemPrompt'](arg1, arg2);
 }

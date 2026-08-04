@@ -83,6 +83,9 @@ const locales = {
         hotkeyEsc: "Close Modals / Reset Search",
         regenerate: "Regenerate response",
         updateAvailable: "New update {version} is available! Click to download.",
+        systemInstructionsTitle: "System Instructions",
+        systemInstructionsDesc: "Rules for AI behavior in this chat",
+        systemPromptPlaceholder: "e.g. You are a Go Senior Developer..."
     },
     ru: {
         authTitle: "Авторизация",
@@ -162,6 +165,9 @@ const locales = {
         hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
         regenerate: "Перегенерировать ответ",
         updateAvailable: "Доступно новое обновление {version}! Нажмите, чтобы скачать.",
+        systemInstructionsTitle: "Системные инструкции",
+        systemInstructionsDesc: "Правила поведения ИИ в этом чате",
+        systemPromptPlaceholder: "Например: Ты опытный Go-разработчик..."
     },
     zh: {
         authTitle: "身份验证",
@@ -240,7 +246,10 @@ const locales = {
         hotkeyExport: "导出对话",
         hotkeyEsc: "关闭弹窗 / 重置搜索",
         regenerate: "重新生成响应",
-        updateAvailable: "新版本 {version} 已发布！点击下载。"
+        updateAvailable: "新版本 {version} 已发布！点击下载。",
+        systemInstructionsTitle: "系统指令",
+        systemInstructionsDesc: "此对话中 AI 行为的规则",
+        systemPromptPlaceholder: "例如：你是一位专业的 Go 开发者..."
     },
     ja: {
         authTitle: "認証",
@@ -301,7 +310,7 @@ const locales = {
         mockEnabled: "モックモード有効: Gemini APIへのリクエストは送信されません",
         mockDisabled: "モックモード無効: Gemini APIを使用中",
         starredAdded: "メッセージをブックマークに追加しました",
-        starredRemoved: "メッセージをブックマークから削除しました",
+        starredRemoved: "メッセージ bookマークから削除しました",
         chatExportedMd: "チャットをMarkdownでエクスポートしました",
         chatExportedJson: "チャット tool JSONでエクスポートしました",
         selectExportChat: "エクスポートするチャットを選択してください",
@@ -319,7 +328,10 @@ const locales = {
         hotkeyExport: "チャットのエクスポート",
         hotkeyEsc: "モーダルを閉じる / 検索リセット",
         regenerate: "応答を再生成する",
-        updateAvailable: "新バージョン {version} が利用可能です！クリックしてダウンロード。"
+        updateAvailable: "新バージョン {version} が利用可能です！クリックしてダウンロード。",
+        systemInstructionsTitle: "システム指示",
+        systemInstructionsDesc: "このチャットでの AI の動作ルール",
+        systemPromptPlaceholder: "例: あなたは優秀な Go 開発者です..."
     },
     ko: {
         authTitle: "인증",
@@ -398,7 +410,10 @@ const locales = {
         hotkeyExport: "채팅 내보내기",
         hotkeyEsc: "모달 닫기 / 검색 초기화",
         regenerate: "응답 다시 생성",
-        updateAvailable: "새 버전 {version}을(를) 이용할 수 있습니다! 다운로드하려면 클릭하세요."
+        updateAvailable: "새 버전 {version}을(를) 이용할 수 있습니다! 다운로드하려면 클릭하세요.",
+        systemInstructionsTitle: "시스템 지침",
+        systemInstructionsDesc: "이 채팅의 AI 동작 지정 규칙",
+        systemPromptPlaceholder: "예: 당신은 유용한 Go 개발자입니다..."
     },
     es: {
         authTitle: "Autenticación",
@@ -477,7 +492,10 @@ const locales = {
         hotkeyExport: "Exportar chat",
         hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
         regenerate: "Regenerar respuesta",
-        updateAvailable: "¡Nueva versión {version} disponible! Haz clic para descargar."
+        updateAvailable: "¡Nueva versión {version} disponible! Haz clic para descargar.",
+        systemInstructionsTitle: "Instrucciones del sistema",
+        systemInstructionsDesc: "Reglas para la IA en este chat",
+        systemPromptPlaceholder: "Ej.: Eres un desarrollador Go..."
     },
     de: {
         authTitle: "Authentifizierung",
@@ -556,7 +574,10 @@ const locales = {
         hotkeyExport: "Chat exportieren",
         hotkeyEsc: "Modals schließen / Suche zurücksetzen",
         regenerate: "Antwort neu generieren",
-        updateAvailable: "Neue Version {version} verfügbar! Klicke zum Herunterladen."
+        updateAvailable: "Neue Version {version} verfügbar! Klicke zum Herunterladen.",
+        systemInstructionsTitle: "Systemanweisungen",
+        systemInstructionsDesc: "Regeln für das Verhalten der KI in diesem Chat",
+        systemPromptPlaceholder: "Z.B.: Du bist ein Go-Entwickler..."
     },
     fr: {
         authTitle: "Authentification",
@@ -635,7 +656,10 @@ const locales = {
         hotkeyExport: "Exporter le chat",
         hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
         regenerate: "Régénérer la réponse",
-        updateAvailable: "Nouvelle version {version} disponible ! Cliquez pour télécharger."
+        updateAvailable: "Nouvelle version {version} disponible ! Cliquez pour télécharger.",
+        systemInstructionsTitle: "Instructions système",
+        systemInstructionsDesc: "Règles pour le comportement de l'IA dans ce chat",
+        systemPromptPlaceholder: "Ex. : Vous êtes un développeur Go..."
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -715,6 +739,9 @@ const locales = {
         hotkeyEsc: "Fechar modais / Redefinir pesquisa",
         regenerate: "Regenerar resposta",
         updateAvailable: "Nova versão {version} disponível! Clique para baixar.",
+        systemInstructionsTitle: "Instruções do sistema",
+        systemInstructionsDesc: "Regras para a IA neste chat",
+        systemPromptPlaceholder: "Ex.: Você é um desenvolvedor Go..."
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -793,7 +820,10 @@ const locales = {
         hotkeyExport: "चैट निर्यात करें",
         hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
         regenerate: "प्रतिक्रिया पुन: उत्पन्न करें",
-        updateAvailable: "नया संस्करण {version} उपलब्ध है! डाउनलोड करने के लिए क्लिक करें।"
+        updateAvailable: "नया संस्करण {version} उपलब्ध है! डाउनलोड करने के लिए क्लिक करें।",
+        systemInstructionsTitle: "सिस्टम निर्देश",
+        systemInstructionsDesc: "इस चैट में AI के व्यवहार के नियम",
+        systemPromptPlaceholder: "उदा.: आप एक Go डेवलपर हैं..."
     },
     it: {
         authTitle: "Autenticazione",
@@ -872,7 +902,10 @@ const locales = {
         hotkeyExport: "Esporta chat",
         hotkeyEsc: "Chiudi modali / Ripristina ricerca",
         regenerate: "Rigenera risposta",
-        updateAvailable: "Nuova versione {version} disponibile! Clicca per scaricare."
+        updateAvailable: "Nuova versione {version} disponibile! Clicca per scaricare.",
+        systemInstructionsTitle: "Istruzioni di sistema",
+        systemInstructionsDesc: "Regole per l'IA in questa chat",
+        systemPromptPlaceholder: "Es.: Sei uno sviluppatore Go..."
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -951,7 +984,10 @@ const locales = {
         hotkeyExport: "Eksportuj czat",
         hotkeyEsc: "Zamknij okna / Resetuj szukanie",
         regenerate: "Wygeneruj ponownie odpowiedź",
-        updateAvailable: "Nowa wersja {version} jest dostępna! Kliknij, aby pobrać."
+        updateAvailable: "Nowa wersja {version} jest dostępna! Kliknij, aby pobrać.",
+        systemInstructionsTitle: "Instrukcje systemowe",
+        systemInstructionsDesc: "Zasady zachowania AI w tym czacie",
+        systemPromptPlaceholder: "Np.: Jesteś deweloperem Go..."
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1030,7 +1066,10 @@ const locales = {
         hotkeyExport: "Sohbeti Dışa Aktar",
         hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
         regenerate: "Yanıtı yeniden oluştur",
-        updateAvailable: "Yeni sürüm {version} mevcut! İndirmek için tıklayın."
+        updateAvailable: "Yeni sürüm {version} mevcut! İndirmek için tıklayın.",
+        systemInstructionsTitle: "Sistem Talimatları",
+        systemInstructionsDesc: "Bu sohbetteki yapay zeka davranış kuralları",
+        systemPromptPlaceholder: "Örn.: Sen bir Go geliştiricisisin..."
     }
 };
 
@@ -1119,6 +1158,12 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for UpdateChatTitle');
         return true;
     },
+    updateChatSystemPrompt: async (chatId, systemPrompt) => {
+        if (window.go?.bindings?.App?.UpdateSystemPrompt) {
+            return await window.go.bindings.App.UpdateSystemPrompt(chatId, systemPrompt);
+        }
+        return true;
+    },
     deleteChat: async (chatId) => {
         if (window.go?.bindings?.App?.DeleteChat) {
             return await window.go.bindings.App.DeleteChat(chatId);
@@ -1133,14 +1178,14 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for GetMessages');
         return [];
     },
-    sendMessageToAI: async (chatId, text) => {
+    sendMessageToAI: async (chatId, text, systemPrompt = '') => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.SendMessageToAI) {
-            return await window.go.bindings.App.SendMessageToAI(chatId, text);
+            return await window.go.bindings.App.SendMessageToAI(chatId, text, systemPrompt);
         }
         console.warn('[Wails] Running in mock mode for SendMessageToAI');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1160,14 +1205,14 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for DeleteLastResponse');
         return true;
     },
-    regenerateResponse: async (chatId, prompt) => {
+    regenerateResponse: async (chatId, prompt, systemPrompt = '') => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.RegenerateResponse) {
-            return await window.go.bindings.App.RegenerateResponse(chatId, prompt);
+            return await window.go.bindings.App.RegenerateResponse(chatId, prompt, systemPrompt);
         }
         console.warn('[Wails] Running in mock mode for RegenerateResponse');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1185,6 +1230,12 @@ const DOM = {
 
     sidebar: document.getElementById('sidebar'),
     btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
+    btnShowSidebar: document.getElementById('btn-show-sidebar'),
+    rightSidebar: document.getElementById('right-sidebar'),
+    btnToggleRightSidebar: document.getElementById('btn-toggle-right-sidebar'),
+    btnShowRightSidebar: document.getElementById('btn-show-right-sidebar'),
+    systemPromptInput: document.getElementById('system-prompt-input'),
+
     mockModeToggle: document.getElementById('mock-mode-toggle'),
     searchChatInput: document.getElementById('search-chat-input'),
     chatList: document.getElementById('chat-list'),
@@ -1502,6 +1553,24 @@ window.addEventListener('resize', () => {
     debouncedRenderScrollbarMarkers();
 });
 
+function toggleLeftSidebar(forceState) {
+    if (!DOM.sidebar) return;
+    const willBeCollapsed = forceState !== undefined ? !forceState : !DOM.sidebar.classList.contains('collapsed');
+    DOM.sidebar.classList.toggle('collapsed', willBeCollapsed);
+    if (DOM.btnShowSidebar) {
+        DOM.btnShowSidebar.classList.toggle('hidden', !willBeCollapsed);
+    }
+}
+
+function toggleRightSidebar(forceState) {
+    if (!DOM.rightSidebar) return;
+    const willBeCollapsed = forceState !== undefined ? !forceState : !DOM.rightSidebar.classList.contains('collapsed');
+    DOM.rightSidebar.classList.toggle('collapsed', willBeCollapsed);
+    if (DOM.btnShowRightSidebar) {
+        DOM.btnShowRightSidebar.classList.toggle('hidden', !willBeCollapsed);
+    }
+}
+
 window.addEventListener('keydown', (e) => {
     const isCmdOrCtrl = e.ctrlKey || e.metaKey;
 
@@ -1532,14 +1601,12 @@ window.addEventListener('keydown', (e) => {
         createNewChat();
     } else if (key === 'f') {
         e.preventDefault();
-        if (DOM.sidebar.classList.contains('collapsed')) {
-            DOM.sidebar.classList.remove('collapsed');
-        }
+        toggleLeftSidebar(true);
         DOM.searchChatInput.focus();
         DOM.searchChatInput.select();
     } else if (e.key === '\\') {
         e.preventDefault();
-        DOM.sidebar.classList.toggle('collapsed');
+        toggleLeftSidebar();
     } else if (key === 'm') {
         e.preventDefault();
         DOM.mockModeToggle.checked = !DOM.mockModeToggle.checked;
@@ -1609,9 +1676,46 @@ DOM.languageSelect.addEventListener('change', (e) => {
     applyLanguage(e.target.value);
 });
 
-DOM.btnToggleSidebar.addEventListener('click', () => {
-    DOM.sidebar.classList.toggle('collapsed');
-});
+if (DOM.btnToggleSidebar) {
+    DOM.btnToggleSidebar.addEventListener('click', () => toggleLeftSidebar());
+}
+
+if (DOM.btnShowSidebar) {
+    DOM.btnShowSidebar.addEventListener('click', () => toggleLeftSidebar(true));
+}
+
+if (DOM.btnToggleRightSidebar) {
+    DOM.btnToggleRightSidebar.addEventListener('click', () => toggleRightSidebar());
+}
+
+if (DOM.btnShowRightSidebar) {
+    DOM.btnShowRightSidebar.addEventListener('click', () => toggleRightSidebar(true));
+}
+
+let systemPromptDebounceTimer = null;
+if (DOM.systemPromptInput) {
+    const saveSystemPrompt = () => {
+        if (!state.activeChatId) return;
+        const val = DOM.systemPromptInput.value;
+        const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+        if (currentChat) {
+            currentChat.system_prompt = val;
+            currentChat.SystemPrompt = val;
+        }
+        AppAPI.updateChatSystemPrompt(state.activeChatId, val);
+        triggerSavedStatus();
+    };
+
+    DOM.systemPromptInput.addEventListener('input', () => {
+        if (systemPromptDebounceTimer) clearTimeout(systemPromptDebounceTimer);
+        systemPromptDebounceTimer = setTimeout(saveSystemPrompt, 500);
+    });
+
+    DOM.systemPromptInput.addEventListener('blur', () => {
+        if (systemPromptDebounceTimer) clearTimeout(systemPromptDebounceTimer);
+        saveSystemPrompt();
+    });
+}
 
 DOM.mockModeToggle.addEventListener('change', (e) => {
     state.isMockMode = e.target.checked;
@@ -1803,6 +1907,7 @@ DOM.btnConfirmDeleteChat.addEventListener('click', async () => {
             DOM.messagesContainer.innerHTML = '';
             DOM.messagesContainer.appendChild(DOM.emptyState);
             if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
+            if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
         }
 
         triggerSavedStatus();
@@ -2068,6 +2173,7 @@ DOM.btnLogout.addEventListener('click', () => {
     DOM.apiKeyInput.value = '';
     DOM.messageInput.value = '';
     if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
+    if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
 });
 
 async function autoLoginWithSavedKey() {
@@ -2140,6 +2246,7 @@ async function initChatApp() {
             DOM.currentChatTitle.textContent = t('selectChatTitle');
             DOM.messagesContainer.innerHTML = '';
             DOM.messagesContainer.appendChild(DOM.emptyState);
+            if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
         }
     } catch (err) {
         showToast(t('chatLoadError'), 'error');
@@ -2150,6 +2257,7 @@ async function initChatApp() {
         DOM.currentChatTitle.textContent = t('selectChatTitle');
         DOM.messagesContainer.innerHTML = '';
         DOM.messagesContainer.appendChild(DOM.emptyState);
+        if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
     }
 }
 
@@ -2160,7 +2268,7 @@ async function createNewChat(title = 'New Chat') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: title, created_at: new Date().toISOString() };
+        const newChat = { id: chatId, title: title, created_at: new Date().toISOString(), system_prompt: '' };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
@@ -2308,6 +2416,10 @@ async function selectChat(chatId) {
     const currentChat = state.chats.find(c => (c.id || c.ID) === chatId);
     if (currentChat) {
         DOM.currentChatTitle.textContent = currentChat.title || currentChat.Title || 'Untitled';
+    }
+
+    if (DOM.systemPromptInput) {
+        DOM.systemPromptInput.value = currentChat?.system_prompt || currentChat?.SystemPrompt || '';
     }
 
     renderChatList();
@@ -2704,6 +2816,7 @@ DOM.messageForm.addEventListener('submit', (e) => {
 
 async function triggerAIGeneration(prompt, isRegenerate = false) {
     const targetChatId = state.activeChatId;
+    const systemPrompt = DOM.systemPromptInput ? DOM.systemPromptInput.value.trim() : '';
     const loaderId = appendLoaderUI();
     state.currentLoaderId = loaderId;
     const startTime = Date.now();
@@ -2730,8 +2843,8 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
 
     try {
         const aiResponse = isRegenerate
-            ? await AppAPI.regenerateResponse(targetChatId, prompt)
-            : await AppAPI.sendMessageToAI(targetChatId, prompt);
+            ? await AppAPI.regenerateResponse(targetChatId, prompt, systemPrompt)
+            : await AppAPI.sendMessageToAI(targetChatId, prompt, systemPrompt);
 
         if (state.isAborted) {
             state.isAborted = false;

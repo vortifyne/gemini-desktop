@@ -76,7 +76,7 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) SendMessage(prompt string, onChunk func(string) error) (string, error) {
+func (c *Client) SendMessage(prompt, systemPrompt string, onChunk func(string) error) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
@@ -87,6 +87,11 @@ func (c *Client) SendMessage(prompt string, onChunk func(string) error) (string,
 
 	// Choose generative model and try to get response from it
 	genModel := c.gClient.GenerativeModel("gemini-3.6-flash")
+
+	if systemPrompt != "" {
+		genModel.SystemInstruction = genai.NewUserContent(genai.Text(systemPrompt))
+	}
+
 	it := genModel.GenerateContentStream(ctx, genai.Text(prompt))
 	var fullText strings.Builder
 

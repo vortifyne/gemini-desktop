@@ -33,10 +33,10 @@ func TestChatCRUD(t *testing.T) {
 	}
 
 	// Add messages from role:user and role:model
-	if err := storage.SaveMessage(chatId, "user", "API give me response"); err != nil {
+	if err := storage.SaveMessages(chatId, MessageItem{Role: "user", Content: "API give me response"}); err != nil {
 		t.Fatalf("SaveMessage occurred error (user role): %v", err)
 	}
-	if err := storage.SaveMessage(chatId, "model", "API gave response to user"); err != nil {
+	if err := storage.SaveMessages(chatId, MessageItem{Role: "model", Content: "API gave response to user"}); err != nil {
 		t.Fatalf("SaveMessage occurred error (user role): %v", err)
 	}
 
