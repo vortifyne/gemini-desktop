@@ -47,6 +47,23 @@ func TestChatCRUD(t *testing.T) {
 		t.Fatalf("incorrect extracted chat count: %v", err)
 	}
 
+	// Verify default config parameters applied by COALESCE / ApplyDefaults
+	if extractedChats[0].Temperature != 0.7 {
+		t.Fatalf("Default Temperature incorrect. Expected 0.7, got: %f", extractedChats[0].Temperature)
+	}
+	if extractedChats[0].TopP != 0.95 {
+		t.Fatalf("Default TopP incorrect. Expected 0.95, got: %f", extractedChats[0].TopP)
+	}
+	if extractedChats[0].TopK != 40 {
+		t.Fatalf("Default TopK incorrect. Expected 40, got: %d", extractedChats[0].TopK)
+	}
+	if extractedChats[0].MaxOutputTokens != 8192 {
+		t.Fatalf("Default MaxOutputTokens incorrect. Expected 8192, got: %d", extractedChats[0].MaxOutputTokens)
+	}
+	if extractedChats[0].SafetyHateSpeech != "NONE" {
+		t.Fatalf("Default SafetyHateSpeech incorrect. Expected NONE, got: %s", extractedChats[0].SafetyHateSpeech)
+	}
+
 	// Update chat title
 	newTitle := "updated chat title"
 	if err := storage.UpdateChatTitle(chatId, newTitle); err != nil {
@@ -122,6 +139,27 @@ func TestChatCRUD(t *testing.T) {
 		t.Fatalf("GetChats sorting order incorrect: expected chat ID %d first, got %d", chatId2, extractedChats[0].ID)
 	}
 
+	// Test NULL resilience via raw SQL insertion simulating legacy database records
+	_, err = storage.db.Exec("INSERT INTO chats (title, temperature, top_p) VALUES ('null chat', NULL, NULL)")
+	if err != nil {
+		t.Fatalf("Failed to insert chat with NULL fields: %v", err)
+	}
+
+	nullTestChats, err := storage.GetChats()
+	if err != nil {
+		t.Fatalf("GetChats failed when reading NULL database values: %v", err)
+	}
+	if len(nullTestChats) != 3 {
+		t.Fatalf("Expected 3 chats, got %d", len(nullTestChats))
+	}
+	// The newly inserted NULL chat should be first due to ORDER BY created_at DESC
+	if nullTestChats[0].Temperature != 0.7 {
+		t.Fatalf("COALESCE failed for NULL Temperature. Expected 0.7, got %f", nullTestChats[0].Temperature)
+	}
+	if nullTestChats[0].TopP != 0.95 {
+		t.Fatalf("COALESCE failed for NULL TopP. Expected 0.95, got %f", nullTestChats[0].TopP)
+	}
+
 	// Last response deletion test
 	if err := storage.DeleteLastMessage(chatId, "model"); err != nil {
 		t.Fatalf("DeleteLastMessage returned error: %v", err)
@@ -143,16 +181,13 @@ func TestChatCRUD(t *testing.T) {
 		t.Fatalf("DeleteChat returned error: %v", err)
 	}
 
-	// Check if one chat left
+	// Check if two chats left (chatId2 and nullTestChat)
 	extractedChats, err = storage.GetChats()
 	if err != nil {
 		t.Fatalf("GetChats after DeleteChat failed: %v", err)
 	}
-	if len(extractedChats) != 1 {
-		t.Fatalf("Expected 1 chat remaining after deletion, got %d", len(extractedChats))
-	}
-	if extractedChats[0].ID != chatId2 {
-		t.Fatalf("Expected remaining chat ID to be %d, got %d", chatId2, extractedChats[0].ID)
+	if len(extractedChats) != 2 {
+		t.Fatalf("Expected 2 chats remaining after deletion, got %d", len(extractedChats))
 	}
 
 	// Check orphans after chat deletion
