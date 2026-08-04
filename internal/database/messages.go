@@ -80,16 +80,16 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	return msgs, nil
 }
 
-func (s *Storage) DeleteLastResponse(chatID int64) error {
+func (s *Storage) DeleteLastMessage(chatID int64, role string) error {
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Delete last message from chat with id = chatID
 	_, err := s.db.ExecContext(ctx,
-		"DELETE FROM messages where id = (SELECT MAX(id) FROM messages WHERE chat_id = ? AND role = 'model');", chatID)
+		"DELETE FROM messages WHERE id = (SELECT MAX(id) FROM messages WHERE chat_id = ? AND role = ?);",
+		chatID, role)
 	if err != nil {
-		return fmt.Errorf("failed to delete last message from chat: %w", err)
+		return fmt.Errorf("failed to delete last message (%s) from chat: %w", role, err)
 	}
 
 	return nil

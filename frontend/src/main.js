@@ -96,7 +96,9 @@ const locales = {
         closeModalDesc: "Choose what happens when you click the close button.",
         btnMinimize: "Minimize to Tray",
         btnQuit: "Quit Application",
-        rememberChoice: "Remember my choice"
+        rememberChoice: "Remember my choice",
+        editPrompt: "Edit prompt",
+        btnSaveSubmit: "Save & Submit"
     },
     ru: {
         authTitle: "Авторизация",
@@ -189,7 +191,9 @@ const locales = {
         closeModalDesc: "Выберите, что делать при нажатии на крестик.",
         btnMinimize: "В трей",
         btnQuit: "Выйти",
-        rememberChoice: "Запомнить мой выбор"
+        rememberChoice: "Запомнить мой выбор",
+        editPrompt: "Редактировать промт",
+        btnSaveSubmit: "Сохранить и отправить"
     },
     zh: {
         authTitle: "身份验证",
@@ -282,7 +286,9 @@ const locales = {
         closeModalDesc: "选择点击关闭按钮 时的操作。",
         btnMinimize: "最小化",
         btnQuit: "退出",
-        rememberChoice: "记住我的选择"
+        rememberChoice: "记住我的选择",
+        editPrompt: "编辑提示词",
+        btnSaveSubmit: "保存并提交"
     },
     ja: {
         authTitle: "認証",
@@ -375,7 +381,9 @@ const locales = {
         closeModalDesc: "閉じるボタン を押した時の動作を選択してください。",
         btnMinimize: "トレイへ",
         btnQuit: "終了",
-        rememberChoice: "選択を記憶する"
+        rememberChoice: "選択を記憶する",
+        editPrompt: "プロンプトを編集",
+        btnSaveSubmit: "保存して送信"
     },
     ko: {
         authTitle: "인증",
@@ -468,7 +476,9 @@ const locales = {
         closeModalDesc: "닫기 버튼(X)을 누를 때의 동작을 선택하세요.",
         btnMinimize: "트레이로",
         btnQuit: "종료",
-        rememberChoice: "내 선택 기억하기"
+        rememberChoice: "내 선택 기억하기",
+        editPrompt: "프롬프트 편집",
+        btnSaveSubmit: "저장 및 제출"
     },
     es: {
         authTitle: "Autenticación",
@@ -561,7 +571,9 @@ const locales = {
         closeModalDesc: "Elige qué hacer al pulsar el botón cerrar.",
         btnMinimize: "Minimizar",
         btnQuit: "Salir",
-        rememberChoice: "Recordar mi elección"
+        rememberChoice: "Recordar mi elección",
+        editPrompt: "Editar prompt",
+        btnSaveSubmit: "Guardar y enviar"
     },
     de: {
         authTitle: "Authentifizierung",
@@ -654,7 +666,9 @@ const locales = {
         closeModalDesc: "Wähle, was beim Klicken auf Schließen passieren soll.",
         btnMinimize: "Minimieren",
         btnQuit: "Beenden",
-        rememberChoice: "Auswahl merken"
+        rememberChoice: "Auswahl merken",
+        editPrompt: "Prompt bearbeiten",
+        btnSaveSubmit: "Speichern & Senden"
     },
     fr: {
         authTitle: "Authentification",
@@ -747,7 +761,9 @@ const locales = {
         closeModalDesc: "Choisissez l'action lors du clic sur fermer.",
         btnMinimize: "Réduire",
         btnQuit: "Quitter",
-        rememberChoice: "Mémoriser mon choix"
+        rememberChoice: "Mémoriser mon choix",
+        editPrompt: "Modifier le prompt",
+        btnSaveSubmit: "Enregistrer et envoyer"
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -840,7 +856,9 @@ const locales = {
         closeModalDesc: "Escolha o que fazer ao clicar no botão fechar.",
         btnMinimize: "Minimizar",
         btnQuit: "Sair",
-        rememberChoice: "Lembrar minha escolha"
+        rememberChoice: "Lembrar minha escolha",
+        editPrompt: "Editar prompt",
+        btnSaveSubmit: "Salvar e enviar"
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -933,7 +951,9 @@ const locales = {
         closeModalDesc: "बंद बटन पर क्लिक करने पर क्या हो, चुनें।",
         btnMinimize: "тра में",
         btnQuit: "बाहर",
-        rememberChoice: "मेरी पसंद याद रखें"
+        rememberChoice: "मेरी पसंद याद रखें",
+        editPrompt: "प्रॉम्प्ट संपादित करें",
+        btnSaveSubmit: "सहेजें और भेजें"
     },
     it: {
         authTitle: "Autenticazione",
@@ -1026,7 +1046,9 @@ const locales = {
         closeModalDesc: "Scegli cosa fare quando fai clic su chiudi.",
         btnMinimize: "Nel tray",
         btnQuit: "Esci",
-        rememberChoice: "Ricorda la mia scelta"
+        rememberChoice: "Ricorda la mia scelta",
+        editPrompt: "Modifica prompt",
+        btnSaveSubmit: "Salva e invia"
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -1073,7 +1095,7 @@ const locales = {
         yesterdayGroup: "Wczoraj",
         past7DaysGroup: "Ostatnie 7 dni",
         earlierGroup: "Wcześniej",
-        emptyStateTitle: "W czym могу pomóc?",
+        emptyStateTitle: "W czym mogę pomóc?",
         emptyStateDesc: "Utwórz nowy czat po lewej stronie lub wybierz istniejący, aby rozpocząć rozmowę.",
         netLost: "Utracono połączenie z Internetem!",
         invalidKey: "Nieprawidłowy klucz API! Sprawdź i spróbuj ponownie.",
@@ -1112,14 +1134,16 @@ const locales = {
         modelSelectLabel: "Model AI",
         tabAdvanced: "Zaawansowane",
         closeBehaviorLabel: "Akcja przy zamykaniu",
-        closeBehaviorAsk: "Pytaj za каждым razem",
+        closeBehaviorAsk: "Pytaj za każdym razem",
         closeBehaviorMinimize: "Minimalizuj do zasobnika",
         closeBehaviorQuit: "Zamknij aplikację",
         closeModalTitle: "Minimalizować czy Zamknąć?",
         closeModalDesc: "Wybierz, co ma się stać po kliknięciu.",
         btnMinimize: "Do zasobnika",
         btnQuit: "Zamknij",
-        rememberChoice: "Zapamiętaj mój wybór"
+        rememberChoice: "Zapamiętaj mój wybór",
+        editPrompt: "Edytuj prompt",
+        btnSaveSubmit: "Zapisz i wyślij"
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1212,7 +1236,9 @@ const locales = {
         closeModalDesc: "Kapat düğmesine tıklandığında ne yapılacağını seçin.",
         btnMinimize: "Küçült",
         btnQuit: "Çık",
-        rememberChoice: "Seçimimi hatırla"
+        rememberChoice: "Seçimimi hatırla",
+        editPrompt: "İstemi düzenle",
+        btnSaveSubmit: "Kaydet ve Gönder"
     }
 };
 
@@ -1373,6 +1399,12 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for RegenerateResponse');
         await new Promise((res) => setTimeout(res, 1500));
         return `Это тестовый регенерированный ответ от **ИИ** (без Go-бэкенда).`;
+    },
+    cancelGeneration: async () => {
+        if (window.go?.bindings?.App?.CancelGeneration) {
+            return await window.go.bindings.App.CancelGeneration();
+        }
+        return true;
     },
     setCloseBehavior: async (val) => {
         if (window.go?.bindings?.App?.SetCloseBehavior) {
@@ -2903,7 +2935,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       </div>
 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
-        <div class="select-text relative transition-all duration-200 ${
+        <div class="msg-box select-text relative transition-all duration-200 ${
         isUser
             ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
             : 'text-zinc-200 markdown-body w-full'
@@ -2911,7 +2943,12 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
           <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
         </div>
 
-        <div class="flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div class="msg-actions flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          ${isUser ? `
+          <button class="btn-edit-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('editPrompt')}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          </button>
+          ` : ''}
           <button class="btn-copy-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
           </button>
@@ -2945,6 +2982,79 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     };
 
     finalizeMessage();
+
+    const editBtn = wrapper.querySelector('.btn-edit-msg');
+    if (editBtn) {
+        editBtn.onclick = () => {
+            const msgBox = wrapper.querySelector('.msg-box');
+            const msgActions = wrapper.querySelector('.msg-actions');
+            const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
+
+            const editBox = document.createElement('div');
+            editBox.className = 'w-full flex flex-col gap-2 my-1 items-end';
+            editBox.innerHTML = `
+              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:anywhere]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+              <div class="flex items-center gap-2">
+                <button class="btn-cancel-edit px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-full text-xs font-medium transition-colors">${t('btnCancel')}</button>
+                <button class="btn-save-edit px-3.5 py-1.5 bg-accent bg-accent-hover text-white rounded-full text-xs font-medium transition-colors shadow-md">${t('btnSaveSubmit')}</button>
+              </div>
+            `;
+
+            msgBox.classList.add('hidden');
+            msgActions.classList.add('hidden');
+            msgBox.parentNode.insertBefore(editBox, msgActions);
+
+            const textarea = editBox.querySelector('.edit-textarea');
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+            editBox.querySelector('.btn-cancel-edit').onclick = () => {
+                editBox.remove();
+                msgBox.classList.remove('hidden');
+                msgActions.classList.remove('hidden');
+            };
+
+            editBox.querySelector('.btn-save-edit').onclick = async () => {
+                const updatedPrompt = textarea.value.trim();
+                if (!updatedPrompt) return;
+
+                editBox.remove();
+                msgBox.classList.remove('hidden');
+                msgActions.classList.remove('hidden');
+
+                let nextEl = wrapper.nextElementSibling;
+                while (nextEl) {
+                    const toRemove = nextEl;
+                    nextEl = nextEl.nextElementSibling;
+                    toRemove.remove();
+                }
+
+                wrapper.setAttribute('data-raw-content', encodeURIComponent(updatedPrompt));
+                textBody.innerHTML = marked.parse(updatedPrompt) + renderFooter();
+                processCodeBlocks(textBody);
+
+                state.lastUserPrompt = updatedPrompt;
+
+                if (state.isSending) {
+                    state.isAborted = true;
+                    await AppAPI.cancelGeneration();
+                    if (window.runtime?.EventsOff) {
+                        window.runtime.EventsOff("ai-stream-chunk");
+                    }
+                    if (state.currentLoaderId) {
+                        removeLoaderUI(state.currentLoaderId);
+                        state.currentLoaderId = null;
+                    }
+                }
+
+                state.isSending = true;
+                state.isAborted = false;
+                updateSendButtonUI();
+
+                await triggerAIGeneration(updatedPrompt);
+            };
+        };
+    }
 
     const copyMsgBtn = wrapper.querySelector('.btn-copy-msg');
     if (copyMsgBtn) {
@@ -3101,6 +3211,7 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
 
     if (window.runtime?.EventsOn) {
         window.runtime.EventsOn("ai-stream-chunk", (chunk) => {
+            if (state.isAborted) return;
             streamedContent += chunk;
 
             if (!aiMsgWrapper && state.activeChatId === targetChatId) {
@@ -3167,11 +3278,15 @@ async function handleSendMessage() {
     if (state.isSending) {
         state.isAborted = true;
         state.wasLastAborted = true;
-        state.isSending = false;
+        await AppAPI.cancelGeneration();
+        if (window.runtime?.EventsOff) {
+            window.runtime.EventsOff("ai-stream-chunk");
+        }
         if (state.currentLoaderId) {
             removeLoaderUI(state.currentLoaderId);
             state.currentLoaderId = null;
         }
+        state.isSending = false;
         updateSendButtonUI();
         showToast(t('genStopped'), 'info');
         return;

@@ -96,16 +96,16 @@ func TestChatCRUD(t *testing.T) {
 	}
 
 	// Last response deletion test
-	if err := storage.DeleteLastResponse(chatId); err != nil {
-		t.Fatalf("DeleteLastResponse returned error: %v", err)
+	if err := storage.DeleteLastMessage(chatId, "model"); err != nil {
+		t.Fatalf("DeleteLastMessage returned error: %v", err)
 	}
 
 	extractedMsgs, err = storage.GetMessages(chatId)
 	if err != nil {
-		t.Fatalf("GetMessages after DeleteLastResponse failed: %v", err)
+		t.Fatalf("GetMessages after DeleteLastMessage failed: %v", err)
 	}
 	if len(extractedMsgs) != 1 {
-		t.Fatalf("Expected 1 message left after DeleteLastResponse, got %d", len(extractedMsgs))
+		t.Fatalf("Expected 1 message left after DeleteLastMessage, got %d", len(extractedMsgs))
 	}
 	if extractedMsgs[0].Role != "user" {
 		t.Fatalf("Remaining message role should be 'user', got '%s'", extractedMsgs[0].Role)

@@ -1,6 +1,7 @@
 package bindings
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -23,12 +24,29 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		return "", errors.New("prompt cannot be empty")
 	}
 
+	// Cancel context based on Wails context
+	a.cancelMu.Lock()
+	ctx, cancel := context.WithCancel(a.ctx)
+	a.cancelFunc = cancel
+	a.cancelMu.Unlock()
+
+	// Cancel context clean up
+	defer func() {
+		cancel()
+		a.cancelMu.Lock()
+		a.cancelFunc = nil
+		a.cancelMu.Unlock()
+	}()
+
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, modelName, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(ctx, prompt, systemPrompt, modelName, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
 	if err != nil {
+		if errors.Is(err, context.Canceled) {
+			return "", errors.New("generation canceled by user")
+		}
 		return "", fmt.Errorf("failed to get response: %w", err)
 	}
 
@@ -49,12 +67,29 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		return "", errors.New("prompt cannot be empty")
 	}
 
+	// Cancel context based on Wails context
+	a.cancelMu.Lock()
+	ctx, cancel := context.WithCancel(a.ctx)
+	a.cancelFunc = cancel
+	a.cancelMu.Unlock()
+
+	// Cancel context clean up
+	defer func() {
+		cancel()
+		a.cancelMu.Lock()
+		a.cancelFunc = nil
+		a.cancelMu.Unlock()
+	}()
+
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, modelName, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(ctx, prompt, systemPrompt, modelName, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
 	if err != nil {
+		if errors.Is(err, context.Canceled) {
+			return "", errors.New("regeneration canceled by user")
+		}
 		return "", fmt.Errorf("failed to regenerate response: %w", err)
 	}
 
@@ -64,7 +99,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	}
 
 	// Save new response to database
-	if err := a.storage.DeleteLastResponse(chatID); err != nil {
+	if err := a.storage.DeleteLastMessage(chatID, "model"); err != nil {
 		return "", fmt.Errorf("failed to delete last response: %w", err)
 	}
 	if err := a.storage.SaveMessages(chatID, database.MessageItem{Role: "model", Content: resp}); err != nil {
@@ -72,4 +107,14 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	}
 
 	return resp, nil
+}
+
+func (a *App) CancelGeneration() {
+	a.cancelMu.Lock()
+	defer a.cancelMu.Unlock()
+
+	if a.cancelFunc != nil {
+		a.cancelFunc()
+		a.cancelFunc = nil
+	}
 }
