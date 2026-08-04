@@ -26,16 +26,28 @@ export function GetModels() {
   return window['go']['bindings']['App']['GetModels']();
 }
 
-export function RegenerateResponse(arg1, arg2, arg3) {
-  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3);
+export function QuitApp() {
+  return window['go']['bindings']['App']['QuitApp']();
 }
 
-export function SendMessageToAI(arg1, arg2, arg3) {
-  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3);
+export function RegenerateResponse(arg1, arg2, arg3, arg4) {
+  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3, arg4);
+}
+
+export function SendMessageToAI(arg1, arg2, arg3, arg4) {
+  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3, arg4);
 }
 
 export function SetApiKey(arg1) {
   return window['go']['bindings']['App']['SetApiKey'](arg1);
+}
+
+export function SetCloseBehavior(arg1) {
+  return window['go']['bindings']['App']['SetCloseBehavior'](arg1);
+}
+
+export function ShowWindow() {
+  return window['go']['bindings']['App']['ShowWindow']();
 }
 
 export function UpdateChatModel(arg1, arg2) {

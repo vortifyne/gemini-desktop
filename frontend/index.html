@@ -318,6 +318,7 @@
         <div class="flex border-b border-zinc-800 text-xs font-medium gap-2">
             <button id="tab-btn-appearance" class="px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors" data-i18n="tabAppearance">Appearance</button>
             <button id="tab-btn-shortcuts" class="px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors" data-i18n="tabShortcuts">Hotkeys</button>
+            <button id="tab-btn-advanced" class="px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors" data-i18n="tabAdvanced">Advanced</button>
         </div>
 
         <div id="tab-content-appearance" class="space-y-4">
@@ -395,6 +396,34 @@
                 <span class="text-zinc-300" data-i18n="hotkeyEsc">Close Modals / Reset Search</span>
                 <kbd class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded-full text-xs font-mono text-zinc-300">Esc</kbd>
             </div>
+        </div>
+
+        <div id="tab-content-advanced" class="space-y-4 hidden">
+            <div class="space-y-2">
+                <label for="close-behavior-select" class="block text-xs font-medium text-zinc-300" data-i18n="closeBehaviorLabel">Action on window close</label>
+                <select id="close-behavior-select" class="w-full bg-zinc-950 border border-zinc-800 rounded-full px-4 py-2 text-xs text-zinc-200 focus:outline-none focus:border-zinc-700 transition-colors">
+                    <option value="default" class="bg-zinc-950 text-zinc-200" data-i18n="closeBehaviorAsk">Ask every time</option>
+                    <option value="minimize" class="bg-zinc-950 text-zinc-200" data-i18n="closeBehaviorMinimize">Minimize to system tray</option>
+                    <option value="quit" class="bg-zinc-950 text-zinc-200" data-i18n="closeBehaviorQuit">Quit application</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="close-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">
+    <div class="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-5">
+        <div class="space-y-2">
+            <h3 class="text-base font-semibold text-white" data-i18n="closeModalTitle">Minimize or Quit?</h3>
+            <p class="text-xs text-zinc-400" data-i18n="closeModalDesc">Choose what happens when you click the close button.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="cb-remember-close-choice" class="rounded bg-zinc-950 border-zinc-800 text-indigo-600 focus:ring-0 cursor-pointer">
+            <label for="cb-remember-close-choice" class="text-xs text-zinc-300 cursor-pointer select-none" data-i18n="rememberChoice">Remember my choice</label>
+        </div>
+        <div class="flex gap-2 pt-2">
+            <button id="btn-close-modal-minimize" class="flex-1 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-full text-xs font-medium transition-colors" data-i18n="btnMinimize">Minimize to Tray</button>
+            <button id="btn-close-modal-quit" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-xs font-medium transition-colors" data-i18n="btnQuit">Quit Application</button>
         </div>
     </div>
 </div>

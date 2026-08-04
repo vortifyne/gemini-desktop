@@ -3,6 +3,7 @@ module github.com/vortifyne/gemini-desktop
 go 1.25.7
 
 require (
+	github.com/energye/systray v1.0.3
 	github.com/google/generative-ai-go v0.20.1
 	github.com/pressly/goose/v3 v3.27.3
 	github.com/wailsapp/wails/v2 v2.13.0
