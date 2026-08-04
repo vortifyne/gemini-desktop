@@ -1,12 +1,20 @@
 export namespace database {
 	
 	export class Chat {
-	    ID: number;
-	    Title: string;
-	    SystemPrompt: string;
-	    ModelName: string;
+	    id: number;
+	    title: string;
+	    system_prompt: string;
+	    model_name: string;
+	    temperature: number;
+	    top_p: number;
+	    top_k: number;
+	    max_output_tokens: number;
+	    safety_hate_speech: string;
+	    safety_harassment: string;
+	    safety_dangerous_content: string;
+	    safety_sexually_explicit: string;
 	    // Go type: time
-	    CreatedAt: any;
+	    created_at: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new Chat(source);
@@ -14,11 +22,19 @@ export namespace database {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.ID = source["ID"];
-	        this.Title = source["Title"];
-	        this.SystemPrompt = source["SystemPrompt"];
-	        this.ModelName = source["ModelName"];
-	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
+	        this.id = source["id"];
+	        this.title = source["title"];
+	        this.system_prompt = source["system_prompt"];
+	        this.model_name = source["model_name"];
+	        this.temperature = source["temperature"];
+	        this.top_p = source["top_p"];
+	        this.top_k = source["top_k"];
+	        this.max_output_tokens = source["max_output_tokens"];
+	        this.safety_hate_speech = source["safety_hate_speech"];
+	        this.safety_harassment = source["safety_harassment"];
+	        this.safety_dangerous_content = source["safety_dangerous_content"];
+	        this.safety_sexually_explicit = source["safety_sexually_explicit"];
+	        this.created_at = this.convertValues(source["created_at"], null);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -38,6 +54,32 @@ export namespace database {
 		    }
 		    return a;
 		}
+	}
+	export class ChatConfig {
+	    temperature: number;
+	    top_p: number;
+	    top_k: number;
+	    max_output_tokens: number;
+	    safety_hate_speech: string;
+	    safety_harassment: string;
+	    safety_dangerous_content: string;
+	    safety_sexually_explicit: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChatConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.temperature = source["temperature"];
+	        this.top_p = source["top_p"];
+	        this.top_k = source["top_k"];
+	        this.max_output_tokens = source["max_output_tokens"];
+	        this.safety_hate_speech = source["safety_hate_speech"];
+	        this.safety_harassment = source["safety_harassment"];
+	        this.safety_dangerous_content = source["safety_dangerous_content"];
+	        this.safety_sexually_explicit = source["safety_sexually_explicit"];
+	    }
 	}
 	export class Message {
 	    ID: number;

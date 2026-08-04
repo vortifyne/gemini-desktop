@@ -77,54 +77,6 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) SendMessage(ctx context.Context, prompt, systemPrompt, modelName string, onChunk func(string) error) (string, error) {
-	if strings.TrimSpace(prompt) == "" {
-		return "", errors.New("prompt cannot be empty")
-	}
-
-	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
-	defer cancel()
-
-	// Choose generative model and try to get response from it
-	genModel := c.gClient.GenerativeModel(modelName)
-
-	if systemPrompt != "" {
-		genModel.SystemInstruction = genai.NewUserContent(genai.Text(systemPrompt))
-	}
-
-	it := genModel.GenerateContentStream(ctx, genai.Text(prompt))
-	var fullText strings.Builder
-
-	for {
-		resp, err := it.Next()
-		if errors.Is(err, iterator.Done) {
-			break
-		}
-		if err != nil {
-			return "", fmt.Errorf("error in stream: %w", err)
-		}
-		if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
-			continue
-		}
-
-		for _, part := range resp.Candidates[0].Content.Parts {
-			if textPart, ok := part.(genai.Text); ok {
-				chunk := string(textPart)
-				fullText.WriteString(chunk)
-
-				if onChunk != nil {
-					if err := onChunk(chunk); err != nil {
-						return "", err
-					}
-				}
-			}
-		}
-	}
-
-	return fullText.String(), nil
-}
-
 func (c *Client) GetModels() ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()

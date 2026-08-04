@@ -34,3 +34,7 @@ func (a *App) UpdateSystemPrompt(chatID int64, systemPrompt string) error {
 func (a *App) UpdateChatModel(chatID int64, modelName string) error {
 	return a.storage.UpdateChatModel(chatID, modelName)
 }
+
+func (a *App) UpdateChatConfiguration(chatID int64, cfg database.ChatConfig) error {
+	return a.storage.UpdateChatConfiguration(chatID, cfg)
+}

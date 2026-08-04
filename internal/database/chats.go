@@ -34,7 +34,22 @@ func (s *Storage) GetChats() ([]Chat, error) {
 
 	rows, err := s.db.QueryContext(
 		ctx,
-		"SELECT id, title, system_prompt, model_name, created_at FROM chats ORDER BY id DESC")
+		`SELECT
+			id,
+			title,
+			COALESCE(system_prompt, ''),
+			COALESCE(model_name, 'gemini-2.0-flash'),
+			COALESCE(temperature, 0.7),
+			COALESCE(top_p, 0.95),
+			COALESCE(top_k, 40),
+			COALESCE(max_output_tokens, 8192),
+			COALESCE(safety_hate_speech, 'NONE'),
+			COALESCE(safety_harassment,'NONE'),
+			COALESCE(safety_dangerous_content,'NONE'),
+			COALESCE(safety_sexually_explicit,'NONE'),
+			created_at
+		FROM chats
+		ORDER BY created_at DESC, id DESC`)
 	if err != nil {
 		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
 	}
@@ -49,10 +64,24 @@ func (s *Storage) GetChats() ([]Chat, error) {
 	for rows.Next() {
 		var c Chat
 
-		if err := rows.Scan(&c.ID, &c.Title, &c.SystemPrompt, &c.ModelName, &c.CreatedAt); err != nil {
+		if err := rows.Scan(
+			&c.ID,
+			&c.Title,
+			&c.SystemPrompt,
+			&c.ModelName,
+			&c.Temperature,
+			&c.TopP,
+			&c.TopK,
+			&c.MaxOutputTokens,
+			&c.SafetyHateSpeech,
+			&c.SafetyHarassment,
+			&c.SafetyDangerousContent,
+			&c.SafetySexuallyExplicit,
+			&c.CreatedAt); err != nil {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
 		}
 
+		c.ApplyDefaults()
 		chats = append(chats, c)
 	}
 
@@ -101,7 +130,11 @@ func (s *Storage) UpdateChatTitle(chatID int64, newTitle string) error {
 	defer cancel()
 
 	// Update title of chat in database
-	_, err := s.db.ExecContext(ctx, "UPDATE chats SET title = ? WHERE id = ?", newTitle, chatID)
+	_, err := s.db.ExecContext(ctx, `
+		UPDATE chats
+		SET title = ?
+		WHERE id = ?`,
+		newTitle, chatID)
 	if err != nil {
 		return err
 	}
@@ -115,7 +148,11 @@ func (s *Storage) UpdateSystemPrompt(chatID int64, systemPrompt string) error {
 	defer cancel()
 
 	// Update system prompt
-	_, err := s.db.ExecContext(ctx, "UPDATE chats SET system_prompt = ? WHERE id = ?", systemPrompt, chatID)
+	_, err := s.db.ExecContext(ctx, `
+		UPDATE chats
+		SET system_prompt = ?
+		WHERE id = ?`,
+		systemPrompt, chatID)
 	if err != nil {
 		return err
 	}
@@ -127,10 +164,65 @@ func (s *Storage) UpdateChatModel(chatID int64, modelName string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, err := s.db.ExecContext(ctx, "UPDATE chats SET model_name = ? WHERE id = ?", modelName, chatID)
+	_, err := s.db.ExecContext(ctx, `
+		UPDATE chats
+		SET model_name = ?
+		WHERE id = ?`,
+		modelName, chatID)
 	if err != nil {
 		return fmt.Errorf("failed to update chat model: %w", err)
 	}
 
 	return nil
+}
+
+func (s *Storage) UpdateChatConfiguration(chatID int64, cfg ChatConfig) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	_, err := s.db.ExecContext(ctx, `
+		UPDATE chats SET
+			temperature = ?,
+			top_p = ?,
+			top_k = ?,
+			max_output_tokens = ?,
+			safety_hate_speech = ?,
+			safety_harassment = ?,
+			safety_dangerous_content = ?,
+			safety_sexually_explicit = ?
+		WHERE id = ?`,
+		cfg.Temperature, cfg.TopP, cfg.TopK, cfg.MaxOutputTokens, cfg.SafetyHateSpeech,
+		cfg.SafetyHarassment, cfg.SafetyDangerousContent, cfg.SafetySexuallyExplicit, chatID)
+	if err != nil {
+		return fmt.Errorf("failed to update chat configuration: %w", err)
+	}
+
+	return nil
+}
+
+func (c *Chat) ApplyDefaults() {
+	if c.Temperature == 0 {
+		c.Temperature = 0.7
+	}
+	if c.TopP == 0 {
+		c.TopP = 0.95
+	}
+	if c.TopK == 0 {
+		c.TopK = 40
+	}
+	if c.MaxOutputTokens == 0 {
+		c.MaxOutputTokens = 8192
+	}
+	if c.SafetyHateSpeech == "" {
+		c.SafetyHateSpeech = "NONE"
+	}
+	if c.SafetyHarassment == "" {
+		c.SafetyHarassment = "NONE"
+	}
+	if c.SafetyDangerousContent == "" {
+		c.SafetyDangerousContent = "NONE"
+	}
+	if c.SafetySexuallyExplicit == "" {
+		c.SafetySexuallyExplicit = "NONE"
+	}
 }
