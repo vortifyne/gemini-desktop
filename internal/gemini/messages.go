@@ -12,15 +12,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-type AIParameter struct {
-	Prompt       string
-	SystemPrompt string
-	ModelName    string
-	OnChunk      func(string) error
-	Cfg          domain.ChatConfig
-}
-
-func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, error) {
+func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
 	if strings.TrimSpace(param.Prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
@@ -63,7 +55,27 @@ func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, er
 		},
 	}
 
-	it := genModel.GenerateContentStream(ctx, genai.Text(param.Prompt))
+	// Attachments
+	parts := []genai.Part{genai.Text(param.Prompt)}
+
+	for _, att := range attachments {
+		switch {
+		case strings.HasPrefix(att.MimeType, "image/"):
+			parts = append(parts, genai.Blob{
+				MIMEType: att.MimeType,
+				Data:     att.Data,
+			})
+		case att.MimeType == "text/plain":
+			parts = append(parts, genai.Text(string(att.Data)))
+		default:
+			parts = append(parts, genai.Blob{
+				MIMEType: att.MimeType,
+				Data:     att.Data,
+			})
+		}
+	}
+
+	it := genModel.GenerateContentStream(ctx, parts...)
 	var fullText strings.Builder
 
 	for {

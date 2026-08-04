@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/vortifyne/gemini-desktop/internal/domain"
-	"github.com/vortifyne/gemini-desktop/internal/gemini"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -20,8 +19,8 @@ func (a *App) GetMessages(chatID int64) ([]domain.Message, error) {
 	return msgs, nil
 }
 
-func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
-	if strings.TrimSpace(prompt) == "" {
+func (a *App) SendMessageToAI(chatID int64, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
+	if strings.TrimSpace(param.Prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
@@ -61,10 +60,10 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		}
 	}
 
-	msgParams := gemini.AIParameter{
-		Prompt:       prompt,
-		SystemPrompt: systemPrompt,
-		ModelName:    modelName,
+	msgParams := domain.AIParameter{
+		Prompt:       param.Prompt,
+		SystemPrompt: param.SystemPrompt,
+		ModelName:    param.ModelName,
 		Cfg:          chatCfg,
 		OnChunk: func(chunk string) error {
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
@@ -73,7 +72,7 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 	}
 
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(ctx, msgParams)
+	resp, err := a.aiClient.SendMessage(ctx, msgParams, attachments)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("generation canceled by user")
@@ -83,7 +82,7 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 
 	err = a.storage.SaveMessages(
 		chatID,
-		domain.MessageItem{Role: "user", Content: prompt},
+		domain.MessageItem{Role: "user", Content: param.Prompt},
 		domain.MessageItem{Role: "model", Content: resp})
 
 	if err != nil {
@@ -93,8 +92,8 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 	return resp, nil
 }
 
-func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
-	if strings.TrimSpace(prompt) == "" {
+func (a *App) RegenerateResponse(chatID int64, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
+	if strings.TrimSpace(param.Prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
@@ -134,10 +133,10 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		}
 	}
 
-	msgParams := gemini.AIParameter{
-		Prompt:       prompt,
-		SystemPrompt: systemPrompt,
-		ModelName:    modelName,
+	msgParams := domain.AIParameter{
+		Prompt:       param.Prompt,
+		SystemPrompt: param.SystemPrompt,
+		ModelName:    param.ModelName,
 		Cfg:          chatCfg,
 		OnChunk: func(chunk string) error {
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
@@ -146,7 +145,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	}
 
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(ctx, msgParams)
+	resp, err := a.aiClient.SendMessage(ctx, msgParams, attachments)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("regeneration canceled by user")
