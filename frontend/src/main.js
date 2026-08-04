@@ -86,7 +86,17 @@ const locales = {
         systemInstructionsTitle: "System Instructions",
         systemInstructionsDesc: "Rules for AI behavior in this chat",
         systemPromptPlaceholder: "e.g. You are a Go Senior Developer...",
-        modelSelectLabel: "AI Model"
+        modelSelectLabel: "AI Model",
+        tabAdvanced: "Advanced",
+        closeBehaviorLabel: "Action on window close",
+        closeBehaviorAsk: "Ask every time",
+        closeBehaviorMinimize: "Minimize to system tray",
+        closeBehaviorQuit: "Quit application",
+        closeModalTitle: "Minimize or Quit?",
+        closeModalDesc: "Choose what happens when you click the close button.",
+        btnMinimize: "Minimize to Tray",
+        btnQuit: "Quit Application",
+        rememberChoice: "Remember my choice"
     },
     ru: {
         authTitle: "Авторизация",
@@ -169,7 +179,17 @@ const locales = {
         systemInstructionsTitle: "Системные инструкции",
         systemInstructionsDesc: "Правила поведения ИИ в этом чате",
         systemPromptPlaceholder: "Например: Ты опытный Go-разработчик...",
-        modelSelectLabel: "Модель ИИ"
+        modelSelectLabel: "Модель ИИ",
+        tabAdvanced: "Дополнительно",
+        closeBehaviorLabel: "Действие при закрытии окна",
+        closeBehaviorAsk: "Спрашивать каждый раз",
+        closeBehaviorMinimize: "Сворачивать в системный трей",
+        closeBehaviorQuit: "Выходить из программы",
+        closeModalTitle: "Свернуть или выйти?",
+        closeModalDesc: "Выберите, что делать при нажатии на крестик.",
+        btnMinimize: "В трей",
+        btnQuit: "Выйти",
+        rememberChoice: "Запомнить мой выбор"
     },
     zh: {
         authTitle: "身份验证",
@@ -252,7 +272,17 @@ const locales = {
         systemInstructionsTitle: "系统指令",
         systemInstructionsDesc: "此对话中 AI 行为的规则",
         systemPromptPlaceholder: "例如：你是一位专业的 Go 开发者...",
-        modelSelectLabel: "AI 模型"
+        modelSelectLabel: "AI 模型",
+        tabAdvanced: "高级",
+        closeBehaviorLabel: "关闭窗口时的操作",
+        closeBehaviorAsk: "每次询问",
+        closeBehaviorMinimize: "最小化到系统托盘",
+        closeBehaviorQuit: "退出程序",
+        closeModalTitle: "最小化还是退出？",
+        closeModalDesc: "选择点击关闭按钮 时的操作。",
+        btnMinimize: "最小化",
+        btnQuit: "退出",
+        rememberChoice: "记住我的选择"
     },
     ja: {
         authTitle: "認証",
@@ -335,7 +365,17 @@ const locales = {
         systemInstructionsTitle: "システム指示",
         systemInstructionsDesc: "このチャットでの AI の動作ルール",
         systemPromptPlaceholder: "例: あなたは優秀な Go 開発者です...",
-        modelSelectLabel: "AI モデル"
+        modelSelectLabel: "AI モデル",
+        tabAdvanced: "詳細設定",
+        closeBehaviorLabel: "ウィンドウを閉じる時の動作",
+        closeBehaviorAsk: "毎回確認",
+        closeBehaviorMinimize: "トレイに最小化",
+        closeBehaviorQuit: "アプリを終了",
+        closeModalTitle: "最小化しますか、終了しますか？",
+        closeModalDesc: "閉じるボタン を押した時の動作を選択してください。",
+        btnMinimize: "トレイへ",
+        btnQuit: "終了",
+        rememberChoice: "選択を記憶する"
     },
     ko: {
         authTitle: "인증",
@@ -418,7 +458,17 @@ const locales = {
         systemInstructionsTitle: "시스템 지침",
         systemInstructionsDesc: "이 채팅의 AI 동작 지정 규칙",
         systemPromptPlaceholder: "예: 당신은 유용한 Go 개발자입니다...",
-        modelSelectLabel: "AI 모델"
+        modelSelectLabel: "AI 모델",
+        tabAdvanced: "고급",
+        closeBehaviorLabel: "창을 닫을 때의 동작",
+        closeBehaviorAsk: "매번 묻기",
+        closeBehaviorMinimize: "트레이로 최소화",
+        closeBehaviorQuit: "앱 종료",
+        closeModalTitle: "최소화할까요, 종료할까요?",
+        closeModalDesc: "닫기 버튼(X)을 누를 때의 동작을 선택하세요.",
+        btnMinimize: "트레이로",
+        btnQuit: "종료",
+        rememberChoice: "내 선택 기억하기"
     },
     es: {
         authTitle: "Autenticación",
@@ -501,7 +551,17 @@ const locales = {
         systemInstructionsTitle: "Instrucciones del sistema",
         systemInstructionsDesc: "Reglas para la IA en este chat",
         systemPromptPlaceholder: "Ej.: Eres un desarrollador Go...",
-        modelSelectLabel: "Modelo de IA"
+        modelSelectLabel: "Modelo de IA",
+        tabAdvanced: "Avanzado",
+        closeBehaviorLabel: "Acción al cerrar ventana",
+        closeBehaviorAsk: "Preguntar siempre",
+        closeBehaviorMinimize: "Minimizar a la bandeja",
+        closeBehaviorQuit: "Salir de la aplicación",
+        closeModalTitle: "¿Minimizar o Salir?",
+        closeModalDesc: "Elige qué hacer al pulsar el botón cerrar.",
+        btnMinimize: "Minimizar",
+        btnQuit: "Salir",
+        rememberChoice: "Recordar mi elección"
     },
     de: {
         authTitle: "Authentifizierung",
@@ -584,7 +644,17 @@ const locales = {
         systemInstructionsTitle: "Systemanweisungen",
         systemInstructionsDesc: "Regeln für das Verhalten der KI in diesem Chat",
         systemPromptPlaceholder: "Z.B.: Du bist ein Go-Entwickler...",
-        modelSelectLabel: "KI-Modell"
+        modelSelectLabel: "KI-Modell",
+        tabAdvanced: "Erweitert",
+        closeBehaviorLabel: "Aktion beim Schließen",
+        closeBehaviorAsk: "Jedes Mal fragen",
+        closeBehaviorMinimize: "In den Tray minimieren",
+        closeBehaviorQuit: "Anwendung beenden",
+        closeModalTitle: "Minimieren oder Beenden?",
+        closeModalDesc: "Wähle, was beim Klicken auf Schließen passieren soll.",
+        btnMinimize: "Minimieren",
+        btnQuit: "Beenden",
+        rememberChoice: "Auswahl merken"
     },
     fr: {
         authTitle: "Authentification",
@@ -667,7 +737,17 @@ const locales = {
         systemInstructionsTitle: "Instructions système",
         systemInstructionsDesc: "Règles pour le comportement de l'IA dans ce chat",
         systemPromptPlaceholder: "Ex. : Vous êtes un développeur Go...",
-        modelSelectLabel: "Modèle IA"
+        modelSelectLabel: "Modèle IA",
+        tabAdvanced: "Avancé",
+        closeBehaviorLabel: "Action à la fermeture",
+        closeBehaviorAsk: "Toujours demander",
+        closeBehaviorMinimize: "Réduire dans la zone de notification",
+        closeBehaviorQuit: "Quitter l'application",
+        closeModalTitle: "Réduire ou Quitter ?",
+        closeModalDesc: "Choisissez l'action lors du clic sur fermer.",
+        btnMinimize: "Réduire",
+        btnQuit: "Quitter",
+        rememberChoice: "Mémoriser mon choix"
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -750,7 +830,17 @@ const locales = {
         systemInstructionsTitle: "Instruções do sistema",
         systemInstructionsDesc: "Regras para a IA neste chat",
         systemPromptPlaceholder: "Ex.: Você é um desenvolvedor Go...",
-        modelSelectLabel: "Modelo de IA"
+        modelSelectLabel: "Modelo de IA",
+        tabAdvanced: "Avançado",
+        closeBehaviorLabel: "Ação ao fechar janela",
+        closeBehaviorAsk: "Perguntar sempre",
+        closeBehaviorMinimize: "Minimizar para a bandeja",
+        closeBehaviorQuit: "Sair do aplicativo",
+        closeModalTitle: "Minimizar ou Sair?",
+        closeModalDesc: "Escolha o que fazer ao clicar no botão fechar.",
+        btnMinimize: "Minimizar",
+        btnQuit: "Sair",
+        rememberChoice: "Lembrar minha escolha"
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -833,7 +923,17 @@ const locales = {
         systemInstructionsTitle: "सिस्टम निर्देश",
         systemInstructionsDesc: "इस चैट में AI के व्यवहार के नियम",
         systemPromptPlaceholder: "उदा.: आप एक Go डेवलपर हैं...",
-        modelSelectLabel: "AI मॉडल"
+        modelSelectLabel: "AI मॉडल",
+        tabAdvanced: "उन्नत",
+        closeBehaviorLabel: "विंडो बंद करने पर कार्रवाई",
+        closeBehaviorAsk: "हर बार पूछें",
+        closeBehaviorMinimize: "सिस्टम ट्रे में छोटा करें",
+        closeBehaviorQuit: "ऐप से बाहर निकलें",
+        closeModalTitle: "छोटा करें या बाहर निकलें?",
+        closeModalDesc: "बंद बटन पर क्लिक करने पर क्या हो, चुनें।",
+        btnMinimize: "тра में",
+        btnQuit: "बाहर",
+        rememberChoice: "मेरी पसंद याद रखें"
     },
     it: {
         authTitle: "Autenticazione",
@@ -916,7 +1016,17 @@ const locales = {
         systemInstructionsTitle: "Istruzioni di sistema",
         systemInstructionsDesc: "Regole per l'IA in questa chat",
         systemPromptPlaceholder: "Es.: Sei uno sviluppatore Go...",
-        modelSelectLabel: "Modello IA"
+        modelSelectLabel: "Modello IA",
+        tabAdvanced: "Avanzate",
+        closeBehaviorLabel: "Azione alla chiusura",
+        closeBehaviorAsk: "Chiedi ogni volta",
+        closeBehaviorMinimize: "Riduci a icona nel tray",
+        closeBehaviorQuit: "Esci dall'applicazione",
+        closeModalTitle: "Riduci o Esci?",
+        closeModalDesc: "Scegli cosa fare quando fai clic su chiudi.",
+        btnMinimize: "Nel tray",
+        btnQuit: "Esci",
+        rememberChoice: "Ricorda la mia scelta"
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -963,7 +1073,7 @@ const locales = {
         yesterdayGroup: "Wczoraj",
         past7DaysGroup: "Ostatnie 7 dni",
         earlierGroup: "Wcześniej",
-        emptyStateTitle: "W czym mogę pomóc?",
+        emptyStateTitle: "W czym могу pomóc?",
         emptyStateDesc: "Utwórz nowy czat po lewej stronie lub wybierz istniejący, aby rozpocząć rozmowę.",
         netLost: "Utracono połączenie z Internetem!",
         invalidKey: "Nieprawidłowy klucz API! Sprawdź i spróbuj ponownie.",
@@ -999,7 +1109,17 @@ const locales = {
         systemInstructionsTitle: "Instrukcje systemowe",
         systemInstructionsDesc: "Zasady zachowania AI w tym czacie",
         systemPromptPlaceholder: "Np.: Jesteś deweloperem Go...",
-        modelSelectLabel: "Model AI"
+        modelSelectLabel: "Model AI",
+        tabAdvanced: "Zaawansowane",
+        closeBehaviorLabel: "Akcja przy zamykaniu",
+        closeBehaviorAsk: "Pytaj za каждым razem",
+        closeBehaviorMinimize: "Minimalizuj do zasobnika",
+        closeBehaviorQuit: "Zamknij aplikację",
+        closeModalTitle: "Minimalizować czy Zamknąć?",
+        closeModalDesc: "Wybierz, co ma się stać po kliknięciu.",
+        btnMinimize: "Do zasobnika",
+        btnQuit: "Zamknij",
+        rememberChoice: "Zapamiętaj mój wybór"
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1082,7 +1202,17 @@ const locales = {
         systemInstructionsTitle: "Sistem Talimatları",
         systemInstructionsDesc: "Bu sohbetteki yapay zeka davranış kuralları",
         systemPromptPlaceholder: "Örn.: Sen bir Go geliştiricisisin...",
-        modelSelectLabel: "Yapay Zeka Modeli"
+        modelSelectLabel: "Yapay Zeka Modeli",
+        tabAdvanced: "Gelişmiş",
+        closeBehaviorLabel: "Pencere kapatma eylemi",
+        closeBehaviorAsk: "Her zaman sor",
+        closeBehaviorMinimize: "Sistem tepsisine küçült",
+        closeBehaviorQuit: "Uygulamadan çık",
+        closeModalTitle: "Küçült mü, Çık mı?",
+        closeModalDesc: "Kapat düğmesine tıklandığında ne yapılacağını seçin.",
+        btnMinimize: "Küçült",
+        btnQuit: "Çık",
+        rememberChoice: "Seçimimi hatırla"
     }
 };
 
@@ -1243,6 +1373,22 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for RegenerateResponse');
         await new Promise((res) => setTimeout(res, 1500));
         return `Это тестовый регенерированный ответ от **ИИ** (без Go-бэкенда).`;
+    },
+    setCloseBehavior: async (val) => {
+        if (window.go?.bindings?.App?.SetCloseBehavior) {
+            return await window.go.bindings.App.SetCloseBehavior(val);
+        }
+        return true;
+    },
+    quitApp: async () => {
+        if (window.go?.bindings?.App?.QuitApp) {
+            return await window.go.bindings.App.QuitApp();
+        }
+    },
+    showWindow: async () => {
+        if (window.go?.bindings?.App?.ShowWindow) {
+            return await window.go.bindings.App.ShowWindow();
+        }
     }
 };
 
@@ -1301,8 +1447,17 @@ const DOM = {
     btnCloseSettingsModal: document.getElementById('btn-close-settings-modal'),
     tabBtnAppearance: document.getElementById('tab-btn-appearance'),
     tabBtnShortcuts: document.getElementById('tab-btn-shortcuts'),
+    tabBtnAdvanced: document.getElementById('tab-btn-advanced'),
     tabContentAppearance: document.getElementById('tab-content-appearance'),
     tabContentShortcuts: document.getElementById('tab-content-shortcuts'),
+    tabContentAdvanced: document.getElementById('tab-content-advanced'),
+    closeBehaviorSelect: document.getElementById('close-behavior-select'),
+
+    closeConfirmModal: document.getElementById('close-confirm-modal'),
+    cbRememberCloseChoice: document.getElementById('cb-remember-close-choice'),
+    btnCloseModalMinimize: document.getElementById('btn-close-modal-minimize'),
+    btnCloseModalQuit: document.getElementById('btn-close-modal-quit'),
+
     codeThemeSelect: document.getElementById('code-theme-select'),
     languageSelect: document.getElementById('language-select'),
 
@@ -1613,6 +1768,7 @@ window.addEventListener('keydown', (e) => {
         DOM.settingsModal.classList.add('hidden');
         DOM.deleteChatModal.classList.add('hidden');
         DOM.tagModal.classList.add('hidden');
+        if (DOM.closeConfirmModal) DOM.closeConfirmModal.classList.add('hidden');
         if (document.activeElement) {
             document.activeElement.blur();
         }
@@ -1673,19 +1829,32 @@ DOM.settingsModal.addEventListener('click', (e) => {
     }
 });
 
-if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts) {
+if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts && DOM.tabBtnAdvanced) {
     DOM.tabBtnAppearance.addEventListener('click', () => {
         DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
         DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentAppearance.classList.remove('hidden');
         DOM.tabContentShortcuts.classList.add('hidden');
+        DOM.tabContentAdvanced.classList.add('hidden');
     });
 
     DOM.tabBtnShortcuts.addEventListener('click', () => {
         DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
         DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
         DOM.tabContentShortcuts.classList.remove('hidden');
         DOM.tabContentAppearance.classList.add('hidden');
+        DOM.tabContentAdvanced.classList.add('hidden');
+    });
+
+    DOM.tabBtnAdvanced.addEventListener('click', () => {
+        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabContentAdvanced.classList.remove('hidden');
+        DOM.tabContentAppearance.classList.add('hidden');
+        DOM.tabContentShortcuts.classList.add('hidden');
     });
 }
 
@@ -1755,6 +1924,34 @@ if (DOM.modelSelect) {
         }
         await AppAPI.updateChatModel(state.activeChatId, val);
         triggerSavedStatus();
+    });
+}
+
+if (DOM.closeBehaviorSelect) {
+    DOM.closeBehaviorSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        AppAPI.setCloseBehavior(val);
+    });
+}
+
+if (DOM.btnCloseModalMinimize) {
+    DOM.btnCloseModalMinimize.addEventListener('click', async () => {
+        if (DOM.cbRememberCloseChoice?.checked) {
+            await AppAPI.setCloseBehavior("minimize");
+            if (DOM.closeBehaviorSelect) DOM.closeBehaviorSelect.value = "minimize";
+        }
+        if (DOM.closeConfirmModal) DOM.closeConfirmModal.classList.add("hidden");
+    });
+}
+
+if (DOM.btnCloseModalQuit) {
+    DOM.btnCloseModalQuit.addEventListener('click', async () => {
+        if (DOM.cbRememberCloseChoice?.checked) {
+            await AppAPI.setCloseBehavior("quit");
+            if (DOM.closeBehaviorSelect) DOM.closeBehaviorSelect.value = "quit";
+        }
+        if (DOM.closeConfirmModal) DOM.closeConfirmModal.classList.add("hidden");
+        await AppAPI.quitApp();
     });
 }
 
@@ -2267,6 +2464,12 @@ function setupUpdateListener() {
                 };
             }
         });
+
+        window.runtime.EventsOn("prompt-close-behavior", () => {
+            if (DOM.closeConfirmModal) {
+                DOM.closeConfirmModal.classList.remove("hidden");
+            }
+        });
     }
 }
 
@@ -2290,6 +2493,8 @@ async function loadAvailableModels() {
 
 async function initChatApp() {
     try {
+        const savedCloseBehavior = localStorage.getItem('close_behavior') || 'default';
+        AppAPI.setCloseBehavior(savedCloseBehavior);
         applyLanguage(state.language);
         applyAccentColor(state.accentName);
         applyCodeTheme(state.codeTheme);

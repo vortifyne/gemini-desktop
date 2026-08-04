@@ -14,11 +14,17 @@ export function GetMessages(arg1:number):Promise<Array<database.Message>>;
 
 export function GetModels():Promise<Array<string>>;
 
-export function RegenerateResponse(arg1:number,arg2:string,arg3:string):Promise<string>;
+export function QuitApp():Promise<void>;
 
-export function SendMessageToAI(arg1:number,arg2:string,arg3:string):Promise<string>;
+export function RegenerateResponse(arg1:number,arg2:string,arg3:string,arg4:string):Promise<string>;
+
+export function SendMessageToAI(arg1:number,arg2:string,arg3:string,arg4:string):Promise<string>;
 
 export function SetApiKey(arg1:string):Promise<boolean>;
+
+export function SetCloseBehavior(arg1:string):Promise<void>;
+
+export function ShowWindow():Promise<void>;
 
 export function UpdateChatModel(arg1:number,arg2:string):Promise<void>;
 

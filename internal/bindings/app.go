@@ -14,9 +14,10 @@ import (
 
 // App struct
 type App struct {
-	ctx      context.Context
-	storage  *database.Storage
-	aiClient *gemini.Client
+	ctx           context.Context
+	closeBehavior string
+	storage       *database.Storage
+	aiClient      *gemini.Client
 }
 
 type ReleaseInfo struct {
@@ -79,4 +80,34 @@ func (a *App) CheckForUpdates() {
 	if release.TagName != currentVersion {
 		runtime.EventsEmit(a.ctx, "update-available", release)
 	}
+}
+
+func (a *App) OnBeforeClose(ctx context.Context) bool {
+	switch a.closeBehavior {
+	case "minimize":
+		runtime.WindowHide(ctx)
+		return true
+	case "quit":
+		return false
+	default:
+		runtime.EventsEmit(ctx, "prompt-close-behavior")
+		return true
+	}
+}
+
+func (a *App) ShowWindow() {
+	if a.ctx != nil {
+		runtime.WindowShow(a.ctx)
+	}
+}
+
+func (a *App) QuitApp() {
+	a.closeBehavior = "quit"
+	if a.ctx != nil {
+		runtime.Quit(a.ctx)
+	}
+}
+
+func (a *App) SetCloseBehavior(behavior string) {
+	a.closeBehavior = behavior
 }

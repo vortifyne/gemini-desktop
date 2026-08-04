@@ -18,13 +18,13 @@ func (a *App) GetMessages(chatID int64) ([]database.Message, error) {
 	return msgs, nil
 }
 
-func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt string) (string, error) {
+func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, modelName, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
@@ -44,13 +44,13 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt string) (string
 	return resp, nil
 }
 
-func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt string) (string, error) {
+func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, func(chunk string) error {
+	resp, err := a.aiClient.SendMessage(prompt, systemPrompt, modelName, func(chunk string) error {
 		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 		return nil
 	})
