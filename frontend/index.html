@@ -267,7 +267,7 @@
                 </div>
             </div>
 
-            <aside id="right-sidebar" class="w-64 bg-zinc-900 border-l border-zinc-800/80 flex flex-col shrink-0">
+            <<aside id="right-sidebar" class="w-64 bg-zinc-900 border-l border-zinc-800/80 flex flex-col shrink-0">
                 <div class="p-4 border-b border-zinc-800/80 flex items-start justify-between gap-2 select-none shrink-0">
                     <div class="space-y-1">
                         <div class="flex items-center gap-2 text-zinc-200 font-semibold text-xs">
@@ -305,35 +305,79 @@
                     <div class="pt-3 border-t border-zinc-800/80 space-y-3">
                         <div class="text-xs font-semibold text-zinc-200 select-none" data-i18n="genParamsTitle">Generation Parameters</div>
 
+                        <!-- Temperature -->
                         <div class="space-y-1">
-                            <div class="flex items-center justify-between text-[11px]">
-                                <label for="temp-slider" class="font-medium text-zinc-400 select-none" data-i18n="temperatureLabel">Temperature</label>
+                            <div class="flex items-center justify-between text-[11px] relative">
+                                <div class="group flex items-center gap-1.5 relative">
+                                    <label for="temp-slider" class="font-medium text-zinc-400 select-none cursor-pointer" data-i18n="temperatureLabel">Temperature</label>
+                                    <svg class="w-3.5 h-3.5 text-zinc-500 hover:text-accent cursor-help transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div class="bg-zinc-900 border border-zinc-700/80 text-zinc-200 text-[11px] font-normal leading-relaxed p-2.5 rounded-xl shadow-2xl w-52 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 select-none" data-i18n="tooltipTemp">
+                                        Controls randomness. 0.0 is rigid & precise. 1.0-2.0 is creative, but may hallucinate.
+                                    </div>
+                                </div>
                                 <span id="temp-val" class="font-mono text-zinc-300">0.7</span>
                             </div>
                             <input type="range" id="temp-slider" min="0" max="2" step="0.1" value="0.7" class="w-full accent-indigo-500 h-1 bg-zinc-950 rounded-lg cursor-pointer">
                         </div>
 
+                        <!-- Top P -->
                         <div class="space-y-1">
-                            <div class="flex items-center justify-between text-[11px]">
-                                <label for="topp-slider" class="font-medium text-zinc-400 select-none" data-i18n="topPLabel">Top P</label>
+                            <div class="flex items-center justify-between text-[11px] relative">
+                                <div class="group flex items-center gap-1.5 relative">
+                                    <label for="topp-slider" class="font-medium text-zinc-400 select-none cursor-pointer" data-i18n="topPLabel">Top P</label>
+                                    <svg class="w-3.5 h-3.5 text-zinc-500 hover:text-accent cursor-help transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div class="bg-zinc-900 border border-zinc-700/80 text-zinc-200 text-[11px] font-normal leading-relaxed p-2.5 rounded-xl shadow-2xl w-52 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 select-none" data-i18n="tooltipTopP">
+                                        Nucleus sampling. Lower values make responses focused, higher values allow diversity.
+                                    </div>
+                                </div>
                                 <span id="topp-val" class="font-mono text-zinc-300">0.95</span>
                             </div>
                             <input type="range" id="topp-slider" min="0" max="1" step="0.05" value="0.95" class="w-full accent-indigo-500 h-1 bg-zinc-950 rounded-lg cursor-pointer">
                         </div>
 
+                        <!-- Top K -->
                         <div class="space-y-1">
-                            <label for="topk-input" class="block text-[11px] font-medium text-zinc-400 select-none" data-i18n="topKLabel">Top K</label>
+                            <div class="group flex items-center gap-1.5 relative text-[11px]">
+                                <label for="topk-input" class="block font-medium text-zinc-400 select-none cursor-pointer" data-i18n="topKLabel">Top K</label>
+                                <svg class="w-3.5 h-3.5 text-zinc-500 hover:text-accent cursor-help transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div class="bg-zinc-900 border border-zinc-700/80 text-zinc-200 text-[11px] font-normal leading-relaxed p-2.5 rounded-xl shadow-2xl w-52 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 select-none" data-i18n="tooltipTopK">
+                                    Limits token selection to K most likely words. Lower = predictable, higher = creative.
+                                </div>
+                            </div>
                             <input type="number" id="topk-input" min="1" max="100" value="40" class="w-full bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors">
                         </div>
 
+                        <!-- Max Tokens -->
                         <div class="space-y-1">
-                            <label for="max-tokens-input" class="block text-[11px] font-medium text-zinc-400 select-none" data-i18n="maxTokensLabel">Max Tokens</label>
+                            <div class="group flex items-center gap-1.5 relative text-[11px]">
+                                <label for="max-tokens-input" class="block font-medium text-zinc-400 select-none cursor-pointer" data-i18n="maxTokensLabel">Max Tokens</label>
+                                <svg class="w-3.5 h-3.5 text-zinc-500 hover:text-accent cursor-help transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div class="bg-zinc-900 border border-zinc-700/80 text-zinc-200 text-[11px] font-normal leading-relaxed p-2.5 rounded-xl shadow-2xl w-52 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 select-none" data-i18n="tooltipMaxTokens">
+                                    Hard token limit for maximum response length.
+                                </div>
+                            </div>
                             <input type="number" id="max-tokens-input" min="64" max="32768" step="128" value="8192" class="w-full bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500 transition-colors">
                         </div>
                     </div>
 
                     <div class="pt-3 border-t border-zinc-800/80 space-y-3">
-                        <div class="text-xs font-semibold text-zinc-200 select-none" data-i18n="safetyTitle">Safety Filters</div>
+                        <div class="group flex items-center gap-1.5 relative text-xs font-semibold text-zinc-200 select-none">
+                            <span data-i18n="safetyTitle">Safety Filters</span>
+                            <svg class="w-3.5 h-3.5 text-zinc-500 hover:text-accent cursor-help transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div class="bg-zinc-900 border border-zinc-700/80 text-zinc-200 text-[11px] font-normal leading-relaxed p-2.5 rounded-xl shadow-2xl w-52 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 select-none" data-i18n="tooltipSafety">
+                                Content moderation threshold. NONE disables censorship completely.
+                            </div>
+                        </div>
 
                         <div class="space-y-1">
                             <label for="safety-hate-select" class="block text-[11px] font-medium text-zinc-400 select-none" data-i18n="safetyHate">Hate Speech</label>
