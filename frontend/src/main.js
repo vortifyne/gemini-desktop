@@ -1785,6 +1785,51 @@ function toggleRightSidebar(forceState) {
     }
 }
 
+function setupCollapseUserMsg(wrapper, content) {
+    const msgBox = wrapper.querySelector('.msg-box');
+    const msgActions = wrapper.querySelector('.msg-actions');
+    if (!msgBox || !msgActions) return;
+
+    const oldOverlay = msgBox.querySelector('.msg-gradient-overlay');
+    if (oldOverlay) oldOverlay.remove();
+    const oldExpandBtn = msgActions.querySelector('.btn-expand-msg');
+    if (oldExpandBtn) oldExpandBtn.remove();
+    msgBox.classList.remove('max-h-[140px]', 'overflow-hidden', 'max-h-none', 'relative');
+
+    if (content.length > 300 || msgBox.scrollHeight > 140) {
+        msgBox.classList.add('max-h-[140px]', 'overflow-hidden', 'relative');
+
+        const overlay = document.createElement('div');
+        overlay.className = 'msg-gradient-overlay absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-zinc-800 to-transparent pointer-events-none rounded-b-[28px]';
+        msgBox.appendChild(overlay);
+
+        const expandBtn = document.createElement('button');
+        expandBtn.className = 'btn-expand-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center';
+        expandBtn.title = 'Expand / Collapse';
+        expandBtn.innerHTML = `<svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+
+        let isExpanded = false;
+
+        expandBtn.onclick = () => {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                msgBox.classList.remove('max-h-[140px]', 'overflow-hidden');
+                msgBox.classList.add('max-h-none');
+                overlay.classList.add('hidden');
+                expandBtn.querySelector('svg').classList.add('rotate-180');
+            } else {
+                msgBox.classList.remove('max-h-none');
+                msgBox.classList.add('max-h-[140px]', 'overflow-hidden');
+                overlay.classList.remove('hidden');
+                expandBtn.querySelector('svg').classList.remove('rotate-180');
+            }
+            debouncedRenderScrollbarMarkers();
+        };
+
+        msgActions.insertBefore(expandBtn, msgActions.firstChild);
+    }
+}
+
 window.addEventListener('keydown', (e) => {
     const isCmdOrCtrl = e.ctrlKey || e.metaKey;
 
@@ -3033,6 +3078,8 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
                 textBody.innerHTML = marked.parse(updatedPrompt) + renderFooter();
                 processCodeBlocks(textBody);
 
+                setupCollapseUserMsg(wrapper, updatedPrompt);
+
                 state.lastUserPrompt = updatedPrompt;
 
                 if (state.isSending) {
@@ -3116,6 +3163,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     }
 
     DOM.messagesContainer.appendChild(wrapper);
+
+    if (isUser) {
+        setupCollapseUserMsg(wrapper, content || '');
+    }
+
     scrollToBottom(true);
     return wrapper;
 }
