@@ -37,19 +37,19 @@ func (s *Storage) GetChats() ([]Chat, error) {
 		`SELECT
 			id,
 			title,
-			system_prompt,
-			model_name,
-			temperature,
-			top_p,
-			top_k,
-			max_output_tokens,
-			safety_hate_speech,
-			safety_harassment,
-			safety_dangerous_content,
-			safety_sexually_explicit,
+			COALESCE(system_prompt, ''),
+			COALESCE(model_name, 'gemini-2.0-flash'),
+			COALESCE(temperature, 0.7),
+			COALESCE(top_p, 0.95),
+			COALESCE(top_k, 40),
+			COALESCE(max_output_tokens, 8192),
+			COALESCE(safety_hate_speech, 'NONE'),
+			COALESCE(safety_harassment,'NONE'),
+			COALESCE(safety_dangerous_content,'NONE'),
+			COALESCE(safety_sexually_explicit,'NONE'),
 			created_at
 		FROM chats
-		ORDER BY id DESC`)
+		ORDER BY created_at DESC, id DESC`)
 	if err != nil {
 		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
 	}

@@ -47,9 +47,16 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	defer cancel()
 
 	// Extract all messages from chatID
-	rows, err := s.db.QueryContext(
-		ctx,
-		"SELECT id, chat_id, role, content, created_at FROM messages where chat_id = ? ORDER BY id ASC", chatID)
+	rows, err := s.db.QueryContext(ctx, `
+		SELECT
+			id,
+			chat_id,
+			COALESCE(role, 'user'),
+			COALESCE(content, ''),
+			created_at
+		FROM messages
+		WHERE chat_id = ?
+		ORDER BY id ASC`, chatID)
 	if err != nil {
 		return nil, fmt.Errorf("GetMessages.QueryContext(): %w", err)
 	}
