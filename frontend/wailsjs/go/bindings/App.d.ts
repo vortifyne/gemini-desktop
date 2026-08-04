@@ -28,6 +28,8 @@ export function SetCloseBehavior(arg1:string):Promise<void>;
 
 export function ShowWindow():Promise<void>;
 
+export function UpdateChatConfiguration(arg1:number,arg2:database.ChatConfig):Promise<void>;
+
 export function UpdateChatModel(arg1:number,arg2:string):Promise<void>;
 
 export function UpdateChatTitle(arg1:number,arg2:string):Promise<void>;

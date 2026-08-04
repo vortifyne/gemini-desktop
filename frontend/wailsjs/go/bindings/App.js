@@ -54,6 +54,10 @@ export function ShowWindow() {
   return window['go']['bindings']['App']['ShowWindow']();
 }
 
+export function UpdateChatConfiguration(arg1, arg2) {
+  return window['go']['bindings']['App']['UpdateChatConfiguration'](arg1, arg2);
+}
+
 export function UpdateChatModel(arg1, arg2) {
   return window['go']['bindings']['App']['UpdateChatModel'](arg1, arg2);
 }

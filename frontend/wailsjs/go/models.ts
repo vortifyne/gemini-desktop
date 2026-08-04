@@ -5,6 +5,14 @@ export namespace database {
 	    Title: string;
 	    SystemPrompt: string;
 	    ModelName: string;
+	    Temperature: number;
+	    TopP: number;
+	    TopK: number;
+	    MaxOutputTokens: number;
+	    SafetyHateSpeech: string;
+	    SafetyHarassment: string;
+	    SafetyDangerousContent: string;
+	    SafetySexuallyExplicit: string;
 	    // Go type: time
 	    CreatedAt: any;
 	
@@ -18,6 +26,14 @@ export namespace database {
 	        this.Title = source["Title"];
 	        this.SystemPrompt = source["SystemPrompt"];
 	        this.ModelName = source["ModelName"];
+	        this.Temperature = source["Temperature"];
+	        this.TopP = source["TopP"];
+	        this.TopK = source["TopK"];
+	        this.MaxOutputTokens = source["MaxOutputTokens"];
+	        this.SafetyHateSpeech = source["SafetyHateSpeech"];
+	        this.SafetyHarassment = source["SafetyHarassment"];
+	        this.SafetyDangerousContent = source["SafetyDangerousContent"];
+	        this.SafetySexuallyExplicit = source["SafetySexuallyExplicit"];
 	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
 	    }
 	
@@ -38,6 +54,32 @@ export namespace database {
 		    }
 		    return a;
 		}
+	}
+	export class ChatConfig {
+	    Temperature: number;
+	    TopP: number;
+	    TopK: number;
+	    MaxOutputTokens: number;
+	    SafetyHateSpeech: string;
+	    SafetyHarassment: string;
+	    SafetyDangerousContent: string;
+	    SafetySexuallyExplicit: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChatConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Temperature = source["Temperature"];
+	        this.TopP = source["TopP"];
+	        this.TopK = source["TopK"];
+	        this.MaxOutputTokens = source["MaxOutputTokens"];
+	        this.SafetyHateSpeech = source["SafetyHateSpeech"];
+	        this.SafetyHarassment = source["SafetyHarassment"];
+	        this.SafetyDangerousContent = source["SafetyDangerousContent"];
+	        this.SafetySexuallyExplicit = source["SafetySexuallyExplicit"];
+	    }
 	}
 	export class Message {
 	    ID: number;
