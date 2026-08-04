@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 
@@ -122,4 +123,29 @@ func (c *Client) SendMessage(prompt, systemPrompt string, onChunk func(string) e
 	}
 
 	return fullText.String(), nil
+}
+
+func (c *Client) GetModels() ([]string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	it := c.gClient.ListModels(ctx)
+	var models []string
+
+	for {
+		m, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return nil, fmt.Errorf("can't get a model: %w", err)
+		}
+
+		if slices.Contains(m.SupportedGenerationMethods, "generateContent") {
+			clearName := strings.TrimPrefix(m.Name, "models/")
+			models = append(models, clearName)
+		}
+	}
+
+	return models, nil
 }

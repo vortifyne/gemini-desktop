@@ -8,6 +8,7 @@ type Chat struct {
 	ID           int64
 	Title        string
 	SystemPrompt string
+	ModelName    string
 	CreatedAt    time.Time
 }
 

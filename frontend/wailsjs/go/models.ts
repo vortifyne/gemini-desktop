@@ -4,6 +4,7 @@ export namespace database {
 	    ID: number;
 	    Title: string;
 	    SystemPrompt: string;
+	    ModelName: string;
 	    // Go type: time
 	    CreatedAt: any;
 	
@@ -16,6 +17,7 @@ export namespace database {
 	        this.ID = source["ID"];
 	        this.Title = source["Title"];
 	        this.SystemPrompt = source["SystemPrompt"];
+	        this.ModelName = source["ModelName"];
 	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
 	    }
 	

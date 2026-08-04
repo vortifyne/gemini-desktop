@@ -85,7 +85,8 @@ const locales = {
         updateAvailable: "New update {version} is available! Click to download.",
         systemInstructionsTitle: "System Instructions",
         systemInstructionsDesc: "Rules for AI behavior in this chat",
-        systemPromptPlaceholder: "e.g. You are a Go Senior Developer..."
+        systemPromptPlaceholder: "e.g. You are a Go Senior Developer...",
+        modelSelectLabel: "AI Model"
     },
     ru: {
         authTitle: "Авторизация",
@@ -167,7 +168,8 @@ const locales = {
         updateAvailable: "Доступно новое обновление {version}! Нажмите, чтобы скачать.",
         systemInstructionsTitle: "Системные инструкции",
         systemInstructionsDesc: "Правила поведения ИИ в этом чате",
-        systemPromptPlaceholder: "Например: Ты опытный Go-разработчик..."
+        systemPromptPlaceholder: "Например: Ты опытный Go-разработчик...",
+        modelSelectLabel: "Модель ИИ"
     },
     zh: {
         authTitle: "身份验证",
@@ -249,7 +251,8 @@ const locales = {
         updateAvailable: "新版本 {version} 已发布！点击下载。",
         systemInstructionsTitle: "系统指令",
         systemInstructionsDesc: "此对话中 AI 行为的规则",
-        systemPromptPlaceholder: "例如：你是一位专业的 Go 开发者..."
+        systemPromptPlaceholder: "例如：你是一位专业的 Go 开发者...",
+        modelSelectLabel: "AI 模型"
     },
     ja: {
         authTitle: "認証",
@@ -331,7 +334,8 @@ const locales = {
         updateAvailable: "新バージョン {version} が利用可能です！クリックしてダウンロード。",
         systemInstructionsTitle: "システム指示",
         systemInstructionsDesc: "このチャットでの AI の動作ルール",
-        systemPromptPlaceholder: "例: あなたは優秀な Go 開発者です..."
+        systemPromptPlaceholder: "例: あなたは優秀な Go 開発者です...",
+        modelSelectLabel: "AI モデル"
     },
     ko: {
         authTitle: "인증",
@@ -413,7 +417,8 @@ const locales = {
         updateAvailable: "새 버전 {version}을(를) 이용할 수 있습니다! 다운로드하려면 클릭하세요.",
         systemInstructionsTitle: "시스템 지침",
         systemInstructionsDesc: "이 채팅의 AI 동작 지정 규칙",
-        systemPromptPlaceholder: "예: 당신은 유용한 Go 개발자입니다..."
+        systemPromptPlaceholder: "예: 당신은 유용한 Go 개발자입니다...",
+        modelSelectLabel: "AI 모델"
     },
     es: {
         authTitle: "Autenticación",
@@ -495,7 +500,8 @@ const locales = {
         updateAvailable: "¡Nueva versión {version} disponible! Haz clic para descargar.",
         systemInstructionsTitle: "Instrucciones del sistema",
         systemInstructionsDesc: "Reglas para la IA en este chat",
-        systemPromptPlaceholder: "Ej.: Eres un desarrollador Go..."
+        systemPromptPlaceholder: "Ej.: Eres un desarrollador Go...",
+        modelSelectLabel: "Modelo de IA"
     },
     de: {
         authTitle: "Authentifizierung",
@@ -577,7 +583,8 @@ const locales = {
         updateAvailable: "Neue Version {version} verfügbar! Klicke zum Herunterladen.",
         systemInstructionsTitle: "Systemanweisungen",
         systemInstructionsDesc: "Regeln für das Verhalten der KI in diesem Chat",
-        systemPromptPlaceholder: "Z.B.: Du bist ein Go-Entwickler..."
+        systemPromptPlaceholder: "Z.B.: Du bist ein Go-Entwickler...",
+        modelSelectLabel: "KI-Modell"
     },
     fr: {
         authTitle: "Authentification",
@@ -659,7 +666,8 @@ const locales = {
         updateAvailable: "Nouvelle version {version} disponible ! Cliquez pour télécharger.",
         systemInstructionsTitle: "Instructions système",
         systemInstructionsDesc: "Règles pour le comportement de l'IA dans ce chat",
-        systemPromptPlaceholder: "Ex. : Vous êtes un développeur Go..."
+        systemPromptPlaceholder: "Ex. : Vous êtes un développeur Go...",
+        modelSelectLabel: "Modèle IA"
     },
     "pt-BR": {
         authTitle: "Autenticação",
@@ -741,7 +749,8 @@ const locales = {
         updateAvailable: "Nova versão {version} disponível! Clique para baixar.",
         systemInstructionsTitle: "Instruções do sistema",
         systemInstructionsDesc: "Regras para a IA neste chat",
-        systemPromptPlaceholder: "Ex.: Você é um desenvolvedor Go..."
+        systemPromptPlaceholder: "Ex.: Você é um desenvolvedor Go...",
+        modelSelectLabel: "Modelo de IA"
     },
     hi: {
         authTitle: "प्रमाणिकरण",
@@ -823,7 +832,8 @@ const locales = {
         updateAvailable: "नया संस्करण {version} उपलब्ध है! डाउनलोड करने के लिए क्लिक करें।",
         systemInstructionsTitle: "सिस्टम निर्देश",
         systemInstructionsDesc: "इस चैट में AI के व्यवहार के नियम",
-        systemPromptPlaceholder: "उदा.: आप एक Go डेवलपर हैं..."
+        systemPromptPlaceholder: "उदा.: आप एक Go डेवलपर हैं...",
+        modelSelectLabel: "AI मॉडल"
     },
     it: {
         authTitle: "Autenticazione",
@@ -905,7 +915,8 @@ const locales = {
         updateAvailable: "Nuova versione {version} disponibile! Clicca per scaricare.",
         systemInstructionsTitle: "Istruzioni di sistema",
         systemInstructionsDesc: "Regole per l'IA in questa chat",
-        systemPromptPlaceholder: "Es.: Sei uno sviluppatore Go..."
+        systemPromptPlaceholder: "Es.: Sei uno sviluppatore Go...",
+        modelSelectLabel: "Modello IA"
     },
     pl: {
         authTitle: "Autoryzacja",
@@ -987,7 +998,8 @@ const locales = {
         updateAvailable: "Nowa wersja {version} jest dostępna! Kliknij, aby pobrać.",
         systemInstructionsTitle: "Instrukcje systemowe",
         systemInstructionsDesc: "Zasady zachowania AI w tym czacie",
-        systemPromptPlaceholder: "Np.: Jesteś deweloperem Go..."
+        systemPromptPlaceholder: "Np.: Jesteś deweloperem Go...",
+        modelSelectLabel: "Model AI"
     },
     tr: {
         authTitle: "Kimlik Doğrulama",
@@ -1069,7 +1081,8 @@ const locales = {
         updateAvailable: "Yeni sürüm {version} mevcut! İndirmek için tıklayın.",
         systemInstructionsTitle: "Sistem Talimatları",
         systemInstructionsDesc: "Bu sohbetteki yapay zeka davranış kuralları",
-        systemPromptPlaceholder: "Örn.: Sen bir Go geliştiricisisin..."
+        systemPromptPlaceholder: "Örn.: Sen bir Go geliştiricisisin...",
+        modelSelectLabel: "Yapay Zeka Modeli"
     }
 };
 
@@ -1144,6 +1157,13 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for GetChats');
         return [];
     },
+    getModels: async () => {
+        if (window.go?.bindings?.App?.GetModels) {
+            return await window.go.bindings.App.GetModels();
+        }
+        console.warn('[Wails] Running in mock mode for GetModels');
+        return ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"];
+    },
     createChat: async (title) => {
         if (window.go?.bindings?.App?.CreateChat) {
             return await window.go.bindings.App.CreateChat(title);
@@ -1164,6 +1184,12 @@ const AppAPI = {
         }
         return true;
     },
+    updateChatModel: async (chatId, modelName) => {
+        if (window.go?.bindings?.App?.UpdateChatModel) {
+            return await window.go.bindings.App.UpdateChatModel(chatId, modelName);
+        }
+        return true;
+    },
     deleteChat: async (chatId) => {
         if (window.go?.bindings?.App?.DeleteChat) {
             return await window.go.bindings.App.DeleteChat(chatId);
@@ -1178,14 +1204,14 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for GetMessages');
         return [];
     },
-    sendMessageToAI: async (chatId, text, systemPrompt = '') => {
+    sendMessageToAI: async (chatId, text, systemPrompt = '', modelName = 'gemini-1.5-flash') => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.SendMessageToAI) {
-            return await window.go.bindings.App.SendMessageToAI(chatId, text, systemPrompt);
+            return await window.go.bindings.App.SendMessageToAI(chatId, text, systemPrompt, modelName);
         }
         console.warn('[Wails] Running in mock mode for SendMessageToAI');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1205,14 +1231,14 @@ const AppAPI = {
         console.warn('[Wails] Running in mock mode for DeleteLastResponse');
         return true;
     },
-    regenerateResponse: async (chatId, prompt, systemPrompt = '') => {
+    regenerateResponse: async (chatId, prompt, systemPrompt = '', modelName = 'gemini-1.5-flash') => {
         if (state.isMockMode) {
             await new Promise((res) => setTimeout(res, 1000));
             const randomIndex = Math.floor(Math.random() * mockResponses.length);
             return mockResponses[randomIndex];
         }
         if (window.go?.bindings?.App?.RegenerateResponse) {
-            return await window.go.bindings.App.RegenerateResponse(chatId, prompt, systemPrompt);
+            return await window.go.bindings.App.RegenerateResponse(chatId, prompt, systemPrompt, modelName);
         }
         console.warn('[Wails] Running in mock mode for RegenerateResponse');
         await new Promise((res) => setTimeout(res, 1500));
@@ -1235,6 +1261,7 @@ const DOM = {
     btnToggleRightSidebar: document.getElementById('btn-toggle-right-sidebar'),
     btnShowRightSidebar: document.getElementById('btn-show-right-sidebar'),
     systemPromptInput: document.getElementById('system-prompt-input'),
+    modelSelect: document.getElementById('model-select'),
 
     mockModeToggle: document.getElementById('mock-mode-toggle'),
     searchChatInput: document.getElementById('search-chat-input'),
@@ -1717,6 +1744,20 @@ if (DOM.systemPromptInput) {
     });
 }
 
+if (DOM.modelSelect) {
+    DOM.modelSelect.addEventListener('change', async (e) => {
+        if (!state.activeChatId) return;
+        const val = e.target.value;
+        const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
+        if (currentChat) {
+            currentChat.model_name = val;
+            currentChat.ModelName = val;
+        }
+        await AppAPI.updateChatModel(state.activeChatId, val);
+        triggerSavedStatus();
+    });
+}
+
 DOM.mockModeToggle.addEventListener('change', (e) => {
     state.isMockMode = e.target.checked;
     if (state.isMockMode) {
@@ -1908,6 +1949,7 @@ DOM.btnConfirmDeleteChat.addEventListener('click', async () => {
             DOM.messagesContainer.appendChild(DOM.emptyState);
             if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
             if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
+            if (DOM.modelSelect) DOM.modelSelect.value = 'gemini-1.5-flash';
         }
 
         triggerSavedStatus();
@@ -2174,6 +2216,7 @@ DOM.btnLogout.addEventListener('click', () => {
     DOM.messageInput.value = '';
     if (DOM.scrollbarMarkersTrack) DOM.scrollbarMarkersTrack.innerHTML = '';
     if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
+    if (DOM.modelSelect) DOM.modelSelect.value = 'gemini-1.5-flash';
 });
 
 async function autoLoginWithSavedKey() {
@@ -2227,12 +2270,32 @@ function setupUpdateListener() {
     }
 }
 
+async function loadAvailableModels() {
+    if (!DOM.modelSelect) return;
+    try {
+        const models = await AppAPI.getModels();
+        DOM.modelSelect.innerHTML = '';
+        const modelsList = (models && models.length > 0) ? models : ['gemini-1.5-flash'];
+        modelsList.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m;
+            opt.textContent = m;
+            DOM.modelSelect.appendChild(opt);
+        });
+    } catch (err) {
+        console.error('Error loading models:', err);
+        DOM.modelSelect.innerHTML = '<option value="gemini-1.5-flash">gemini-1.5-flash</option>';
+    }
+}
+
 async function initChatApp() {
     try {
         applyLanguage(state.language);
         applyAccentColor(state.accentName);
         applyCodeTheme(state.codeTheme);
         applyUiScale();
+
+        await loadAvailableModels();
 
         const chats = await AppAPI.getChats();
         state.chats = chats || [];
@@ -2247,6 +2310,7 @@ async function initChatApp() {
             DOM.messagesContainer.innerHTML = '';
             DOM.messagesContainer.appendChild(DOM.emptyState);
             if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
+            if (DOM.modelSelect) DOM.modelSelect.value = 'gemini-1.5-flash';
         }
     } catch (err) {
         showToast(t('chatLoadError'), 'error');
@@ -2258,6 +2322,7 @@ async function initChatApp() {
         DOM.messagesContainer.innerHTML = '';
         DOM.messagesContainer.appendChild(DOM.emptyState);
         if (DOM.systemPromptInput) DOM.systemPromptInput.value = '';
+        if (DOM.modelSelect) DOM.modelSelect.value = 'gemini-1.5-flash';
     }
 }
 
@@ -2268,7 +2333,7 @@ async function createNewChat(title = 'New Chat') {
 
     try {
         const chatId = await AppAPI.createChat(title);
-        const newChat = { id: chatId, title: title, created_at: new Date().toISOString(), system_prompt: '' };
+        const newChat = { id: chatId, title: title, created_at: new Date().toISOString(), system_prompt: '', model_name: 'gemini-1.5-flash' };
         state.chats.unshift(newChat);
         renderChatList();
         await selectChat(chatId);
@@ -2420,6 +2485,10 @@ async function selectChat(chatId) {
 
     if (DOM.systemPromptInput) {
         DOM.systemPromptInput.value = currentChat?.system_prompt || currentChat?.SystemPrompt || '';
+    }
+
+    if (DOM.modelSelect) {
+        DOM.modelSelect.value = currentChat?.model_name || currentChat?.ModelName || 'gemini-1.5-flash';
     }
 
     renderChatList();
@@ -2817,6 +2886,7 @@ DOM.messageForm.addEventListener('submit', (e) => {
 async function triggerAIGeneration(prompt, isRegenerate = false) {
     const targetChatId = state.activeChatId;
     const systemPrompt = DOM.systemPromptInput ? DOM.systemPromptInput.value.trim() : '';
+    const selectedModel = DOM.modelSelect ? DOM.modelSelect.value : 'gemini-1.5-flash';
     const loaderId = appendLoaderUI();
     state.currentLoaderId = loaderId;
     const startTime = Date.now();
@@ -2843,8 +2913,8 @@ async function triggerAIGeneration(prompt, isRegenerate = false) {
 
     try {
         const aiResponse = isRegenerate
-            ? await AppAPI.regenerateResponse(targetChatId, prompt, systemPrompt)
-            : await AppAPI.sendMessageToAI(targetChatId, prompt, systemPrompt);
+            ? await AppAPI.regenerateResponse(targetChatId, prompt, systemPrompt, selectedModel)
+            : await AppAPI.sendMessageToAI(targetChatId, prompt, systemPrompt, selectedModel);
 
         if (state.isAborted) {
             state.isAborted = false;

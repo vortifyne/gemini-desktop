@@ -12,11 +12,15 @@ export function GetChats():Promise<Array<database.Chat>>;
 
 export function GetMessages(arg1:number):Promise<Array<database.Message>>;
 
+export function GetModels():Promise<Array<string>>;
+
 export function RegenerateResponse(arg1:number,arg2:string,arg3:string):Promise<string>;
 
 export function SendMessageToAI(arg1:number,arg2:string,arg3:string):Promise<string>;
 
 export function SetApiKey(arg1:string):Promise<boolean>;
+
+export function UpdateChatModel(arg1:number,arg2:string):Promise<void>;
 
 export function UpdateChatTitle(arg1:number,arg2:string):Promise<void>;
 
