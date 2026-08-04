@@ -6,9 +6,9 @@ import (
 )
 
 type Attachment struct {
-	FileName string
-	MimeType string
-	Data     []byte
+	FileName string `json:"file_name"`
+	MimeType string `json:"mime_type"`
+	Data     []byte `json:"data"`
 }
 
 func IsTextFile(filename string) bool {

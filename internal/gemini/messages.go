@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -17,7 +18,6 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 		return "", errors.New("prompt and attachments cannot both be empty")
 	}
 
-	// Защита от дурака: если имя модели пришло пустым, ставим дефолт
 	modelName := strings.TrimSpace(param.ModelName)
 	if modelName == "" {
 		modelName = "gemini-2.0-flash"
@@ -68,7 +68,11 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 	}
 
 	for _, att := range attachments {
-		mime := strings.ToLower(att.MimeType)
+		mime := strings.ToLower(strings.TrimSpace(att.MimeType))
+
+		if mime == "" && len(att.Data) > 0 {
+			mime = http.DetectContentType(att.Data)
+		}
 
 		switch {
 		case strings.HasPrefix(mime, "image/"):

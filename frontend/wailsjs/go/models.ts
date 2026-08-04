@@ -63,9 +63,9 @@ export namespace domain {
 		}
 	}
 	export class Attachment {
-	    FileName: string;
-	    MimeType: string;
-	    Data: number[];
+	    file_name: string;
+	    mime_type: string;
+	    data: number[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Attachment(source);
@@ -73,9 +73,9 @@ export namespace domain {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.FileName = source["FileName"];
-	        this.MimeType = source["MimeType"];
-	        this.Data = source["Data"];
+	        this.file_name = source["file_name"];
+	        this.mime_type = source["mime_type"];
+	        this.data = source["data"];
 	    }
 	}
 	export class Chat {
