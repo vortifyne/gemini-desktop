@@ -11,8 +11,8 @@ type Chat struct {
 	ModelName              string
 	Temperature            float32
 	TopP                   float32
-	TopK                   int
-	MaxOutputTokens        int
+	TopK                   int32
+	MaxOutputTokens        int32
 	SafetyHateSpeech       string
 	SafetyHarassment       string
 	SafetyDangerousContent string
@@ -36,8 +36,8 @@ type MessageItem struct {
 type ChatConfig struct {
 	Temperature            float32
 	TopP                   float32
-	TopK                   int
-	MaxOutputTokens        int
+	TopK                   int32
+	MaxOutputTokens        int32
 	SafetyHateSpeech       string
 	SafetyHarassment       string
 	SafetyDangerousContent string

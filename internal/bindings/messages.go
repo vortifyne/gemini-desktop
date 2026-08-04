@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/vortifyne/gemini-desktop/internal/database"
+	"github.com/vortifyne/gemini-desktop/internal/gemini"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -38,11 +39,41 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		a.cancelMu.Unlock()
 	}()
 
+	chats, err := a.storage.GetChats()
+	if err != nil {
+		return "", fmt.Errorf("failed to get chat config: %w", err)
+	}
+
+	var chatCfg database.ChatConfig
+	for _, c := range chats {
+		if c.ID == chatID {
+			chatCfg = database.ChatConfig{
+				Temperature:            c.Temperature,
+				TopP:                   c.TopP,
+				TopK:                   c.TopK,
+				MaxOutputTokens:        c.MaxOutputTokens,
+				SafetyHateSpeech:       c.SafetyHateSpeech,
+				SafetyHarassment:       c.SafetyHarassment,
+				SafetyDangerousContent: c.SafetyDangerousContent,
+				SafetySexuallyExplicit: c.SafetySexuallyExplicit,
+			}
+			break
+		}
+	}
+
+	msgParams := gemini.AIParameter{
+		Prompt:       prompt,
+		SystemPrompt: systemPrompt,
+		ModelName:    modelName,
+		Cfg:          chatCfg,
+		OnChunk: func(chunk string) error {
+			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
+			return nil
+		},
+	}
+
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(ctx, prompt, systemPrompt, modelName, func(chunk string) error {
-		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
-		return nil
-	})
+	resp, err := a.aiClient.SendMessage(ctx, msgParams)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("generation canceled by user")
@@ -81,11 +112,41 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		a.cancelMu.Unlock()
 	}()
 
+	chats, err := a.storage.GetChats()
+	if err != nil {
+		return "", fmt.Errorf("failed to get chat config: %w", err)
+	}
+
+	var chatCfg database.ChatConfig
+	for _, c := range chats {
+		if c.ID == chatID {
+			chatCfg = database.ChatConfig{
+				Temperature:            c.Temperature,
+				TopP:                   c.TopP,
+				TopK:                   c.TopK,
+				MaxOutputTokens:        c.MaxOutputTokens,
+				SafetyHateSpeech:       c.SafetyHateSpeech,
+				SafetyHarassment:       c.SafetyHarassment,
+				SafetyDangerousContent: c.SafetyDangerousContent,
+				SafetySexuallyExplicit: c.SafetySexuallyExplicit,
+			}
+			break
+		}
+	}
+
+	msgParams := gemini.AIParameter{
+		Prompt:       prompt,
+		SystemPrompt: systemPrompt,
+		ModelName:    modelName,
+		Cfg:          chatCfg,
+		OnChunk: func(chunk string) error {
+			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
+			return nil
+		},
+	}
+
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(ctx, prompt, systemPrompt, modelName, func(chunk string) error {
-		runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
-		return nil
-	})
+	resp, err := a.aiClient.SendMessage(ctx, msgParams)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("regeneration canceled by user")
