@@ -3,7 +3,7 @@ package bindings
 import (
 	"fmt"
 
-	"github.com/vortifyne/gemini-desktop/internal/database"
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 )
 
 func (a *App) CreateChat(title string) (int64, error) {
@@ -15,7 +15,7 @@ func (a *App) CreateChat(title string) (int64, error) {
 	return res, nil
 }
 
-func (a *App) GetChats() ([]database.Chat, error) {
+func (a *App) GetChats() ([]domain.Chat, error) {
 	return a.storage.GetChats()
 }
 
@@ -35,6 +35,6 @@ func (a *App) UpdateChatModel(chatID int64, modelName string) error {
 	return a.storage.UpdateChatModel(chatID, modelName)
 }
 
-func (a *App) UpdateChatConfiguration(chatID int64, cfg database.ChatConfig) error {
+func (a *App) UpdateChatConfiguration(chatID int64, cfg domain.ChatConfig) error {
 	return a.storage.UpdateChatConfiguration(chatID, cfg)
 }

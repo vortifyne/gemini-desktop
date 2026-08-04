@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 )
 
-func (s *Storage) SaveMessages(chatID int64, msgs ...MessageItem) error {
+func (s *Storage) SaveMessages(chatID int64, msgs ...domain.MessageItem) error {
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -41,7 +43,7 @@ func (s *Storage) SaveMessages(chatID int64, msgs ...MessageItem) error {
 	return nil
 }
 
-func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
+func (s *Storage) GetMessages(chatID int64) ([]domain.Message, error) {
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -67,10 +69,10 @@ func (s *Storage) GetMessages(chatID int64) ([]Message, error) {
 	}()
 
 	// Extract all data from query rows to messages slice
-	var msgs []Message
+	var msgs []domain.Message
 
 	for rows.Next() {
-		var msg Message
+		var msg domain.Message
 
 		if err := rows.Scan(&msg.ID, &msg.ChatID, &msg.Role, &msg.Content, &msg.CreatedAt); err != nil {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)

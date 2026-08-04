@@ -1,4 +1,4 @@
-package database
+package domain
 
 import (
 	"time"
@@ -31,15 +31,29 @@ type ChatConfig struct {
 	SafetySexuallyExplicit string  `json:"safety_sexually_explicit"`
 }
 
-type Message struct {
-	ID        int64
-	ChatID    int64
-	Role      string
-	Content   string
-	CreatedAt time.Time
-}
-
-type MessageItem struct {
-	Role    string
-	Content string
+func (c *Chat) ApplyDefaults() {
+	if c.Temperature == 0 {
+		c.Temperature = 0.7
+	}
+	if c.TopP == 0 {
+		c.TopP = 0.95
+	}
+	if c.TopK == 0 {
+		c.TopK = 40
+	}
+	if c.MaxOutputTokens == 0 {
+		c.MaxOutputTokens = 8192
+	}
+	if c.SafetyHateSpeech == "" {
+		c.SafetyHateSpeech = "NONE"
+	}
+	if c.SafetyHarassment == "" {
+		c.SafetyHarassment = "NONE"
+	}
+	if c.SafetyDangerousContent == "" {
+		c.SafetyDangerousContent = "NONE"
+	}
+	if c.SafetySexuallyExplicit == "" {
+		c.SafetySexuallyExplicit = "NONE"
+	}
 }

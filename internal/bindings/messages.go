@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/vortifyne/gemini-desktop/internal/database"
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 	"github.com/vortifyne/gemini-desktop/internal/gemini"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) GetMessages(chatID int64) ([]database.Message, error) {
+func (a *App) GetMessages(chatID int64) ([]domain.Message, error) {
 	msgs, err := a.storage.GetMessages(chatID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get messages from database: %w", err)
@@ -44,10 +44,10 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		return "", fmt.Errorf("failed to get chat config: %w", err)
 	}
 
-	var chatCfg database.ChatConfig
+	var chatCfg domain.ChatConfig
 	for _, c := range chats {
 		if c.ID == chatID {
-			chatCfg = database.ChatConfig{
+			chatCfg = domain.ChatConfig{
 				Temperature:            c.Temperature,
 				TopP:                   c.TopP,
 				TopK:                   c.TopK,
@@ -83,8 +83,8 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 
 	err = a.storage.SaveMessages(
 		chatID,
-		database.MessageItem{Role: "user", Content: prompt},
-		database.MessageItem{Role: "model", Content: resp})
+		domain.MessageItem{Role: "user", Content: prompt},
+		domain.MessageItem{Role: "model", Content: resp})
 
 	if err != nil {
 		return "", fmt.Errorf("failed to save messages in database: %w", err)
@@ -117,10 +117,10 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		return "", fmt.Errorf("failed to get chat config: %w", err)
 	}
 
-	var chatCfg database.ChatConfig
+	var chatCfg domain.ChatConfig
 	for _, c := range chats {
 		if c.ID == chatID {
-			chatCfg = database.ChatConfig{
+			chatCfg = domain.ChatConfig{
 				Temperature:            c.Temperature,
 				TopP:                   c.TopP,
 				TopK:                   c.TopK,
@@ -163,7 +163,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	if err := a.storage.DeleteLastMessage(chatID, "model"); err != nil {
 		return "", fmt.Errorf("failed to delete last response: %w", err)
 	}
-	if err := a.storage.SaveMessages(chatID, database.MessageItem{Role: "model", Content: resp}); err != nil {
+	if err := a.storage.SaveMessages(chatID, domain.MessageItem{Role: "model", Content: resp}); err != nil {
 		return "", fmt.Errorf("failed to save response in database: %w", err)
 	}
 

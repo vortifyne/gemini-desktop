@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/vortifyne/gemini-desktop/internal/database"
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 	"google.golang.org/api/iterator"
 )
 
@@ -17,7 +17,7 @@ type AIParameter struct {
 	SystemPrompt string
 	ModelName    string
 	OnChunk      func(string) error
-	Cfg          database.ChatConfig
+	Cfg          domain.ChatConfig
 }
 
 func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, error) {
