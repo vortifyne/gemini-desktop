@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/vortifyne/gemini-desktop/internal/database"
@@ -18,6 +19,8 @@ type App struct {
 	closeBehavior string
 	storage       *database.Storage
 	aiClient      *gemini.Client
+	cancelMu      sync.Mutex
+	cancelFunc    context.CancelFunc
 }
 
 type ReleaseInfo struct {

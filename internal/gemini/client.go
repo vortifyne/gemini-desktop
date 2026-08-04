@@ -77,13 +77,13 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	return true, nil
 }
 
-func (c *Client) SendMessage(prompt, systemPrompt, modelName string, onChunk func(string) error) (string, error) {
+func (c *Client) SendMessage(ctx context.Context, prompt, systemPrompt, modelName string, onChunk func(string) error) (string, error) {
 	if strings.TrimSpace(prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
 	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
 	// Choose generative model and try to get response from it
