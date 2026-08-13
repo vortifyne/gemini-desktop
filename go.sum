@@ -156,8 +156,8 @@ github.com/wailsapp/go-webview2 v1.0.23 h1:jmv8qhz1lHibCc79bMM/a/FqOnnzOGEisLav+
 github.com/wailsapp/go-webview2 v1.0.23/go.mod h1:qJmWAmAmaniuKGZPWwne+uor3AHMB5PFhqiK0Bbj8kc=
 github.com/wailsapp/mimetype v1.4.1 h1:pQN9ycO7uo4vsUUuPeHEYoUkLVkaRntMnHJxVwYhwHs=
 github.com/wailsapp/mimetype v1.4.1/go.mod h1:9aV5k31bBOv5z6u+QP8TltzvNGJPmNJD4XlAL3U+j3o=
-github.com/wailsapp/wails/v2 v2.13.0 h1:S7OgXWpj72V91unF8iDWJKbcS9ZpwCT3R0QVru4v2Mg=
-github.com/wailsapp/wails/v2 v2.13.0/go.mod h1:nVr/wSIEZ7xxKPkzK65mjpKpaOPQI2k4pvLwGR/i4kc=
+github.com/wailsapp/wails/v2 v2.14.0 h1:+GlF6BM8Mg7Saa1lxUAzfZ6jsEMg2zQhQvUHtqB7xpc=
+github.com/wailsapp/wails/v2 v2.14.0/go.mod h1:scxrgwfsv6yR6fE6cCF+Flfl+JeU+SR87T9x4kILJ6M=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
 go.opencensus.io v0.24.0/go.mod h1:vNK8G9p7aAivkbmorf4v+7Hgx+Zs0yY+0fOtgBfjQKo=
 go.opentelemetry.io/auto/sdk v1.2.1 h1:jXsnJ4Lmnqd11kwkBV2LgLoFMZKizbCi5fNZ/ipaZ64=

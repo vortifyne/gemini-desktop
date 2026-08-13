@@ -77,7 +77,12 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 		switch {
 		case strings.HasPrefix(mime, "image/"):
 			parts = append(parts, genai.Blob{
-				MIMEType: att.MimeType,
+				MIMEType: mime,
+				Data:     att.Data,
+			})
+		case strings.HasSuffix(mime, "/pdf"):
+			parts = append(parts, genai.Blob{
+				MIMEType: mime,
 				Data:     att.Data,
 			})
 		case strings.HasPrefix(mime, "text/") || mime == "application/json" || mime == "" || domain.IsTextFile(att.FileName):
@@ -86,7 +91,7 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 			parts = append(parts, genai.Text(formattedText))
 		default:
 			parts = append(parts, genai.Blob{
-				MIMEType: att.MimeType,
+				MIMEType: mime,
 				Data:     att.Data,
 			})
 		}
