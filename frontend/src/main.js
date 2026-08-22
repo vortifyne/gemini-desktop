@@ -1802,6 +1802,13 @@ const DOM = {
     toastMessage: document.getElementById('toast-message'),
 };
 
+if (window.markedKatex) {
+    marked.use(window.markedKatex({
+        throwOnError: false,
+        displayMode: false
+    }));
+}
+
 marked.setOptions({
     highlight: function (code, lang) {
         if (lang && hljs.getLanguage(lang)) {
