@@ -2,6 +2,8 @@ package database
 
 import (
 	"testing"
+
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 )
 
 func TestChatCRUD(t *testing.T) {
@@ -16,10 +18,10 @@ func TestChatCRUD(t *testing.T) {
 	}
 
 	// Add messages from role:user and role:model
-	if err := storage.SaveMessages(chatId, MessageItem{Role: "user", Content: "API give me response"}); err != nil {
+	if err := storage.SaveMessages(chatId, domain.MessageItem{Role: "user", Content: "API give me response"}); err != nil {
 		t.Fatalf("SaveMessage occurred error (user role): %v", err)
 	}
-	if err := storage.SaveMessages(chatId, MessageItem{Role: "model", Content: "API gave response to user"}); err != nil {
+	if err := storage.SaveMessages(chatId, domain.MessageItem{Role: "model", Content: "API gave response to user"}); err != nil {
 		t.Fatalf("SaveMessage occurred error (user role): %v", err)
 	}
 
@@ -79,7 +81,7 @@ func TestChatCRUD(t *testing.T) {
 	}
 
 	// Test update chat configuration
-	newConfig := ChatConfig{
+	newConfig := domain.ChatConfig{
 		Temperature:            1.2,
 		TopP:                   0.8,
 		TopK:                   50,

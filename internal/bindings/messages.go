@@ -6,12 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/vortifyne/gemini-desktop/internal/database"
-	"github.com/vortifyne/gemini-desktop/internal/gemini"
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) GetMessages(chatID int64) ([]database.Message, error) {
+func (a *App) GetMessages(chatID int64) ([]domain.Message, error) {
 	msgs, err := a.storage.GetMessages(chatID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get messages from database: %w", err)
@@ -20,8 +19,8 @@ func (a *App) GetMessages(chatID int64) ([]database.Message, error) {
 	return msgs, nil
 }
 
-func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
-	if strings.TrimSpace(prompt) == "" {
+func (a *App) SendMessageToAI(chatID int64, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
+	if strings.TrimSpace(param.Prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
@@ -44,10 +43,10 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		return "", fmt.Errorf("failed to get chat config: %w", err)
 	}
 
-	var chatCfg database.ChatConfig
+	var chatCfg domain.ChatConfig
 	for _, c := range chats {
 		if c.ID == chatID {
-			chatCfg = database.ChatConfig{
+			chatCfg = domain.ChatConfig{
 				Temperature:            c.Temperature,
 				TopP:                   c.TopP,
 				TopK:                   c.TopK,
@@ -61,10 +60,10 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 		}
 	}
 
-	msgParams := gemini.AIParameter{
-		Prompt:       prompt,
-		SystemPrompt: systemPrompt,
-		ModelName:    modelName,
+	msgParams := domain.AIParameter{
+		Prompt:       param.Prompt,
+		SystemPrompt: param.SystemPrompt,
+		ModelName:    param.ModelName,
 		Cfg:          chatCfg,
 		OnChunk: func(chunk string) error {
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
@@ -73,7 +72,7 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 	}
 
 	// Send user prompt to generative model
-	resp, err := a.aiClient.SendMessage(ctx, msgParams)
+	resp, err := a.aiClient.SendMessage(ctx, msgParams, attachments)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("generation canceled by user")
@@ -83,9 +82,9 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 
 	err = a.storage.SaveMessages(
 		chatID,
-		database.MessageItem{Role: "user", Content: prompt},
-		database.MessageItem{Role: "model", Content: resp})
-
+		domain.MessageItem{Role: "user", Content: param.Prompt, Attachments: attachments},
+		domain.MessageItem{Role: "model", Content: resp},
+	)
 	if err != nil {
 		return "", fmt.Errorf("failed to save messages in database: %w", err)
 	}
@@ -93,8 +92,8 @@ func (a *App) SendMessageToAI(chatID int64, prompt, systemPrompt, modelName stri
 	return resp, nil
 }
 
-func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName string) (string, error) {
-	if strings.TrimSpace(prompt) == "" {
+func (a *App) RegenerateResponse(chatID int64, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
+	if strings.TrimSpace(param.Prompt) == "" {
 		return "", errors.New("prompt cannot be empty")
 	}
 
@@ -117,10 +116,10 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		return "", fmt.Errorf("failed to get chat config: %w", err)
 	}
 
-	var chatCfg database.ChatConfig
+	var chatCfg domain.ChatConfig
 	for _, c := range chats {
 		if c.ID == chatID {
-			chatCfg = database.ChatConfig{
+			chatCfg = domain.ChatConfig{
 				Temperature:            c.Temperature,
 				TopP:                   c.TopP,
 				TopK:                   c.TopK,
@@ -134,10 +133,10 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 		}
 	}
 
-	msgParams := gemini.AIParameter{
-		Prompt:       prompt,
-		SystemPrompt: systemPrompt,
-		ModelName:    modelName,
+	msgParams := domain.AIParameter{
+		Prompt:       param.Prompt,
+		SystemPrompt: param.SystemPrompt,
+		ModelName:    param.ModelName,
 		Cfg:          chatCfg,
 		OnChunk: func(chunk string) error {
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
@@ -146,7 +145,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	}
 
 	// Send it back to regenerate response for the same prompt
-	resp, err := a.aiClient.SendMessage(ctx, msgParams)
+	resp, err := a.aiClient.SendMessage(ctx, msgParams, attachments)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
 			return "", errors.New("regeneration canceled by user")
@@ -163,7 +162,7 @@ func (a *App) RegenerateResponse(chatID int64, prompt, systemPrompt, modelName s
 	if err := a.storage.DeleteLastMessage(chatID, "model"); err != nil {
 		return "", fmt.Errorf("failed to delete last response: %w", err)
 	}
-	if err := a.storage.SaveMessages(chatID, database.MessageItem{Role: "model", Content: resp}); err != nil {
+	if err := a.storage.SaveMessages(chatID, domain.MessageItem{Role: "model", Content: resp}); err != nil {
 		return "", fmt.Errorf("failed to save response in database: %w", err)
 	}
 

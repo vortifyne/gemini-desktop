@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 )
 
 func (s *Storage) CreateChat(title string) (int64, error) {
@@ -27,7 +29,7 @@ func (s *Storage) CreateChat(title string) (int64, error) {
 	return lastInserted, nil
 }
 
-func (s *Storage) GetChats() ([]Chat, error) {
+func (s *Storage) GetChats() ([]domain.Chat, error) {
 	// Set timeout for queries
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -59,10 +61,10 @@ func (s *Storage) GetChats() ([]Chat, error) {
 		}
 	}()
 
-	var chats []Chat
+	var chats []domain.Chat
 
 	for rows.Next() {
-		var c Chat
+		var c domain.Chat
 
 		if err := rows.Scan(
 			&c.ID,
@@ -176,7 +178,7 @@ func (s *Storage) UpdateChatModel(chatID int64, modelName string) error {
 	return nil
 }
 
-func (s *Storage) UpdateChatConfiguration(chatID int64, cfg ChatConfig) error {
+func (s *Storage) UpdateChatConfiguration(chatID int64, cfg domain.ChatConfig) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -198,31 +200,4 @@ func (s *Storage) UpdateChatConfiguration(chatID int64, cfg ChatConfig) error {
 	}
 
 	return nil
-}
-
-func (c *Chat) ApplyDefaults() {
-	if c.Temperature == 0 {
-		c.Temperature = 0.7
-	}
-	if c.TopP == 0 {
-		c.TopP = 0.95
-	}
-	if c.TopK == 0 {
-		c.TopK = 40
-	}
-	if c.MaxOutputTokens == 0 {
-		c.MaxOutputTokens = 8192
-	}
-	if c.SafetyHateSpeech == "" {
-		c.SafetyHateSpeech = "NONE"
-	}
-	if c.SafetyHarassment == "" {
-		c.SafetyHarassment = "NONE"
-	}
-	if c.SafetyDangerousContent == "" {
-		c.SafetyDangerousContent = "NONE"
-	}
-	if c.SafetySexuallyExplicit == "" {
-		c.SafetySexuallyExplicit = "NONE"
-	}
 }

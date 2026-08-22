@@ -1,6 +1,10 @@
 package database
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/vortifyne/gemini-desktop/internal/domain"
+)
 
 func TestMessagesCRUD(t *testing.T) {
 	storage := setupTestDB(t)
@@ -15,8 +19,8 @@ func TestMessagesCRUD(t *testing.T) {
 	// Test save and get messages
 	err = storage.SaveMessages(
 		chatID,
-		MessageItem{Role: "user", Content: "How to reverse a string in Go?"},
-		MessageItem{Role: "model", Content: "Use []rune slice."},
+		domain.MessageItem{Role: "user", Content: "How to reverse a string in Go?"},
+		domain.MessageItem{Role: "model", Content: "Use []rune slice."},
 	)
 	if err != nil {
 		t.Fatalf("SaveMessages() failed: %v", err)

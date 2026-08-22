@@ -10,7 +10,9 @@
     <link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-</head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script></head>
 <body class="h-full flex flex-col font-sans overflow-hidden" style="background-color: #09090b; color: #f4f4f5;">
 
 <div id="auth-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-zinc-950 p-4">
@@ -72,7 +74,7 @@
             <div class="font-bold tracking-wider text-xs text-zinc-300 uppercase select-none" data-i18n="unofficialClient">UNOFFICIAL CLIENT</div>
             <div class="text-[11px] text-zinc-400 select-none" data-i18n="createdForEnthusiasts">Created by enthusiast for enthusiasts</div>
             <div class="text-[11px] font-mono pt-1">
-                <a href="https://github.com/vortifyne/gemini-client/releases" class="text-indigo-400 hover:underline">v0.4.0</a>
+                <a href="https://github.com/vortifyne/gemini-client/releases" class="text-indigo-400 hover:underline">v0.5.0</a>
             </div>
             <div class="flex items-center justify-center gap-4 pt-1 text-zinc-400">
                 <a href="https://github.com/vortifyne" class="flex items-center gap-1 hover:text-white transition-colors text-[11px]" title="GitHub">
@@ -240,7 +242,19 @@
 
                 <div class="p-4 bg-zinc-950">
                     <div class="max-w-3xl mx-auto">
-                        <form id="message-form" class="relative flex items-center bg-zinc-900 border border-zinc-800/80 rounded-3xl px-5 py-2.5 focus-within:border-zinc-700 transition-all shadow-xl gap-3" onsubmit="return false;">
+                        <div id="attachments-preview-container" class="hidden flex flex-wrap gap-2 mb-2.5"></div>
+                        <form id="message-form" class="relative flex items-center bg-zinc-900 border border-zinc-800/80 rounded-3xl px-4 py-2.5 focus-within:border-zinc-700 transition-all shadow-xl gap-2.5" onsubmit="return false;">
+                            <input type="file" id="file-input" class="hidden" multiple accept="application/pdf, image/*,text/*,.pdf,.txt,.go,.js,.py,.html,.css,.json,.md" />
+                            <button
+                                    type="button"
+                                    id="btn-attach-file"
+                                    class="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors shrink-0"
+                                    title="Attach file"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                                </svg>
+                            </button>
                             <textarea
                                     id="message-input"
                                     rows="1"
@@ -662,5 +676,20 @@
 </div>
 
 <script type="module" src="/src/main.js"></script>
+
+<div id="file-preview-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 p-4 hidden animate-fade-in">
+    <div class="w-full max-w-2xl bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4 flex flex-col max-h-[85vh]">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <h3 id="preview-filename" class="text-sm font-semibold text-white font-mono truncate max-w-md">File Preview</h3>
+            <button id="btn-close-file-preview" class="p-1 text-zinc-400 hover:text-zinc-100 rounded-full transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="file-preview-body" class="flex-1 overflow-y-auto custom-scrollbar min-h-0 flex items-center justify-center">
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -4,25 +4,23 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/vortifyne/gemini-desktop/internal/database"
+	"github.com/vortifyne/gemini-desktop/internal/domain"
 	"google.golang.org/api/iterator"
 )
 
-type AIParameter struct {
-	Prompt       string
-	SystemPrompt string
-	ModelName    string
-	OnChunk      func(string) error
-	Cfg          database.ChatConfig
-}
+func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
+	if strings.TrimSpace(param.Prompt) == "" && len(attachments) == 0 {
+		return "", errors.New("prompt and attachments cannot both be empty")
+	}
 
-func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, error) {
-	if strings.TrimSpace(param.Prompt) == "" {
-		return "", errors.New("prompt cannot be empty")
+	modelName := strings.TrimSpace(param.ModelName)
+	if modelName == "" {
+		modelName = "gemini-2.0-flash"
 	}
 
 	// Set timeout for queries
@@ -30,7 +28,7 @@ func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, er
 	defer cancel()
 
 	// Choose generative model
-	genModel := c.gClient.GenerativeModel(param.ModelName)
+	genModel := c.gClient.GenerativeModel(modelName)
 
 	// Check if system prompt is set
 	if param.SystemPrompt != "" {
@@ -63,7 +61,43 @@ func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, er
 		},
 	}
 
-	it := genModel.GenerateContentStream(ctx, genai.Text(param.Prompt))
+	// Attachments & Prompt assembly
+	parts := []genai.Part{}
+	if strings.TrimSpace(param.Prompt) != "" {
+		parts = append(parts, genai.Text(param.Prompt))
+	}
+
+	for _, att := range attachments {
+		mime := strings.ToLower(strings.TrimSpace(att.MimeType))
+
+		if mime == "" && len(att.Data) > 0 {
+			mime = http.DetectContentType(att.Data)
+		}
+
+		switch {
+		case strings.HasPrefix(mime, "image/"):
+			parts = append(parts, genai.Blob{
+				MIMEType: mime,
+				Data:     att.Data,
+			})
+		case strings.HasSuffix(mime, "/pdf"):
+			parts = append(parts, genai.Blob{
+				MIMEType: mime,
+				Data:     att.Data,
+			})
+		case strings.HasPrefix(mime, "text/") || mime == "application/json" || mime == "" || domain.IsTextFile(att.FileName):
+			fileContent := string(att.Data)
+			formattedText := fmt.Sprintf("\n\n--- Attached File: %s ---\n%s\n--- End of File ---", att.FileName, fileContent)
+			parts = append(parts, genai.Text(formattedText))
+		default:
+			parts = append(parts, genai.Blob{
+				MIMEType: mime,
+				Data:     att.Data,
+			})
+		}
+	}
+
+	it := genModel.GenerateContentStream(ctx, parts...)
 	var fullText strings.Builder
 
 	for {
@@ -72,6 +106,9 @@ func (c *Client) SendMessage(ctx context.Context, param AIParameter) (string, er
 			break
 		}
 		if err != nil {
+			if fullText.Len() > 0 && strings.Contains(err.Error(), "looking for beginning of value") {
+				break
+			}
 			return "", fmt.Errorf("error in stream: %w", err)
 		}
 		if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {

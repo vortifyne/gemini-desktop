@@ -34,12 +34,12 @@ export function QuitApp() {
   return window['go']['bindings']['App']['QuitApp']();
 }
 
-export function RegenerateResponse(arg1, arg2, arg3, arg4) {
-  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3, arg4);
+export function RegenerateResponse(arg1, arg2, arg3) {
+  return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3);
 }
 
-export function SendMessageToAI(arg1, arg2, arg3, arg4) {
-  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3, arg4);
+export function SendMessageToAI(arg1, arg2, arg3) {
+  return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3);
 }
 
 export function SetApiKey(arg1) {
