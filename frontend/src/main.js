@@ -3370,6 +3370,8 @@ async function loadMessages(chatId) {
         messages.forEach((msg, idx) => {
             const role = msg.role || msg.Role;
             const content = msg.content || msg.Content;
+            const attachments = msg.attachments || msg.Attachments || [];
+
             if (role === 'user') {
                 state.lastUserPrompt = content;
             }
@@ -3381,7 +3383,8 @@ async function loadMessages(chatId) {
                 msg.created_at || msg.CreatedAt,
                 formatResponseTime(msg.duration || msg.Duration || null),
                 false,
-                isLastInChat
+                isLastInChat,
+                attachments
             );
         });
         scrollToBottom(false);
@@ -3509,7 +3512,7 @@ function updateAIMessageContent(wrapper, content, duration = null) {
     textBody.innerHTML = marked.parse(content) + renderFooter();
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false, attachments = []) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -3548,6 +3551,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
             : 'text-zinc-200 markdown-body w-full'
     }">
+          <div class="msg-attachments-container hidden flex flex-wrap gap-2 mb-2.5"></div>
           <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
         </div>
 
@@ -3579,10 +3583,32 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     </div>
   `;
 
+    const attContainer = wrapper.querySelector('.msg-attachments-container');
+    if (attachments && attachments.length > 0 && attContainer) {
+        attContainer.classList.remove('hidden');
+        attachments.forEach(att => {
+            const fileName = att.file_name || att.FileName || 'file';
+            const mimeType = att.mime_type || att.MimeType || 'text/plain';
+            const data = att.data || att.Data || '';
+
+            const badge = document.createElement('div');
+            badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-xs text-zinc-200 cursor-pointer hover:border-indigo-500 hover:bg-zinc-800 transition-all select-none shadow-sm';
+
+            const isImage = mimeType.startsWith('image/');
+            const iconSvg = isImage
+                ? `<svg class="w-3.5 h-3.5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`
+                : `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+
+            badge.innerHTML = `${iconSvg}<span class="truncate max-w-[140px]" title="${fileName}">${fileName}</span>`;
+            badge.onclick = () => openFilePreview({ file_name: fileName, mime_type: mimeType, data: data });
+            attContainer.appendChild(badge);
+        });
+    }
+
     const textBody = wrapper.querySelector('.markdown-text-body');
 
     const finalizeMessage = () => {
-        textBody.innerHTML = marked.parse(content) + renderFooter();
+        textBody.innerHTML = marked.parse(content || '') + renderFooter();
         processCodeBlocks(textBody);
         scrollToBottom(true);
         triggerSavedStatus();
@@ -3661,7 +3687,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
                 state.isAborted = false;
                 updateSendButtonUI();
 
-                await triggerAIGeneration(updatedPrompt);
+                await triggerAIGeneration(updatedPrompt, false, attachments);
             };
         };
     }
@@ -3932,8 +3958,7 @@ async function handleSendMessage() {
     state.lastUserPrompt = text;
     updateSendButtonUI();
 
-    const displayContent = text || (attachmentsToSend.length > 0 ? `[Attached ${attachmentsToSend.length} file(s)]` : '');
-    appendMessageUI('user', displayContent, new Date().toISOString(), null, false, false);
+    appendMessageUI('user', text, new Date().toISOString(), null, false, false, attachmentsToSend);
 
     await triggerAIGeneration(text, false, attachmentsToSend);
 }

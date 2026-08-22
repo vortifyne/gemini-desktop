@@ -135,12 +135,13 @@ export namespace domain {
 	}
 	
 	export class Message {
-	    ID: number;
-	    ChatID: number;
-	    Role: string;
-	    Content: string;
+	    id: number;
+	    chat_id: number;
+	    role: string;
+	    content: string;
 	    // Go type: time
-	    CreatedAt: any;
+	    created_at: any;
+	    attachments: Attachment[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Message(source);
@@ -148,11 +149,12 @@ export namespace domain {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.ID = source["ID"];
-	        this.ChatID = source["ChatID"];
-	        this.Role = source["Role"];
-	        this.Content = source["Content"];
-	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
+	        this.id = source["id"];
+	        this.chat_id = source["chat_id"];
+	        this.role = source["role"];
+	        this.content = source["content"];
+	        this.created_at = this.convertValues(source["created_at"], null);
+	        this.attachments = this.convertValues(source["attachments"], Attachment);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

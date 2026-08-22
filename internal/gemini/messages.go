@@ -106,6 +106,9 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 			break
 		}
 		if err != nil {
+			if fullText.Len() > 0 && strings.Contains(err.Error(), "looking for beginning of value") {
+				break
+			}
 			return "", fmt.Errorf("error in stream: %w", err)
 		}
 		if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {

@@ -82,9 +82,9 @@ func (a *App) SendMessageToAI(chatID int64, param domain.AIParameter, attachment
 
 	err = a.storage.SaveMessages(
 		chatID,
-		domain.MessageItem{Role: "user", Content: param.Prompt},
-		domain.MessageItem{Role: "model", Content: resp})
-
+		domain.MessageItem{Role: "user", Content: param.Prompt, Attachments: attachments},
+		domain.MessageItem{Role: "model", Content: resp},
+	)
 	if err != nil {
 		return "", fmt.Errorf("failed to save messages in database: %w", err)
 	}
