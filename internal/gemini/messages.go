@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 
@@ -19,7 +18,7 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 
 	modelName := strings.TrimSpace(param.ModelName)
 	if modelName == "" {
-		modelName = "gemini-2.0-flash"
+		modelName = "gemini-3.6-flash"
 	}
 
 	ctx, cancel := context.WithTimeout(ctx, 120*time.Second)
@@ -33,43 +32,58 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 		})
 	}
 
+	// Give chat history context to AI
+	// It allows AI to understand conversation context
+	contents := make([]*genai.Content, 0, len(param.History)+1)
+
+	for _, msg := range param.History {
+		historyParts := make([]*genai.Part, 0, len(attachments)+1)
+
+		// Message text
+		historyParts = append(historyParts, &genai.Part{Text: msg.Content})
+
+		// Message attachments
+		for _, att := range msg.Attachments {
+			if part := attachmentToPart(att); part != nil {
+				historyParts = append(historyParts, part)
+			}
+		}
+
+		if len(historyParts) == 0 {
+			continue
+		}
+
+		// Role of message
+		role := "user"
+		if msg.Role == "model" {
+			role = "model"
+		}
+
+		// Add formed record in history
+		contents = append(contents, &genai.Content{
+			Role:  role,
+			Parts: historyParts,
+		})
+	}
+
+	// Make current user's prompt
+	currentParts := make([]*genai.Part, 0, len(attachments)+1)
+	currentParts = append(currentParts, &genai.Part{Text: param.Prompt})
 	for _, att := range attachments {
-		mime := strings.ToLower(strings.TrimSpace(att.MimeType))
-
-		if mime == "" && len(att.Data) > 0 {
-			mime = http.DetectContentType(att.Data)
-		}
-
-		switch {
-		case strings.HasPrefix(mime, "image/") || strings.HasSuffix(mime, "/pdf"):
-			parts = append(parts, &genai.Part{
-				InlineData: &genai.Blob{
-					MIMEType: mime,
-					Data:     att.Data,
-				},
-			})
-		case strings.HasPrefix(mime, "text/") || mime == "application/json" || mime == "" || domain.IsTextFile(att.FileName):
-			fileContent := string(att.Data)
-			formattedText := fmt.Sprintf("\n\n--- Attached File: %s ---\n%s\n--- End of File ---", att.FileName, fileContent)
-			parts = append(parts, &genai.Part{
-				Text: formattedText,
-			})
-		default:
-			parts = append(parts, &genai.Part{
-				InlineData: &genai.Blob{
-					MIMEType: mime,
-					Data:     att.Data,
-				},
-			})
+		if part := attachmentToPart(att); part != nil {
+			currentParts = append(currentParts, part)
 		}
 	}
 
-	contents := []*genai.Content{
-		{
-			Role:  "user",
-			Parts: parts,
-		},
+	if len(currentParts) == 0 {
+		return "", errors.New("current user turn has no valid parts")
 	}
+
+	// Give all context (current prompt and current chat history) to AI
+	contents = append(contents, &genai.Content{
+		Role:  "user",
+		Parts: currentParts,
+	})
 
 	config := &genai.GenerateContentConfig{
 		Temperature:     genai.Ptr(param.Cfg.Temperature),
@@ -129,19 +143,4 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 	}
 
 	return fullText.String(), nil
-}
-
-func parseSafetyThreshold(threshold string) genai.HarmBlockThreshold {
-	switch strings.ToUpper(strings.TrimSpace(threshold)) {
-	case "NONE":
-		return genai.HarmBlockThresholdBlockNone
-	case "LOW_AND_ABOVE", "LOW":
-		return genai.HarmBlockThresholdBlockLowAndAbove
-	case "MEDIUM_AND_ABOVE", "MEDIUM":
-		return genai.HarmBlockThresholdBlockMediumAndAbove
-	case "ONLY_HIGH", "HIGH":
-		return genai.HarmBlockThresholdBlockOnlyHigh
-	default:
-		return genai.HarmBlockThresholdUnspecified
-	}
 }

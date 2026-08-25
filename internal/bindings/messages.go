@@ -60,6 +60,17 @@ func (a *App) SendMessageToAI(chatID int64, param domain.AIParameter, attachment
 		}
 	}
 
+	// Get all messages history
+	chatHistory, err := a.storage.GetMessages(chatID)
+	if err != nil {
+		return "", fmt.Errorf("failed to get all messages history: %w", err)
+	}
+
+	// Get only ten messages if chat history is big; otherwise - all chat
+	if len(chatHistory) >= 20 {
+		chatHistory = chatHistory[len(chatHistory)-10:]
+	}
+
 	msgParams := domain.AIParameter{
 		Prompt:       param.Prompt,
 		SystemPrompt: param.SystemPrompt,
@@ -69,6 +80,7 @@ func (a *App) SendMessageToAI(chatID int64, param domain.AIParameter, attachment
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 			return nil
 		},
+		History: chatHistory,
 	}
 
 	// Send user prompt to generative model
@@ -133,6 +145,17 @@ func (a *App) RegenerateResponse(chatID int64, param domain.AIParameter, attachm
 		}
 	}
 
+	// Get all messages history
+	chatHistory, err := a.storage.GetMessages(chatID)
+	if err != nil {
+		return "", fmt.Errorf("failed to get all messages history: %w", err)
+	}
+
+	// Get only ten messages if chat history is big; otherwise - all chat
+	if len(chatHistory) >= 20 {
+		chatHistory = chatHistory[len(chatHistory)-10:]
+	}
+
 	msgParams := domain.AIParameter{
 		Prompt:       param.Prompt,
 		SystemPrompt: param.SystemPrompt,
@@ -142,6 +165,7 @@ func (a *App) RegenerateResponse(chatID int64, param domain.AIParameter, attachm
 			runtime.EventsEmit(a.ctx, "ai-stream-chunk", chunk)
 			return nil
 		},
+		History: chatHistory,
 	}
 
 	// Send it back to regenerate response for the same prompt
