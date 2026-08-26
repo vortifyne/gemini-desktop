@@ -34,6 +34,7 @@ func NewGeminiClient(apiKey string) (*Client, error) {
 		it, err := gClient.Models.List(ctx, nil)
 		if err != nil {
 			log.Printf("failed to get a list of models\n")
+			return
 		}
 		_, _ = it.Next(ctx)
 	}()
@@ -53,10 +54,15 @@ func CheckGeminiKeyLive(apiKey string) (bool, error) {
 	}
 
 	// Get one model to check the key
-	_, err = client.Models.List(ctx, &genai.ListModelsConfig{PageSize: 1})
+	it, err := client.Models.List(ctx, &genai.ListModelsConfig{PageSize: 1})
+	if err != nil {
+		return false, err
+	}
+
+	// Make real request on server
+	_, err = it.Next(ctx)
 	if err != nil {
 		var apiErr *genai.APIError
-
 		if errors.As(err, &apiErr) { // server sent bad answer but without system errors
 			if apiErr.Code == http.StatusUnauthorized || apiErr.Code == http.StatusForbidden {
 				return false, nil
@@ -73,7 +79,7 @@ func (c *Client) GetModels() ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	var models []string
+	models := make([]string, 0)
 
 	for m, err := range c.gClient.Models.All(ctx) {
 		if err != nil {

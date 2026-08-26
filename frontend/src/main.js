@@ -1495,7 +1495,6 @@ const state = {
     chats: [],
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
     chatTags: JSON.parse(localStorage.getItem('chatTags') || '{}'),
-    starredMessages: JSON.parse(localStorage.getItem('starredMessages') || '[]'),
     currentTagChatId: null,
     searchQuery: '',
     drafts: {},
@@ -1513,6 +1512,18 @@ const state = {
     language: localStorage.getItem('language') || 'en',
     lastUserPrompt: '',
 };
+
+let mockBookmarks = [
+    {
+        id: 1,
+        message_id: 101,
+        chat_id: 1,
+        chat_title: 'Demo Chat',
+        sender: 'assistant',
+        message_content: 'This is an example bookmarked message from AI in mock mode.',
+        created_at: new Date().toISOString()
+    }
+];
 
 function formatResponseTime(ms) {
     if (ms == null) return null;
@@ -1686,6 +1697,41 @@ const AppAPI = {
         if (window.go?.bindings?.App?.ShowWindow) {
             return await window.go.bindings.App.ShowWindow();
         }
+    },
+    getBookmarks: async () => {
+        if (window.go?.bindings?.App?.GetBookmarks) {
+            return await window.go.bindings.App.GetBookmarks();
+        }
+        console.warn('[Wails] Running in mock mode for GetBookmarks');
+        return [...mockBookmarks];
+    },
+    addBookmark: async (messageId) => {
+        if (window.go?.bindings?.App?.AddBookmark) {
+            return await window.go.bindings.App.AddBookmark(messageId);
+        }
+        console.warn('[Wails] Running in mock mode for AddBookmark');
+        const numId = parseInt(messageId, 10);
+        if (!mockBookmarks.some(b => (b.message_id || b.MessageID) === numId)) {
+            mockBookmarks.push({
+                id: Date.now(),
+                message_id: numId,
+                chat_id: state.activeChatId || 1,
+                chat_title: DOM.currentChatTitle?.textContent || 'Chat',
+                sender: 'assistant',
+                message_content: 'Bookmarked message content',
+                created_at: new Date().toISOString()
+            });
+        }
+        return true;
+    },
+    deleteBookmark: async (messageId) => {
+        if (window.go?.bindings?.App?.DeleteBookmark) {
+            return await window.go.bindings.App.DeleteBookmark(messageId);
+        }
+        console.warn('[Wails] Running in mock mode for DeleteBookmark');
+        const numId = parseInt(messageId, 10);
+        mockBookmarks = mockBookmarks.filter(b => (b.message_id || b.MessageID) !== numId);
+        return true;
     }
 };
 
@@ -1871,7 +1917,6 @@ function openFilePreview(att) {
         img.className = 'max-w-full max-h-[60vh] rounded-2xl object-contain shadow-lg border border-zinc-800';
         DOM.filePreviewBody.appendChild(img);
     } else {
-        // Декодируем Base64 в читаемый текст для кода/файлов
         let textContent = '';
         try {
             const binaryString = atob(att.data);
@@ -2600,8 +2645,8 @@ DOM.btnScrollBottom.addEventListener('click', () => {
     scrollToBottom(true);
 });
 
-DOM.btnStarredModal.addEventListener('click', () => {
-    renderStarredMessages();
+DOM.btnStarredModal.addEventListener('click', async () => {
+    await renderStarredMessages();
     DOM.starredModal.classList.remove('hidden');
 });
 
@@ -2822,68 +2867,91 @@ document.querySelectorAll('.btn-tag-preset').forEach(btn => {
     };
 });
 
-function toggleStarMessage(msgObj) {
-    const idx = state.starredMessages.findIndex(s => s.id === msgObj.id);
-    if (idx > -1) {
-        state.starredMessages.splice(idx, 1);
-        showToast(t('starredRemoved'), 'info');
-    } else {
-        state.starredMessages.push(msgObj);
-        showToast(t('starredAdded'), 'info');
+async function renderStarredMessages() {
+    DOM.starredMessagesList.innerHTML = '<div class="text-center text-zinc-500 py-8 text-xs">Loading...</div>';
+
+    try {
+        const bookmarks = await AppAPI.getBookmarks() || [];
+        DOM.starredMessagesList.innerHTML = '';
+
+        if (bookmarks.length === 0) {
+            DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+            return;
+        }
+
+        bookmarks.forEach(item => {
+            const messageId = item.message_id ?? item.MessageID;
+            const chatTitle = item.chat_title || item.ChatTitle || 'Chat';
+            const createdAt = item.created_at || item.CreatedAt;
+            const sender = (item.sender || item.Sender || 'assistant').toLowerCase();
+            const content = item.message_content || item.MessageContent || '';
+
+            const div = document.createElement('div');
+            div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text animate-fade-in';
+            div.setAttribute('data-starred-message-id', messageId);
+
+            div.innerHTML = `
+              <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[9px] font-bold text-accent">${sender === 'user' ? 'YOU' : 'AI'}</span>
+                  <span class="truncate max-w-[200px]">${chatTitle}</span>
+                </div>
+                <span>${formatMessageTime(createdAt)}</span>
+              </div>
+              <div class="markdown-body">${marked.parse(content)}</div>
+              <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
+                <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                </button>
+                <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </button>
+              </div>
+            `;
+
+            div.querySelector('.btn-copy-star-text').onclick = async function() {
+                try {
+                    await navigator.clipboard.writeText(content);
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy error:', err);
+                }
+            };
+
+            div.querySelector('.btn-unstar-item').onclick = async () => {
+                try {
+                    await AppAPI.deleteBookmark(messageId);
+                    showToast(t('starredRemoved'), 'info');
+                    div.remove();
+                    if (DOM.starredMessagesList.children.length === 0) {
+                        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+                    }
+
+                    const chatMsg = DOM.messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
+                    if (chatMsg) {
+                        const starBtn = chatMsg.querySelector('.btn-star-msg');
+                        if (starBtn) {
+                            starBtn.classList.remove('text-amber-400');
+                            const svg = starBtn.querySelector('svg');
+                            if (svg) svg.setAttribute('fill', 'none');
+                        }
+                    }
+                } catch (err) {
+                    showToast('Error removing bookmark', 'error');
+                    console.error('Delete bookmark error:', err);
+                }
+            };
+
+            DOM.starredMessagesList.appendChild(div);
+        });
+    } catch (err) {
+        console.error('Bookmarks load error:', err);
+        DOM.starredMessagesList.innerHTML = `<div class="text-center text-rose-400 py-8 text-xs">Error loading bookmarks</div>`;
     }
-    localStorage.setItem('starredMessages', JSON.stringify(state.starredMessages));
-}
-
-function renderStarredMessages() {
-    DOM.starredMessagesList.innerHTML = '';
-    if (state.starredMessages.length === 0) {
-        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
-        return;
-    }
-
-    state.starredMessages.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text';
-        div.innerHTML = `
-      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
-        <span>${item.chatTitle || 'Chat'}</span>
-        <span>${formatMessageTime(item.createdAt)}</span>
-      </div>
-      <div class="markdown-body">${marked.parse(item.content)}</div>
-      <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
-        <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-        </button>
-        <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-        </button>
-      </div>
-    `;
-
-        div.querySelector('.btn-copy-star-text').onclick = async function() {
-            try {
-                await navigator.clipboard.writeText(item.content);
-                const originalHTML = this.innerHTML;
-                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-                setTimeout(() => {
-                    this.innerHTML = originalHTML;
-                }, 2000);
-            } catch (err) {
-                console.error('Copy error:', err);
-            }
-        };
-
-        div.querySelector('.btn-unstar-item').onclick = () => {
-            toggleStarMessage(item);
-            renderStarredMessages();
-            renderChatList();
-            if (state.activeChatId) {
-                loadMessages(state.activeChatId);
-            }
-        };
-
-        DOM.starredMessagesList.appendChild(div);
-    });
 }
 
 function downloadFile(content, filename, type) {
@@ -3006,12 +3074,12 @@ DOM.btnToggleApiKey.addEventListener('click', () => {
     const iconClosed = DOM.btnToggleApiKey.querySelector('#icon-eye-closed');
 
     if (isPassword) {
-            iconOpen.classList.add('hidden');
-            iconClosed.classList.remove('hidden');
-        } else {
-            iconOpen.classList.remove('hidden');
-            iconClosed.classList.add('hidden');
-        }
+        iconOpen.classList.add('hidden');
+        iconClosed.classList.remove('hidden');
+    } else {
+        iconOpen.classList.remove('hidden');
+        iconClosed.classList.add('hidden');
+    }
 });
 
 DOM.btnLogout.addEventListener('click', () => {
@@ -3378,6 +3446,8 @@ async function loadMessages(chatId) {
             const role = msg.role || msg.Role;
             const content = msg.content || msg.Content;
             const attachments = msg.attachments || msg.Attachments || [];
+            const msgId = msg.id ?? msg.ID ?? null;
+            const isBookmarked = Boolean(msg.is_bookmarked ?? msg.isBookmarked ?? msg.IsBookmarked ?? false);
 
             if (role === 'user') {
                 state.lastUserPrompt = content;
@@ -3391,7 +3461,9 @@ async function loadMessages(chatId) {
                 formatResponseTime(msg.duration || msg.Duration || null),
                 false,
                 isLastInChat,
-                attachments
+                attachments,
+                msgId,
+                isBookmarked
             );
         });
         scrollToBottom(false);
@@ -3495,8 +3567,8 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendEmptyAIMessageUI(createdAt = new Date().toISOString()) {
-    return appendMessageUI('assistant', '', createdAt, null, false, true);
+function appendEmptyAIMessageUI(createdAt = new Date().toISOString(), messageId = null) {
+    return appendMessageUI('assistant', '', createdAt, null, false, true, [], messageId, false);
 }
 
 function updateAIMessageContent(wrapper, content, duration = null) {
@@ -3519,7 +3591,7 @@ function updateAIMessageContent(wrapper, content, duration = null) {
     textBody.innerHTML = marked.parse(content) + renderFooter();
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false, attachments = []) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false, attachments = [], messageId = null, isStarred = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -3532,12 +3604,9 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     wrapper.setAttribute('data-role', role);
     wrapper.setAttribute('data-created-at', createdAt);
     wrapper.setAttribute('data-raw-content', encodeURIComponent(content || ''));
-
-    const msgId = `${state.activeChatId}_${createdAt}_${(content || '').substring(0, 20)}`;
-    const isStarred = state.starredMessages.some(s => s.id === msgId);
-
-    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
-    const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Chat') : 'Chat';
+    if (messageId) {
+        wrapper.setAttribute('data-message-id', messageId);
+    }
 
     const renderFooter = () => `
       <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
@@ -3718,13 +3787,42 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     const starBtn = wrapper.querySelector('.btn-star-msg');
     if (starBtn) {
-        starBtn.onclick = () => {
-            const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
-            toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content: currentRaw, createdAt, role });
-            const nowStarred = state.starredMessages.some(s => s.id === msgId);
-            starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
-            const svg = starBtn.querySelector('svg');
-            if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
+        starBtn.onclick = async () => {
+            let currentMsgId = parseInt(wrapper.getAttribute('data-message-id'), 10);
+            if (!currentMsgId || isNaN(currentMsgId)) {
+                currentMsgId = Date.now();
+                wrapper.setAttribute('data-message-id', currentMsgId);
+            }
+
+            const isCurrentlyStarred = starBtn.classList.contains('text-amber-400');
+
+            const setStarredUI = (active) => {
+                if (active) {
+                    starBtn.classList.add('text-amber-400');
+                    const svg = starBtn.querySelector('svg');
+                    if (svg) svg.setAttribute('fill', 'currentColor');
+                } else {
+                    starBtn.classList.remove('text-amber-400');
+                    const svg = starBtn.querySelector('svg');
+                    if (svg) svg.setAttribute('fill', 'none');
+                }
+            };
+
+            setStarredUI(!isCurrentlyStarred);
+
+            try {
+                if (isCurrentlyStarred) {
+                    await AppAPI.deleteBookmark(currentMsgId);
+                    showToast(t('starredRemoved'), 'info');
+                } else {
+                    await AppAPI.addBookmark(currentMsgId);
+                    showToast(t('starredAdded'), 'info');
+                }
+            } catch (err) {
+                console.error('Bookmark toggle error:', err);
+                setStarredUI(isCurrentlyStarred);
+                showToast(isCurrentlyStarred ? 'Error removing bookmark' : 'Error adding bookmark', 'error');
+            }
         };
     }
 

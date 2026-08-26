@@ -1,14 +1,14 @@
 -- +goose Up
-CREATE TABLE attachments (
+CREATE TABLE IF NOT EXISTS attachments(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    message_id INTEGER NOT NULL,
+    message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
     file_name TEXT NOT NULL,
     mime_type TEXT NOT NULL,
-    data BLOB NOT NULL,
-    FOREIGN KEY (message_id) REFERENCES messages (id) ON DELETE CASCADE
+    data BLOB NOT NULL
 );
-CREATE INDEX idx_attachments_message_id ON attachments (message_id);
+
+CREATE INDEX IF NOT EXISTS idx_attachments_message_id ON attachments(message_id);
 
 -- +goose Down
 DROP INDEX IF EXISTS idx_attachments_message_id;
-DROP TABLE attachments;
+DROP TABLE IF EXISTS attachments;

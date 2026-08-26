@@ -51,7 +51,8 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			COALESCE(safety_sexually_explicit,'NONE'),
 			created_at
 		FROM chats
-		ORDER BY created_at DESC, id DESC`)
+		ORDER BY created_at DESC, id DESC`,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
 	}
@@ -61,7 +62,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 		}
 	}()
 
-	var chats []domain.Chat
+	chats := make([]domain.Chat, 0)
 
 	for rows.Next() {
 		var c domain.Chat
@@ -79,7 +80,8 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			&c.SafetyHarassment,
 			&c.SafetyDangerousContent,
 			&c.SafetySexuallyExplicit,
-			&c.CreatedAt); err != nil {
+			&c.CreatedAt,
+		); err != nil {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
 		}
 
@@ -88,7 +90,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("connection interrupted after rows.Next() iterations: %w", err)
+		return nil, fmt.Errorf("connection interrupted on iteration: %w", err)
 	}
 
 	return chats, nil

@@ -24,20 +24,12 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 	ctx, cancel := context.WithTimeout(ctx, 120*time.Second)
 	defer cancel()
 
-	var parts []*genai.Part
-
-	if strings.TrimSpace(param.Prompt) != "" {
-		parts = append(parts, &genai.Part{
-			Text: param.Prompt,
-		})
-	}
-
 	// Give chat history context to AI
 	// It allows AI to understand conversation context
 	contents := make([]*genai.Content, 0, len(param.History)+1)
 
 	for _, msg := range param.History {
-		historyParts := make([]*genai.Part, 0, len(attachments)+1)
+		historyParts := make([]*genai.Part, 0, len(msg.Attachments)+1)
 
 		// Message text
 		historyParts = append(historyParts, &genai.Part{Text: msg.Content})
