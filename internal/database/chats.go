@@ -40,7 +40,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			id,
 			title,
 			COALESCE(system_prompt, ''),
-			COALESCE(model_name, 'gemini-2.0-flash'),
+			COALESCE(model_name, 'gemini-3.6-flash'),
 			COALESCE(temperature, 0.7),
 			COALESCE(top_p, 0.95),
 			COALESCE(top_k, 40),
