@@ -4,13 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 
-	"github.com/google/generative-ai-go/genai"
 	"github.com/vortifyne/gemini-desktop/internal/domain"
-	"google.golang.org/api/iterator"
+	"google.golang.org/genai"
 )
 
 func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, attachments []domain.Attachment) (string, error) {
@@ -20,109 +18,116 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 
 	modelName := strings.TrimSpace(param.ModelName)
 	if modelName == "" {
-		modelName = "gemini-2.0-flash"
+		modelName = "gemini-3.6-flash"
 	}
 
-	// Set timeout for queries
-	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 120*time.Second)
 	defer cancel()
 
-	// Choose generative model
-	genModel := c.gClient.GenerativeModel(modelName)
+	// Give chat history context to AI
+	// It allows AI to understand conversation context
+	contents := make([]*genai.Content, 0, len(param.History)+1)
 
-	// Check if system prompt is set
-	if param.SystemPrompt != "" {
-		genModel.SystemInstruction = genai.NewUserContent(genai.Text(param.SystemPrompt))
-	}
+	for _, msg := range param.History {
+		historyParts := make([]*genai.Part, 0, len(msg.Attachments)+1)
 
-	// Generate parameters
-	genModel.Temperature = &param.Cfg.Temperature
-	genModel.TopP = &param.Cfg.TopP
-	genModel.TopK = &param.Cfg.TopK
-	genModel.MaxOutputTokens = &param.Cfg.MaxOutputTokens
+		// Message text
+		historyParts = append(historyParts, &genai.Part{Text: msg.Content})
 
-	// Safety filters
-	genModel.SafetySettings = []*genai.SafetySetting{
-		{
-			Category:  genai.HarmCategoryHateSpeech,
-			Threshold: parseSafetyThreshold(param.Cfg.SafetyHateSpeech),
-		},
-		{
-			Category:  genai.HarmCategoryHarassment,
-			Threshold: parseSafetyThreshold(param.Cfg.SafetyHarassment),
-		},
-		{
-			Category:  genai.HarmCategoryDangerousContent,
-			Threshold: parseSafetyThreshold(param.Cfg.SafetyDangerousContent),
-		},
-		{
-			Category:  genai.HarmCategorySexuallyExplicit,
-			Threshold: parseSafetyThreshold(param.Cfg.SafetySexuallyExplicit),
-		},
-	}
-
-	// Attachments & Prompt assembly
-	parts := []genai.Part{}
-	if strings.TrimSpace(param.Prompt) != "" {
-		parts = append(parts, genai.Text(param.Prompt))
-	}
-
-	for _, att := range attachments {
-		mime := strings.ToLower(strings.TrimSpace(att.MimeType))
-
-		if mime == "" && len(att.Data) > 0 {
-			mime = http.DetectContentType(att.Data)
-		}
-
-		switch {
-		case strings.HasPrefix(mime, "image/"):
-			parts = append(parts, genai.Blob{
-				MIMEType: mime,
-				Data:     att.Data,
-			})
-		case strings.HasSuffix(mime, "/pdf"):
-			parts = append(parts, genai.Blob{
-				MIMEType: mime,
-				Data:     att.Data,
-			})
-		case strings.HasPrefix(mime, "text/") || mime == "application/json" || mime == "" || domain.IsTextFile(att.FileName):
-			fileContent := string(att.Data)
-			formattedText := fmt.Sprintf("\n\n--- Attached File: %s ---\n%s\n--- End of File ---", att.FileName, fileContent)
-			parts = append(parts, genai.Text(formattedText))
-		default:
-			parts = append(parts, genai.Blob{
-				MIMEType: mime,
-				Data:     att.Data,
-			})
-		}
-	}
-
-	it := genModel.GenerateContentStream(ctx, parts...)
-	var fullText strings.Builder
-
-	for {
-		resp, err := it.Next()
-		if errors.Is(err, iterator.Done) {
-			break
-		}
-		if err != nil {
-			if fullText.Len() > 0 && strings.Contains(err.Error(), "looking for beginning of value") {
-				break
+		// Message attachments
+		for _, att := range msg.Attachments {
+			if part := attachmentToPart(att); part != nil {
+				historyParts = append(historyParts, part)
 			}
-			return "", fmt.Errorf("error in stream: %w", err)
 		}
-		if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+
+		if len(historyParts) == 0 {
 			continue
 		}
 
-		for _, part := range resp.Candidates[0].Content.Parts {
-			if textPart, ok := part.(genai.Text); ok {
-				chunk := string(textPart)
-				fullText.WriteString(chunk)
+		// Role of message
+		role := "user"
+		if msg.Role == "model" {
+			role = "model"
+		}
 
-				if param.OnChunk != nil {
-					if err := param.OnChunk(chunk); err != nil {
-						return "", err
+		// Add formed record in history
+		contents = append(contents, &genai.Content{
+			Role:  role,
+			Parts: historyParts,
+		})
+	}
+
+	// Make current user's prompt
+	currentParts := make([]*genai.Part, 0, len(attachments)+1)
+	currentParts = append(currentParts, &genai.Part{Text: param.Prompt})
+	for _, att := range attachments {
+		if part := attachmentToPart(att); part != nil {
+			currentParts = append(currentParts, part)
+		}
+	}
+
+	if len(currentParts) == 0 {
+		return "", errors.New("current user turn has no valid parts")
+	}
+
+	// Give all context (current prompt and current chat history) to AI
+	contents = append(contents, &genai.Content{
+		Role:  "user",
+		Parts: currentParts,
+	})
+
+	config := &genai.GenerateContentConfig{
+		Temperature:     genai.Ptr(param.Cfg.Temperature),
+		TopP:            genai.Ptr(param.Cfg.TopP),
+		TopK:            genai.Ptr(float32(param.Cfg.TopK)),
+		MaxOutputTokens: param.Cfg.MaxOutputTokens,
+		SafetySettings: []*genai.SafetySetting{
+			{
+				Category:  genai.HarmCategoryHateSpeech,
+				Threshold: parseSafetyThreshold(param.Cfg.SafetyHateSpeech),
+			},
+			{
+				Category:  genai.HarmCategoryHarassment,
+				Threshold: parseSafetyThreshold(param.Cfg.SafetyHarassment),
+			},
+			{
+				Category:  genai.HarmCategoryDangerousContent,
+				Threshold: parseSafetyThreshold(param.Cfg.SafetyDangerousContent),
+			},
+			{
+				Category:  genai.HarmCategorySexuallyExplicit,
+				Threshold: parseSafetyThreshold(param.Cfg.SafetySexuallyExplicit),
+			},
+		},
+	}
+
+	if strings.TrimSpace(param.SystemPrompt) != "" {
+		config.SystemInstruction = &genai.Content{
+			Parts: []*genai.Part{
+				{Text: param.SystemPrompt},
+			},
+		}
+	}
+
+	var fullText strings.Builder
+
+	for resp, err := range c.gClient.Models.GenerateContentStream(ctx, modelName, contents, config) {
+		if err != nil {
+			return "", fmt.Errorf("stream error: %w", err)
+		}
+
+		for _, cand := range resp.Candidates {
+			if cand.Content != nil {
+				for _, part := range cand.Content.Parts {
+					if part.Text != "" {
+						fullText.WriteString(part.Text)
+
+						if param.OnChunk != nil {
+							if err := param.OnChunk(part.Text); err != nil {
+								return "", err
+							}
+						}
 					}
 				}
 			}
@@ -130,19 +135,4 @@ func (c *Client) SendMessage(ctx context.Context, param domain.AIParameter, atta
 	}
 
 	return fullText.String(), nil
-}
-
-func parseSafetyThreshold(threshold string) genai.HarmBlockThreshold {
-	switch strings.ToUpper(strings.TrimSpace(threshold)) {
-	case "NONE":
-		return genai.HarmBlockNone
-	case "LOW_AND_ABOVE", "LOW":
-		return genai.HarmBlockLowAndAbove
-	case "MEDIUM_AND_ABOVE", "MEDIUM":
-		return genai.HarmBlockMediumAndAbove
-	case "ONLY_HIGH", "HIGH":
-		return genai.HarmBlockOnlyHigh
-	default:
-		return genai.HarmBlockUnspecified
-	}
 }

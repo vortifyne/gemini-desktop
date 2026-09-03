@@ -6,4 +6,5 @@ type AIParameter struct {
 	ModelName    string             `json:"model_name"`
 	OnChunk      func(string) error `json:"-"`
 	Cfg          ChatConfig         `json:"cfg"`
+	History      []Message          `json:"history"`
 }

@@ -26,13 +26,13 @@ func NewStorage() (*Storage, error) {
 	}
 
 	appDir := filepath.Join(configDir, "gemini-desktop")
-	if err := os.MkdirAll(appDir, 0755); err != nil { // Create app directory with permission 755
+	if err := os.MkdirAll(appDir, 0o755); err != nil { // Create app directory with permission 755
 		return nil, err
 	}
 
 	// Path to database file in app directory
 	dbPath := filepath.Join(appDir, "app.db")
-	dsn := "file:" + dbPath + "?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=synchronous(NORMAL)"
+	dsn := "file:" + dbPath + "?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=synchronous(NORMAL)&_pragma=foreign_keys(ON)"
 
 	// Preparing database structure
 	db, err := sql.Open("sqlite", dsn)

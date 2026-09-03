@@ -1,1493 +1,4 @@
-const hljsThemes = {
-    'atom-one-dark': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
-    'vs2015': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
-    'monokai': 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
-};
-
-const locales = {
-    en: {
-        authTitle: "Authorization",
-        authDesc: "Enter Gemini API Key to access AI",
-        apiKeyLabel: "API Key",
-        loginBtn: "Sign In",
-        checking: "Checking...",
-        unofficialClient: "UNOFFICIAL CLIENT",
-        createdForEnthusiasts: "Created by enthusiast for enthusiasts",
-        searchPlaceholder: "Search chats... (Ctrl+F)",
-        newChatBtn: "New Chat",
-        logoutBtn: "Change API Key",
-        selectChatTitle: "Select or create a chat",
-        mockMode: "Mock Mode",
-        askPlaceholder: "Ask anything...",
-        disclaimer: "Gemini may display inaccurate info. Double-check important facts.",
-        charCount: "chars",
-        exportTitle: "Export Chat",
-        exportDesc: "Choose format to save conversation history:",
-        downloadMd: "Download as Markdown (.md)",
-        downloadJson: "Download as JSON (.json)",
-        starredTitle: "Bookmarked Messages",
-        noStarred: "No saved bookmarks",
-        tagTitle: "Chat Tag",
-        presets: "Presets",
-        work: "Work",
-        study: "Study",
-        important: "Important",
-        customTag: "Custom Tag",
-        tagNamePlaceholder: "Tag name...",
-        saveBtn: "Save",
-        resetBtn: "Reset",
-        settingsTitle: "Appearance Settings",
-        accentColorLabel: "Interface Accent Color",
-        codeThemeLabel: "Code Highlight Theme",
-        languageLabel: "Interface Language",
-        preview: "Preview:",
-        previewCodeTitle: "Code Preview:",
-        copyText: "Copy text",
-        copied: "Copied!",
-        copyCode: "Copy code",
-        pinnedGroup: "Pinned",
-        todayGroup: "Today",
-        yesterdayGroup: "Yesterday",
-        past7DaysGroup: "Previous 7 Days",
-        earlierGroup: "Earlier",
-        emptyStateTitle: "How can I help?",
-        emptyStateDesc: "Create a new chat on the left or select an existing one to start a conversation.",
-        netLost: "Internet connection lost!",
-        invalidKey: "Invalid API key! Please check and try again.",
-        authError: "Error validating API key",
-        chatLoadError: "Error loading chat history",
-        createChatError: "Failed to create chat",
-        msgLoadError: "Error loading messages",
-        aiError: "Error receiving response from AI",
-        genStopped: "Generation stopped",
-        continueGen: "Continue generation...",
-        mockEnabled: "Mock Mode enabled: requests are not sent to Gemini API",
-        mockDisabled: "Mock Mode disabled: using Gemini API",
-        starredAdded: "Message added to bookmarks",
-        starredRemoved: "Message removed from bookmarks",
-        chatExportedMd: "Chat exported to Markdown",
-        chatExportedJson: "Chat exported to JSON",
-        selectExportChat: "Select a chat to export",
-        savedStatus: "Saved",
-        deleteChatTitle: "Delete Chat?",
-        deleteChatConfirm: "Are you sure? All messages in this chat will be lost permanently.",
-        btnCancel: "Cancel",
-        btnDelete: "Delete",
-        tabAppearance: "Appearance",
-        tabShortcuts: "Hotkeys",
-        hotkeyNewChat: "New Chat",
-        hotkeySearch: "Search Chats",
-        hotkeySidebar: "Toggle Sidebar",
-        hotkeyMock: "Toggle Mock Mode",
-        hotkeyExport: "Export Chat",
-        hotkeyEsc: "Close Modals / Reset Search",
-        regenerate: "Regenerate response",
-        updateAvailable: "New update {version} is available! Click to download.",
-        systemInstructionsTitle: "System Instructions",
-        systemInstructionsDesc: "Rules for AI behavior in this chat",
-        systemPromptPlaceholder: "e.g. You are a Go Senior Developer...",
-        modelSelectLabel: "AI Model",
-        tabAdvanced: "Advanced",
-        closeBehaviorLabel: "Action on window close",
-        closeBehaviorAsk: "Ask every time",
-        closeBehaviorMinimize: "Minimize to system tray",
-        closeBehaviorQuit: "Quit application",
-        closeModalTitle: "Minimize or Quit?",
-        closeModalDesc: "Choose what happens when you click the close button.",
-        btnMinimize: "Minimize to Tray",
-        btnQuit: "Quit Application",
-        rememberChoice: "Remember my choice",
-        editPrompt: "Edit prompt",
-        btnSaveSubmit: "Save & Submit",
-        genParamsTitle: "Generation Parameters",
-        temperatureLabel: "Temperature",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Max Tokens",
-        safetyTitle: "Safety Filters",
-        safetyHate: "Hate Speech",
-        safetyHarassment: "Harassment",
-        safetyDangerous: "Dangerous Content",
-        safetyExplicit: "Sexually Explicit",
-        safetyBlockNone: "Unfiltered (NONE)",
-        safetyBlockHigh: "Weak (Block High)",
-        safetyBlockMedium: "Medium (Block Med+)",
-        safetyBlockLow: "Strict (Block Low+)",
-        tooltipTemp: "Controls randomness. 0.0 is rigid & precise (code/math). 1.0-2.0 is creative, but may hallucinate.",
-        tooltipTopP: "Nucleus sampling. Lower values make responses focused, higher values allow diversity.",
-        tooltipTopK: "Limits token selection to K most likely words. Lower = predictable, higher = creative.",
-        tooltipMaxTokens: "Hard token limit for maximum response length.",
-        tooltipSafety: "Content moderation threshold. NONE disables censorship completely."
-    },
-    ru: {
-        authTitle: "Авторизация",
-        authDesc: "Введи API-ключ Gemini для доступа к ИИ",
-        apiKeyLabel: "API Key",
-        loginBtn: "Войти в систему",
-        checking: "Проверка...",
-        unofficialClient: "НЕОФИЦИАЛЬНЫЙ КЛИЕНТ",
-        createdForEnthusiasts: "Создан энтузиастом для энтузиастов",
-        searchPlaceholder: "Поиск чатов... (Ctrl+F)",
-        newChatBtn: "Новый чат",
-        logoutBtn: "Сменить API-ключ",
-        selectChatTitle: "Выберите или создайте чат",
-        mockMode: "Mock Mode",
-        askPlaceholder: "Спроси о чём угодно...",
-        disclaimer: "Gemini может допускать ошибки. Проверяйте важную информацию.",
-        charCount: "символов",
-        exportTitle: "Экспорт чата",
-        exportDesc: "Выберите формат для сохранения всей истории текущего диалога:",
-        downloadMd: "Скачать как Markdown (.md)",
-        downloadJson: "Скачать как JSON (.json)",
-        starredTitle: "Избранные сообщения",
-        noStarred: "Нет сохраненных закладок",
-        tagTitle: "Метка чата",
-        presets: "Пресеты",
-        work: "Работа",
-        study: "Учеба",
-        important: "Важное",
-        customTag: "Своя метка",
-        tagNamePlaceholder: "Название метки...",
-        saveBtn: "Сохранить",
-        resetBtn: "Сбросить",
-        settingsTitle: "Настройки внешнего вида",
-        accentColorLabel: "Акцентный цвет интерфейса",
-        codeThemeLabel: "Тема подсветки кода",
-        languageLabel: "Язык интерфейса",
-        preview: "Превью:",
-        previewCodeTitle: "Превью кода:",
-        copyText: "Скопировать текст",
-        copied: "Скопировано!",
-        copyCode: "Скопировать код",
-        pinnedGroup: "Закрепленные",
-        todayGroup: "Сегодня",
-        yesterdayGroup: "Вчера",
-        past7DaysGroup: "Прошлые 7 дней",
-        earlierGroup: "Ранее",
-        emptyStateTitle: "Чем я могу помочь?",
-        emptyStateDesc: "Создай новый чат слева или выбери существующий, чтобы начать беседу.",
-        netLost: "Интернет-соединение потеряно!",
-        invalidKey: "Неверный API ключ! Проверь и повтори попытку.",
-        authError: "Ошибка при валидации ключа",
-        chatLoadError: "Ошибка загрузки истории чатов",
-        createChatError: "Не удалось создать чат",
-        msgLoadError: "Ошибка загрузки сообщений",
-        aiError: "Ошибка при получении ответа от ИИ",
-        genStopped: "Генерация остановлена",
-        continueGen: "Продолжить генерацию...",
-        mockEnabled: "Mock Mode включен: запросы в API Gemini не отправляются",
-        mockDisabled: "Mock Mode отключен: работаем через Gemini API",
-        starredAdded: "Сообщение добавлено в закладки",
-        starredRemoved: "Сообщение удалено из закладок",
-        chatExportedMd: "Чат экспортирован в Markdown",
-        chatExportedJson: "Чат экспортирован в JSON",
-        selectExportChat: "Выберите чат для экспорта",
-        savedStatus: "Сохранено",
-        deleteChatTitle: "Удалить чат?",
-        deleteChatConfirm: "Вы уверены? Все сообщения из этого чата будут навсегда удалены.",
-        btnCancel: "Отмена",
-        btnDelete: "Удалить",
-        tabAppearance: "Внешний вид",
-        tabShortcuts: "Горячие клавиши",
-        hotkeyNewChat: "Новый чат",
-        hotkeySearch: "Поиск по чатам",
-        hotkeySidebar: "Свернуть / развернуть сайдбар",
-        hotkeyMock: "Включить / выключить Mock Mode",
-        hotkeyExport: "Экспортировать чат",
-        hotkeyEsc: "Закрыть модальные окна / сбросить поиск",
-        regenerate: "Перегенерировать ответ",
-        updateAvailable: "Доступно новое обновление {version}! Нажмите, чтобы скачать.",
-        systemInstructionsTitle: "Системные инструкции",
-        systemInstructionsDesc: "Правила поведения ИИ в этом чате",
-        systemPromptPlaceholder: "Например: Ты опытный Go-разработчик...",
-        modelSelectLabel: "Модель ИИ",
-        tabAdvanced: "Дополнительно",
-        closeBehaviorLabel: "Действие при закрытии окна",
-        closeBehaviorAsk: "Спрашивать каждый раз",
-        closeBehaviorMinimize: "Сворачивать в системный трей",
-        closeBehaviorQuit: "Выходить из программы",
-        closeModalTitle: "Свернуть или выйти?",
-        closeModalDesc: "Выберите, что делать при нажатии на крестик.",
-        btnMinimize: "В трей",
-        btnQuit: "Выйти",
-        rememberChoice: "Запомнить мой выбор",
-        editPrompt: "Редактировать промт",
-        btnSaveSubmit: "Сохранить и отправить",
-        genParamsTitle: "Параметры генерации",
-        temperatureLabel: "Температура",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Макс. токенов",
-        safetyTitle: "Фильтры безопасности",
-        safetyHate: "Язык вражды",
-        safetyHarassment: "Домогательства",
-        safetyDangerous: "Опасный контент",
-        safetyExplicit: "Откровенный контент",
-        safetyBlockNone: "Без цензуры (NONE)",
-        safetyBlockHigh: "Слабая (Block High)",
-        safetyBlockMedium: "Средняя (Block Med+)",
-        safetyBlockLow: "Строгая (Block Low+)",
-        tooltipTemp: "Управляет случайностью. 0.0 — точный робот (код/математика). 1.0-2.0 — творческий режим, возможны галлюцинации.",
-        tooltipTopP: "Вероятностный отбор слов. Низкие значения делают ответ точным, высокие — разнообразным.",
-        tooltipTopK: "Ограничивает выбор K самыми вероятными словами.",
-        tooltipMaxTokens: "Жесткое ограничение максимальной длины ответа в токенах.",
-        tooltipSafety: "Порог цензуры. NONE полностью отключает фильтры модерации."
-    },
-    zh: {
-        authTitle: "身份验证",
-        authDesc: "输入 Gemini API 密钥以访问 AI",
-        apiKeyLabel: "API 密钥",
-        loginBtn: "登录",
-        checking: "验证中...",
-        unofficialClient: "非官方客户端",
-        createdForEnthusiasts: "由热心开发者制作",
-        searchPlaceholder: "搜索对话... (Ctrl+F)",
-        newChatBtn: "新建对话",
-        logoutBtn: "更改 API 密钥",
-        selectChatTitle: "选择或新建对话",
-        mockMode: "模拟模式",
-        askPlaceholder: "输入任何问题...",
-        disclaimer: "Gemini 可能会提供不准确的信息，请核对重要事实。",
-        charCount: "字符",
-        exportTitle: "导出对话",
-        exportDesc: "选择保存对话历史记录的格式：",
-        downloadMd: "下载为 Markdown (.md)",
-        downloadJson: "下载为 JSON (.json)",
-        starredTitle: "收藏消息",
-        noStarred: "暂无收藏消息",
-        tagTitle: "对话标签",
-        presets: "预设",
-        work: "工作",
-        study: "学习",
-        important: "重要",
-        customTag: "自定义标签",
-        tagNamePlaceholder: "标签名称...",
-        saveBtn: "保存",
-        resetBtn: "重置",
-        settingsTitle: "外观设置",
-        accentColorLabel: "界面强调色",
-        codeThemeLabel: "代码高亮主题",
-        languageLabel: "界面语言",
-        preview: "预览：",
-        previewCodeTitle: "代码预览：",
-        copyText: "复制文本",
-        copied: "已复制！",
-        copyCode: "复制代码",
-        pinnedGroup: "已置顶",
-        todayGroup: "今天",
-        yesterdayGroup: "昨天",
-        past7DaysGroup: "过去 7 天",
-        earlierGroup: "更早",
-        emptyStateTitle: "有什么我可以帮忙的？",
-        emptyStateDesc: "在左侧新建对话或选择已有对话以开始聊天。",
-        netLost: "网络连接已断开！",
-        invalidKey: "API 密钥无效！请检查后重试。",
-        authError: "验证 API 密钥时出错",
-        chatLoadError: "加载对话历史记录出错",
-        createChatError: "创建对话失败",
-        msgLoadError: "加载消息出错",
-        aiError: "获取 AI 响应时出错",
-        genStopped: "已停止生成",
-        continueGen: "继续生成...",
-        mockEnabled: "已启用模拟模式：不会向 Gemini API 发送请求",
-        mockDisabled: "已禁用模拟模式：使用 Gemini API",
-        starredAdded: "消息已添加到收藏",
-        starredRemoved: "消息已从收藏中移除",
-        chatExportedMd: "对话已导出为 Markdown",
-        chatExportedJson: "对话已导出为 JSON",
-        selectExportChat: "请选择要导出的对话",
-        savedStatus: "已保存",
-        deleteChatTitle: "删除对话？",
-        deleteChatConfirm: "您确定吗？此对话中的所有消息都将永久丢失。",
-        btnCancel: "取消",
-        btnDelete: "删除",
-        tabAppearance: "外观",
-        tabShortcuts: "快捷键",
-        hotkeyNewChat: "新建对话",
-        hotkeySearch: "搜索对话",
-        hotkeySidebar: "切换侧边栏",
-        hotkeyMock: "切换模拟模式",
-        hotkeyExport: "导出对话",
-        hotkeyEsc: "关闭弹窗 / 重置搜索",
-        regenerate: "重新生成响应",
-        updateAvailable: "新版本 {version} 已发布！点击下载。",
-        systemInstructionsTitle: "系统指令",
-        systemInstructionsDesc: "此对话中 AI 行为的规则",
-        systemPromptPlaceholder: "例如：你是一位专业的 Go 开发者...",
-        modelSelectLabel: "AI 模型",
-        tabAdvanced: "高级",
-        closeBehaviorLabel: "关闭窗口时的操作",
-        closeBehaviorAsk: "每次询问",
-        closeBehaviorMinimize: "最小化到系统托盘",
-        closeBehaviorQuit: "退出程序",
-        closeModalTitle: "最小化还是退出？",
-        closeModalDesc: "选择点击关闭按钮 时的操作。",
-        btnMinimize: "最小化",
-        btnQuit: "退出",
-        rememberChoice: "记住我的选择",
-        editPrompt: "编辑提示词",
-        btnSaveSubmit: "保存并提交",
-        genParamsTitle: "生成参数",
-        temperatureLabel: "Temperature",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Max Tokens",
-        safetyTitle: "安全过滤器",
-        safetyHate: "仇恨言论",
-        safetyHarassment: "骚扰内容",
-        safetyDangerous: "危险内容",
-        safetyExplicit: "露骨内容",
-        safetyBlockNone: "无过滤 (NONE)",
-        safetyBlockHigh: "低度 (Block High)",
-        safetyBlockMedium: "中度 (Block Med+)",
-        safetyBlockLow: "严格 (Block Low+)",
-        tooltipTemp: "控制随机性。0.0 适用于代码/数学；1.0-2.0 提升创意，但可能产生幻觉。",
-        tooltipTopP: "核采样。较低的值使回答更集中，较高的值增加多样性。",
-        tooltipTopK: "限制词汇选择范围为前 K 个最可能的词。",
-        tooltipMaxTokens: "生成回答的最大 Token 数量限制。",
-        tooltipSafety: "内容审核阈值。NONE 表示完全禁用审查。"
-    },
-    ja: {
-        authTitle: "認証",
-        authDesc: "AIにアクセスするにはGemini APIキーを入力してください",
-        apiKeyLabel: "APIキー",
-        loginBtn: "ログイン",
-        checking: "確認中...",
-        unofficialClient: "非公式クライアント",
-        createdForEnthusiasts: "愛好家による愛好家的アプリ",
-        searchPlaceholder: "チャットを検索... (Ctrl+F)",
-        newChatBtn: "新しいチャット",
-        logoutBtn: "APIキーを変更",
-        selectChatTitle: "チャットを選択または作成",
-        mockMode: "モックモード",
-        askPlaceholder: "何でも質問してください...",
-        disclaimer: "Geminiは不正確な情報を表示する可能性があります。重要な事実を確認してください。",
-        charCount: "文字",
-        exportTitle: "チャットのエクスポート",
-        exportDesc: "会話履歴を保存する形式を選択してください:",
-        downloadMd: "Markdownとしてダウンロード (.md)",
-        downloadJson: "JSONとしてダウンロード (.json)",
-        starredTitle: "ブックマークしたメッセージ",
-        noStarred: "保存されたブックマークはありません",
-        tagTitle: "チャットタグ",
-        presets: "プリセット",
-        work: "仕事",
-        study: "学習",
-        important: "重要",
-        customTag: "カスタムタグ",
-        tagNamePlaceholder: "タグ名...",
-        saveBtn: "保存",
-        resetBtn: "リセット",
-        settingsTitle: "外観設定",
-        accentColorLabel: "アクセントカラー",
-        codeThemeLabel: "コードハイライトテーマ",
-        languageLabel: "表示言語",
-        preview: "プレビュー:",
-        previewCodeTitle: "コードプレビュー:",
-        copyText: "テキストをコピー",
-        copied: "コピーしました！",
-        copyCode: "コードをコピー",
-        pinnedGroup: "ピン留め",
-        todayGroup: "今日",
-        yesterdayGroup: "昨日",
-        past7DaysGroup: "過去7日間",
-        earlierGroup: "それ以前",
-        emptyStateTitle: "何かお手伝いできますか？",
-        emptyStateDesc: "左側で新しいチャットを作成するか、既存のチャットを選択してください。",
-        netLost: "インターネット接続が切断されました！",
-        invalidKey: "無効なAPIキーです。確認して再試行してください。",
-        authError: "APIキーの検証エラー",
-        chatLoadError: "チャット履歴の読み込みエラー",
-        createChatError: "チャットの作成に失敗しました",
-        msgLoadError: "メッセージの読み込みエラー",
-        aiError: "AI応答の受信エラー",
-        genStopped: "生成を停止しました",
-        continueGen: "生成を継続...",
-        mockEnabled: "モックモード有効: Gemini APIへのリクエストは送信されません",
-        mockDisabled: "モックモード無効: Gemini APIを使用中",
-        starredAdded: "メッセージをブックマークに追加しました",
-        starredRemoved: "メッセージをブックマークから削除しました",
-        chatExportedMd: "チャットをMarkdownでエクスポートしました",
-        chatExportedJson: "チャットをJSONでエクスポートしました",
-        selectExportChat: "エクスポートするチャットを選択してください",
-        savedStatus: "保存済み",
-        deleteChatTitle: "チャットを削除しますか？",
-        deleteChatConfirm: "本当によろしいですか？このチャットのすべてのメッセージが永久に失われます。",
-        btnCancel: "キャンセル",
-        btnDelete: "削除",
-        tabAppearance: "外観",
-        tabShortcuts: "ショートカット",
-        hotkeyNewChat: "新しいチャット",
-        hotkeySearch: "チャット検索",
-        hotkeySidebar: "サイドバー切り替え",
-        hotkeyMock: "モックモード切り替え",
-        hotkeyExport: "チャットのエクスポート",
-        hotkeyEsc: "モーダルを閉じる / 検索リセット",
-        regenerate: "応答を再生成する",
-        updateAvailable: "新バージョン {version} が利用可能です！クリックしてダウンロード。",
-        systemInstructionsTitle: "システム指示",
-        systemInstructionsDesc: "このチャットでの AI の動作ルール",
-        systemPromptPlaceholder: "例: あなたは優秀な Go 開発者です...",
-        modelSelectLabel: "AI モデル",
-        tabAdvanced: "詳細設定",
-        closeBehaviorLabel: "ウィンドウを閉じる時の動作",
-        closeBehaviorAsk: "毎回確認",
-        closeBehaviorMinimize: "トレイに最小化",
-        closeBehaviorQuit: "アプリを終了",
-        closeModalTitle: "最小化しますか、終了しますか？",
-        closeModalDesc: "閉じるボタンを押した時の動作を選択してください。",
-        btnMinimize: "トレイへ",
-        btnQuit: "終了",
-        rememberChoice: "選択を記憶する",
-        editPrompt: "プロンプトを編集",
-        btnSaveSubmit: "保存して送信",
-        genParamsTitle: "生成パラメータ",
-        temperatureLabel: "Temperature",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Max Tokens",
-        safetyTitle: "セーフティフィルタ",
-        safetyHate: "ヘイトスピーチ",
-        safetyHarassment: "嫌がらせ",
-        safetyDangerous: "危険なコンテンツ",
-        safetyExplicit: "性的なコンテンツ",
-        safetyBlockNone: "制限なし (NONE)",
-        safetyBlockHigh: "弱 (Block High)",
-        safetyBlockMedium: "中 (Block Med+)",
-        safetyBlockLow: "強 (Block Low+)",
-        tooltipTemp: "ランダム性を制御します。0.0は正確（コード/数学向け）、1.0〜2.0は創造的ですが誤情報のリスクがあります。",
-        tooltipTopP: "確率サンプリング。値が低いと厳密に、高いと多様な応答になります。",
-        tooltipTopK: "候補語を選択可能な上位K個に制限します。",
-        tooltipMaxTokens: "生成される応答の最大トークン数の制限。",
-        tooltipSafety: "コンテンツモデレーションの基準。NONEは検閲を完全に無効化します。"
-    },
-    ko: {
-        authTitle: "인증",
-        authDesc: "AI에 액세스하려면 Gemini API 키를 입력하세요",
-        apiKeyLabel: "API 키",
-        loginBtn: "로그인",
-        checking: "확인 중...",
-        unofficialClient: "비공식 클라이언트",
-        createdForEnthusiasts: "열정적인 개발자가 제작",
-        searchPlaceholder: "채팅 검색... (Ctrl+F)",
-        newChatBtn: "새 채팅",
-        logoutBtn: "API 키 변경",
-        selectChatTitle: "채팅을 선택하거나 생성하세요",
-        mockMode: "모의 모드",
-        askPlaceholder: "무엇이든 물어보세요...",
-        disclaimer: "Gemini는 부정확한 정보를 표시할 수 있습니다. 중요 정보를 확인하세요.",
-        charCount: "자",
-        exportTitle: "채팅 내보내기",
-        exportDesc: "대화 기록을 저장할 형식을 선택하세요:",
-        downloadMd: "Markdown으로 다운로드 (.md)",
-        downloadJson: "JSON으로 다운로드 (.json)",
-        starredTitle: "북마크된 메시지",
-        noStarred: "저장된 북마크가 없습니다",
-        tagTitle: "채팅 태그",
-        presets: "프리셋",
-        work: "업무",
-        study: "공부",
-        important: "중요",
-        customTag: "사용자 지정 태그",
-        tagNamePlaceholder: "태그 이름...",
-        saveBtn: "저장",
-        resetBtn: "초기화",
-        settingsTitle: "모양 설정",
-        accentColorLabel: "인터페이스 강조 색상",
-        codeThemeLabel: "코드 하이라이트 테마",
-        languageLabel: "인터페이스 언어",
-        preview: "미리보기:",
-        previewCodeTitle: "코드 미리보기:",
-        copyText: "텍스트 복사",
-        copied: "복사됨!",
-        copyCode: "코드 복사",
-        pinnedGroup: "고정됨",
-        todayGroup: "오늘",
-        yesterdayGroup: "어제",
-        past7DaysGroup: "지난 7일",
-        earlierGroup: "이전",
-        emptyStateTitle: "무엇을 도와드릴까요?",
-        emptyStateDesc: "왼쪽에서 새 채팅을 만들거나 기존 채팅을 선택하여 대화를 시작하세요.",
-        netLost: "인터넷 연결이 끊겼습니다!",
-        invalidKey: "유효하지 않은 API 키입니다. 확인 후 다시 시도하세요.",
-        authError: "API 키 검증 오류",
-        chatLoadError: "채팅 기록 로드 오류",
-        createChatError: "채팅 생성 실패",
-        msgLoadError: "메시지 로드 오류",
-        aiError: "AI 응답 수신 오류",
-        genStopped: "생성이 중지되었습니다",
-        continueGen: "생성 계속하기...",
-        mockEnabled: "모의 모드 활성화됨: Gemini API로 요청을 보내지 않습니다",
-        mockDisabled: "모의 모드 비사용 중: Gemini API 사용 중",
-        starredAdded: "메시지가 북마크에 추가되었습니다",
-        starredRemoved: "메시지가 북마크에서 제거되었습니다",
-        chatExportedMd: "채팅이 Markdown으로 내보내졌습니다",
-        chatExportedJson: "채팅이 JSON으로 내보내졌습니다",
-        selectExportChat: "내보낼 채팅을 선택하세요",
-        savedStatus: "저장됨",
-        deleteChatTitle: "채팅을 삭제하시겠습니까?",
-        deleteChatConfirm: "정말 진행하시겠습니까? 이 채팅의 모든 메시지가 영구적으로 삭제됩니다.",
-        btnCancel: "취소",
-        btnDelete: "삭제",
-        tabAppearance: "모양",
-        tabShortcuts: "단축키",
-        hotkeyNewChat: "새 채팅",
-        hotkeySearch: "채팅 검색",
-        hotkeySidebar: "사이드바 토글",
-        hotkeyMock: "모의 모드 토글",
-        hotkeyExport: "채팅 내보내기",
-        hotkeyEsc: "모달 닫기 / 검색 초기화",
-        regenerate: "응답 다시 생성",
-        updateAvailable: "새 버전 {version}을(를) 이용할 수 있습니다! 다운로드하려면 클릭하세요.",
-        systemInstructionsTitle: "시스템 지침",
-        systemInstructionsDesc: "이 채팅의 AI 동작 지정 규칙",
-        systemPromptPlaceholder: "예: 당신은 유용한 Go 개발자입니다...",
-        modelSelectLabel: "AI 모델",
-        tabAdvanced: "고급",
-        closeBehaviorLabel: "창을 닫을 때의 동작",
-        closeBehaviorAsk: "매번 묻기",
-        closeBehaviorMinimize: "트레이로 최소화",
-        closeBehaviorQuit: "앱 종료",
-        closeModalTitle: "최소화할까요, 종료할까요?",
-        closeModalDesc: "닫기 버튼(X)을 누를 때의 동작을 선택하세요.",
-        btnMinimize: "트레이로",
-        btnQuit: "종료",
-        rememberChoice: "내 선택 기억하기",
-        editPrompt: "프롬프트 편집",
-        btnSaveSubmit: "저장 및 제출",
-        genParamsTitle: "생성 매개변수",
-        temperatureLabel: "Temperature",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Max Tokens",
-        safetyTitle: "안전 필터",
-        safetyHate: "혐오 발언",
-        safetyHarassment: "괴롭힘",
-        safetyDangerous: "위험한 콘텐츠",
-        safetyExplicit: "음란성 콘텐츠",
-        safetyBlockNone: "제한 없음 (NONE)",
-        safetyBlockHigh: "약하게 (Block High)",
-        safetyBlockMedium: "보통 (Block Med+)",
-        safetyBlockLow: "엄격하게 (Block Low+)",
-        tooltipTemp: "무작위성을 제어합니다. 0.0은 정확하며(코드/수학용), 1.0~2.0은 창의적이지만 환각이 발생할 수 있습니다.",
-        tooltipTopP: "확률 샘플링. 값이 낮을수록 일관되고, 높을수록 다양한 답변을 생성합니다.",
-        tooltipTopK: "가장 가능성이 높은 K개 단어로 선택을 제한합니다.",
-        tooltipMaxTokens: "생성되는 응답의 최대 토큰 수 제한입니다.",
-        tooltipSafety: "콘텐츠 검열 임계값입니다. NONE은 검열을 완전히 비활성화합니다."
-    },
-    es: {
-        authTitle: "Autenticación",
-        authDesc: "Introduce tu clave API de Gemini para acceder a la IA",
-        apiKeyLabel: "Clave API",
-        loginBtn: "Iniciar sesión",
-        checking: "Comprobando...",
-        unofficialClient: "CLIENTE NO OFICIAL",
-        createdForEnthusiasts: "Creado por entusiastas para entusiastas",
-        searchPlaceholder: "Buscar chats... (Ctrl+F)",
-        newChatBtn: "Nuevo chat",
-        logoutBtn: "Cambiar clave API",
-        selectChatTitle: "Selecciona o crea un chat",
-        mockMode: "Modo simulado",
-        askPlaceholder: "Pregunta lo que quieras...",
-        disclaimer: "Gemini puede cometer errores. Verifica la información importante.",
-        charCount: "caracteres",
-        exportTitle: "Exportar chat",
-        exportDesc: "Elige el formato para guardar el historial del chat:",
-        downloadMd: "Descargar como Markdown (.md)",
-        downloadJson: "Descargar como JSON (.json)",
-        starredTitle: "Mensajes guardados",
-        noStarred: "No hay marcadores guardados",
-        tagTitle: "Etiqueta de chat",
-        presets: "Ajustes preestablecidos",
-        work: "Trabajo",
-        study: "Estudio",
-        important: "Importante",
-        customTag: "Etiqueta personalizada",
-        tagNamePlaceholder: "Nombre de la etiqueta...",
-        saveBtn: "Guardar",
-        resetBtn: "Restablecer",
-        settingsTitle: "Configuración de apariencia",
-        accentColorLabel: "Color de acento de la interfaz",
-        codeThemeLabel: "Tema de resaltado de código",
-        languageLabel: "Idioma de la interfaz",
-        preview: "Vista previa:",
-        previewCodeTitle: "Vista previa del código:",
-        copyText: "Copiar texto",
-        copied: "¡Copiado!",
-        copyCode: "Copiar código",
-        pinnedGroup: "Fijados",
-        todayGroup: "Hoy",
-        yesterdayGroup: "Ayer",
-        past7DaysGroup: "Últimos 7 días",
-        earlierGroup: "Anteriores",
-        emptyStateTitle: "¿En qué puedo ayudarte?",
-        emptyStateDesc: "Crea un nuevo chat a la izquierda o selecciona uno existente para empezar.",
-        netLost: "¡Conexión a Internet perdida!",
-        invalidKey: "¡Clave API no válida! Comprueba e inténtalo de nuevo.",
-        authError: "Error al validar la clave API",
-        chatLoadError: "Error al cargar el historial de chats",
-        createChatError: "No se pudo crear el chat",
-        msgLoadError: "Error al cargar los mensajes",
-        aiError: "Error al recibir respuesta de la IA",
-        genStopped: "Generación detenida",
-        continueGen: "Continuar generación...",
-        mockEnabled: "Modo simulado activado: no se envían solicitudes a la API de Gemini",
-        mockDisabled: "Modo simulado desactivado: usando API de Gemini",
-        starredAdded: "Mensaje añadido a marcadores",
-        starredRemoved: "Mensaje eliminado de marcadores",
-        chatExportedMd: "Chat exportado a Markdown",
-        chatExportedJson: "Chat exportado a JSON",
-        selectExportChat: "Selecciona un chat para exportar",
-        savedStatus: "Guardado",
-        deleteChatTitle: "¿Eliminar chat?",
-        deleteChatConfirm: "¿Estás seguro? Todos los mensajes de este chat se perderán permanentemente.",
-        btnCancel: "Cancelar",
-        btnDelete: "Eliminar",
-        tabAppearance: "Apariencia",
-        tabShortcuts: "Atajos de teclado",
-        hotkeyNewChat: "Nuevo chat",
-        hotkeySearch: "Buscar chats",
-        hotkeySidebar: "Alternar barra lateral",
-        hotkeyMock: "Alternar modo simulado",
-        hotkeyExport: "Exportar chat",
-        hotkeyEsc: "Cerrar modales / Restablecer búsqueda",
-        regenerate: "Regenerar respuesta",
-        updateAvailable: "¡Nueva versión {version} disponible! Haz clic para descargar.",
-        systemInstructionsTitle: "Instrucciones del sistema",
-        systemInstructionsDesc: "Reglas para la IA en este chat",
-        systemPromptPlaceholder: "Ej.: Eres un desarrollador Go...",
-        modelSelectLabel: "Modelo de IA",
-        tabAdvanced: "Avanzado",
-        closeBehaviorLabel: "Acción al cerrar ventana",
-        closeBehaviorAsk: "Preguntar siempre",
-        closeBehaviorMinimize: "Minimizar a la bandeja",
-        closeBehaviorQuit: "Salir de la aplicación",
-        closeModalTitle: "¿Minimizar o Salir?",
-        closeModalDesc: "Elige qué hacer al pulsar el botón cerrar.",
-        btnMinimize: "Minimizar",
-        btnQuit: "Salir",
-        rememberChoice: "Recordar mi elección",
-        editPrompt: "Editar prompt",
-        btnSaveSubmit: "Guardar y enviar",
-        genParamsTitle: "Parámetros de generación",
-        temperatureLabel: "Temperatura",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Tokens máx.",
-        safetyTitle: "Filtros de seguridad",
-        safetyHate: "Discurso de odio",
-        safetyHarassment: "Acoso",
-        safetyDangerous: "Contenido peligroso",
-        safetyExplicit: "Contenido explícito",
-        safetyBlockNone: "Sin filtro (NONE)",
-        safetyBlockHigh: "Débil (Block High)",
-        safetyBlockMedium: "Medio (Block Med+)",
-        safetyBlockLow: "Estricto (Block Low+)",
-        tooltipTemp: "Controla la aleatoriedad. 0.0 es preciso (código/matemáticas); 1.0-2.0 es creativo pero puede alucinar.",
-        tooltipTopP: "Muestreo de núcleo. Valores bajos enfocan la respuesta, valores altos aportan diversidad.",
-        tooltipTopK: "Limita la selección a las K palabras más probables.",
-        tooltipMaxTokens: "Límite estricto sobre la longitud máxima de la respuesta en tokens.",
-        tooltipSafety: "Umbral de moderación. NONE deshabilita la censura por completo."
-    },
-    de: {
-        authTitle: "Authentifizierung",
-        authDesc: "Gib deinen Gemini API-Schlüssel ein, um auf die KI zuzugreifen",
-        apiKeyLabel: "API-Schlüssel",
-        loginBtn: "Anmelden",
-        checking: "Überprüfe...",
-        unofficialClient: "INOFFIZIELLER CLIENT",
-        createdForEnthusiasts: "Von Enthusiasten für Enthusiasten entwickelt",
-        searchPlaceholder: "Chats suchen... (Strg+F)",
-        newChatBtn: "Neuer Chat",
-        logoutBtn: "API-Schlüssel ändern",
-        selectChatTitle: "Wähle oder erstelle einen Chat",
-        mockMode: "Mock-Modus",
-        askPlaceholder: "Frage irgendetwas...",
-        disclaimer: "Gemini kann Fehler machen. Überprüfe wichtige Informationen.",
-        charCount: "Zeichen",
-        exportTitle: "Chat exportieren",
-        exportDesc: "Wähle das Format zum Speichern des Nachrichtenverlaufs:",
-        downloadMd: "Als Markdown herunterladen (.md)",
-        downloadJson: "Als JSON herunterladen (.json)",
-        starredTitle: "Gespeicherte Nachrichten",
-        noStarred: "Keine gespeicherten Lesezeichen",
-        tagTitle: "Chat-Tag",
-        presets: "Voreinstellungen",
-        work: "Arbeit",
-        study: "Studium",
-        important: "Wichtig",
-        customTag: "Benutzerdefiniertes Tag",
-        tagNamePlaceholder: "Tag-Name...",
-        saveBtn: "Speichern",
-        resetBtn: "Zurücksetzen",
-        settingsTitle: "Erscheinungsbild-Einstellungen",
-        accentColorLabel: "Akzentfarbe der Benutzeroberfläche",
-        codeThemeLabel: "Code-Highlighting-Design",
-        languageLabel: "Sprache der Benutzeroberfläche",
-        preview: "Vorschau:",
-        previewCodeTitle: "Code-Vorschau:",
-        copyText: "Text kopieren",
-        copied: "Kopiert!",
-        copyCode: "Code kopieren",
-        pinnedGroup: "Angeheftet",
-        todayGroup: "Heute",
-        yesterdayGroup: "Gestern",
-        past7DaysGroup: "Letzte 7 Tage",
-        earlierGroup: "Früher",
-        emptyStateTitle: "Wie kann ich helfen?",
-        emptyStateDesc: "Erstelle links einen neuen Chat oder wähle einen vorhandenen aus, um zu beginnen.",
-        netLost: "Internetverbindung verloren!",
-        invalidKey: "Ungültiger API-Schlüssel! Bitte überprüfen und erneut versuchen.",
-        authError: "Fehler bei der API-Schlüssel-Validierung",
-        chatLoadError: "Fehler beim Laden des Chat-Verlaufs",
-        createChatError: "Chat konnte nicht erstellt werden",
-        msgLoadError: "Fehler beim Laden der Nachrichten",
-        aiError: "Fehler beim Empfangen der KI-Antwort",
-        genStopped: "Generierung gestoppt",
-        continueGen: "Generierung fortsetzen...",
-        mockEnabled: "Mock-Modus aktiviert: Keine Anfragen an Gemini API",
-        mockDisabled: "Mock-Modus deaktiviert: Gemini API wird verwendet",
-        starredAdded: "Nachricht zu Lesezeichen hinzugefügt",
-        starredRemoved: "Nachricht aus Lesezeichen entfernt",
-        chatExportedMd: "Chat als Markdown exportiert",
-        chatExportedJson: "Chat als JSON exportiert",
-        selectExportChat: "Wähle einen Chat zum Exportieren aus",
-        savedStatus: "Gespeichert",
-        deleteChatTitle: "Chat löschen?",
-        deleteChatConfirm: "Bist du sicher? Alle Nachrichten in diesem Chat gehen dauerhaft verloren.",
-        btnCancel: "Abbrechen",
-        btnDelete: "Löschen",
-        tabAppearance: "Erscheinungsbild",
-        tabShortcuts: "Tastenkombinationen",
-        hotkeyNewChat: "Neuer Chat",
-        hotkeySearch: "Chats suchen",
-        hotkeySidebar: "Seitenleiste umschalten",
-        hotkeyMock: "Mock-Modus umschalten",
-        hotkeyExport: "Chat exportieren",
-        hotkeyEsc: "Modals schließen / Suche zurücksetzen",
-        regenerate: "Antwort neu generieren",
-        updateAvailable: "Neue Version {version} verfügbar! Klicke zum Herunterladen.",
-        systemInstructionsTitle: "Systemanweisungen",
-        systemInstructionsDesc: "Regeln für das Verhalten der KI in diesem Chat",
-        systemPromptPlaceholder: "Z.B.: Du bist ein Go-Entwickler...",
-        modelSelectLabel: "KI-Modell",
-        tabAdvanced: "Erweitert",
-        closeBehaviorLabel: "Aktion beim Schließen",
-        closeBehaviorAsk: "Jedes Mal fragen",
-        closeBehaviorMinimize: "In den Tray minimieren",
-        closeBehaviorQuit: "Anwendung beenden",
-        closeModalTitle: "Minimieren oder Beenden?",
-        closeModalDesc: "Wähle, was beim Klicken auf Schließen passieren soll.",
-        btnMinimize: "Minimieren",
-        btnQuit: "Beenden",
-        rememberChoice: "Auswahl merken",
-        editPrompt: "Prompt bearbeiten",
-        btnSaveSubmit: "Speichern & Senden",
-        genParamsTitle: "Generierungsparameter",
-        temperatureLabel: "Temperatur",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Max. Tokens",
-        safetyTitle: "Sicherheitsfilter",
-        safetyHate: "Hassrede",
-        safetyHarassment: "Belästigung",
-        safetyDangerous: "Gefährliche Inhalte",
-        safetyExplicit: "Explizite Inhalte",
-        safetyBlockNone: "Ungefiltert (NONE)",
-        safetyBlockHigh: "Schwach (Block High)",
-        safetyBlockMedium: "Mittel (Block Med+)",
-        safetyBlockLow: "Streng (Block Low+)",
-        tooltipTemp: "Steuert die Zufälligkeit. 0.0 ist präzise (Code/Mathe); 1.0-2.0 ist kreativ, kann aber halluzinieren.",
-        tooltipTopP: "Nucleus-Sampling. Niedrige Werte machen Antworten fokussiert, hohe Werte vielfältig.",
-        tooltipTopK: "Beschränkt die Wortauswahl auf die K wahrscheinlichsten Wörter.",
-        tooltipMaxTokens: "Maximale Anzahl von Ausgabetokens für die Antwort.",
-        tooltipSafety: "Inhaltsmoderationsschwelle. NONE deaktiviert die Zensur vollständig."
-    },
-    fr: {
-        authTitle: "Authentification",
-        authDesc: "Entrez votre clé API Gemini pour accéder à l'IA",
-        apiKeyLabel: "Clé API",
-        loginBtn: "Se connecter",
-        checking: "Vérification...",
-        unofficialClient: "CLIENT NON OFFICIEL",
-        createdForEnthusiasts: "Créé par un passionné pour des passionnés",
-        searchPlaceholder: "Rechercher des chats... (Ctrl+F)",
-        newChatBtn: "Nouveau chat",
-        logoutBtn: "Changer de clé API",
-        selectChatTitle: "Sélectionnez ou créez un chat",
-        mockMode: "Mode fictif",
-        askPlaceholder: "Posez n'importe quelle question...",
-        disclaimer: "Gemini peut afficher des informations inexactes. Vérifiez les faits importants.",
-        charCount: "caractères",
-        exportTitle: "Exporter le chat",
-        exportDesc: "Choisissez le format pour enregistrer l'historique du chat :",
-        downloadMd: "Télécharger en Markdown (.md)",
-        downloadJson: "Télécharger en JSON (.json)",
-        starredTitle: "Messages enregistrés",
-        noStarred: "Aucun favori enregistré",
-        tagTitle: "Étiquette de chat",
-        presets: "Préréglages",
-        work: "Travail",
-        study: "Études",
-        important: "Important",
-        customTag: "Étiquette personnalisée",
-        tagNamePlaceholder: "Nom de l'étiquette...",
-        saveBtn: "Enregistrer",
-        resetBtn: "Réinitialiser",
-        settingsTitle: "Paramètres d'apparence",
-        accentColorLabel: "Couleur d'accentuation de l'interface",
-        codeThemeLabel: "Thème de coloration syntaxique",
-        languageLabel: "Langue de l'interface",
-        preview: "Aperçu :",
-        previewCodeTitle: "Aperçu du code :",
-        copyText: "Copier le texte",
-        copied: "Copié !",
-        copyCode: "Copier le code",
-        pinnedGroup: "Epinglés",
-        todayGroup: "Aujourd'hui",
-        yesterdayGroup: "Hier",
-        past7DaysGroup: "7 derniers jours",
-        earlierGroup: "Plus ancien",
-        emptyStateTitle: "Comment puis-je vous aider ?",
-        emptyStateDesc: "Créez un nouveau chat sur la gauche ou sélectionnez-en un existant pour commencer.",
-        netLost: "Connexion Internet perdue !",
-        invalidKey: "Clé API invalide ! Veuillez vérifier et réessayer.",
-        authError: "Erreur lors de la validation de la clé API",
-        chatLoadError: "Erreur lors du chargement de l'historique des chats",
-        createChatError: "Échec de la création du chat",
-        msgLoadError: "Erreur lors du chargement des messages",
-        aiError: "Erreur lors de la réception de la réponse de l'IA",
-        genStopped: "Génération arrêtée",
-        continueGen: "Continuer la génération...",
-        mockEnabled: "Mode fictif activé : aucune requête envoyée à l'API Gemini",
-        mockDisabled: "Mode fictif désactivé : utilisation de l'API Gemini",
-        starredAdded: "Message ajouté aux favoris",
-        starredRemoved: "Message retiré des favoris",
-        chatExportedMd: "Chat exporté en Markdown",
-        chatExportedJson: "Chat exporté en JSON",
-        selectExportChat: "Sélectionnez un chat à exporter",
-        savedStatus: "Enregistré",
-        deleteChatTitle: "Supprimer le chat ?",
-        deleteChatConfirm: "Êtes-vous sûr ? Tous les messages de ce chat seront perdus définitivement.",
-        btnCancel: "Annuler",
-        btnDelete: "Supprimer",
-        tabAppearance: "Apparence",
-        tabShortcuts: "Raccourcis",
-        hotkeyNewChat: "Nouveau chat",
-        hotkeySearch: "Rechercher des chats",
-        hotkeySidebar: "Basculer la barre latérale",
-        hotkeyMock: "Basculer le mode fictif",
-        hotkeyExport: "Exporter le chat",
-        hotkeyEsc: "Fermer les modales / Réinitialiser la recherche",
-        regenerate: "Régénérer la réponse",
-        updateAvailable: "Nouvelle version {version} disponible ! Cliquez pour télécharger.",
-        systemInstructionsTitle: "Instructions système",
-        systemInstructionsDesc: "Règles pour le comportement de l'IA dans ce chat",
-        systemPromptPlaceholder: "Ex. : Vous êtes un développeur Go...",
-        modelSelectLabel: "Modèle IA",
-        tabAdvanced: "Avancé",
-        closeBehaviorLabel: "Action à la fermeture",
-        closeBehaviorAsk: "Toujours demander",
-        closeBehaviorMinimize: "Réduire dans la zone de notification",
-        closeBehaviorQuit: "Quitter l'application",
-        closeModalTitle: "Réduire ou Quitter ?",
-        closeModalDesc: "Choisissez l'action lors du clic sur fermer.",
-        btnMinimize: "Réduire",
-        btnQuit: "Quitter",
-        rememberChoice: "Mémoriser mon choix",
-        editPrompt: "Modifier le prompt",
-        btnSaveSubmit: "Enregistrer et envoyer",
-        genParamsTitle: "Paramètres de génération",
-        temperatureLabel: "Température",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Tokens max",
-        safetyTitle: "Filtres de sécurité",
-        safetyHate: "Discours de haine",
-        safetyHarassment: "Harcèlement",
-        safetyDangerous: "Contenu dangereux",
-        safetyExplicit: "Contenu explicite",
-        safetyBlockNone: "Sans filtre (NONE)",
-        safetyBlockHigh: "Faible (Block High)",
-        safetyBlockMedium: "Moyen (Block Med+)",
-        safetyBlockLow: "Strict (Block Low+)",
-        tooltipTemp: "Contrôle l'aléa. 0.0 est précis (code/maths) ; 1.0-2.0 est créatif mais peut halluciner.",
-        tooltipTopP: "Échantillonnage noyau. Des valeurs basses rendent la réponse ciblée, des valeurs hautes apportent de la diversité.",
-        tooltipTopK: "Limite le choix aux K mots les plus probables.",
-        tooltipMaxTokens: "Limite stricte du nombre maximal de tokens générés.",
-        tooltipSafety: "Seuil de modération du contenu. NONE désactive totalement la censure."
-    },
-    "pt-BR": {
-        authTitle: "Autenticação",
-        authDesc: "Insira sua Chave API do Gemini para acessar a IA",
-        apiKeyLabel: "Chave API",
-        loginBtn: "Entrar",
-        checking: "Verificando...",
-        unofficialClient: "CLIENT NÃO OFICIAL",
-        createdForEnthusiasts: "Criado por entusiasta para entusiastas",
-        searchPlaceholder: "Pesquisar chats... (Ctrl+F)",
-        newChatBtn: "Novo Chat",
-        logoutBtn: "Alterar Chave API",
-        selectChatTitle: "Selecione ou crie um chat",
-        mockMode: "Modo Simulado",
-        askPlaceholder: "Pergunte qualquer coisa...",
-        disclaimer: "O Gemini pode exibir informações imprecisas. Verifique fatos importantes.",
-        charCount: "caracteres",
-        exportTitle: "Exportar Chat",
-        exportDesc: "Escolha o formato para salvar o histórico do chat:",
-        downloadMd: "Baixar como Markdown (.md)",
-        downloadJson: "Baixar como JSON (.json)",
-        starredTitle: "Mensagens Salvas",
-        noStarred: "Nenhum favorito salvo",
-        tagTitle: "Tag do Chat",
-        presets: "Predefinições",
-        work: "Trabalho",
-        study: "Estudo",
-        important: "Importante",
-        customTag: "Tag Personalizada",
-        tagNamePlaceholder: "Nome da tag...",
-        saveBtn: "Salvar",
-        resetBtn: "Redefinir",
-        settingsTitle: "Configurações de Aparência",
-        accentColorLabel: "Cor de Destaque da Interface",
-        codeThemeLabel: "Tema de Destaque de Código",
-        languageLabel: "Idioma da Interface",
-        preview: "Pré-visualização:",
-        previewCodeTitle: "Pré-visualização do Código:",
-        copyText: "Copiar texto",
-        copied: "Copiado!",
-        copyCode: "Copiar código",
-        pinnedGroup: "Fixados",
-        todayGroup: "Hoje",
-        yesterdayGroup: "Ontem",
-        past7DaysGroup: "Últimos 7 dias",
-        earlierGroup: "Anteriores",
-        emptyStateTitle: "Como posso ajudar?",
-        emptyStateDesc: "Crie um novo chat à esquerda ou selecione um existente para começar.",
-        netLost: "Conexão com a Internet perdida!",
-        invalidKey: "Chave API inválida! Verifique e tente novamente.",
-        authError: "Erro ao validar a Chave API",
-        chatLoadError: "Erro ao carregar o histórico de chats",
-        createChatError: "Falha ao criar o chat",
-        msgLoadError: "Erro ao carregar mensagens",
-        aiError: "Erro ao receber resposta da IA",
-        genStopped: "Geração interrompida",
-        continueGen: "Continuar geração...",
-        mockEnabled: "Modo simulado ativado: nenhuma solicitação é enviada para a API Gemini",
-        mockDisabled: "Modo simulado desativado: usando API Gemini",
-        starredAdded: "Mensagem adicionada aos favoritos",
-        starredRemoved: "Mensagem removida dos favoritos",
-        chatExportedMd: "Chat exportado para Markdown",
-        chatExportedJson: "Chat exportado para JSON",
-        selectExportChat: "Selecione um chat para exportar",
-        savedStatus: "Salvo",
-        deleteChatTitle: "Excluir chat?",
-        deleteChatConfirm: "Tem certeza? Todas as mensagens neste chat serão perdidas permanentemente.",
-        btnCancel: "Cancelar",
-        btnDelete: "Excluir",
-        tabAppearance: "Aparência",
-        tabShortcuts: "Atalhos",
-        hotkeyNewChat: "Novo Chat",
-        hotkeySearch: "Pesquisar chats",
-        hotkeySidebar: "Alternar barra lateral",
-        hotkeyMock: "Alternar modo simulado",
-        hotkeyExport: "Exportar chat",
-        hotkeyEsc: "Fechar modais / Redefinir pesquisa",
-        regenerate: "Regenerar resposta",
-        updateAvailable: "Nova versão {version} disponível! Clique para baixar.",
-        systemInstructionsTitle: "Instruções do sistema",
-        systemInstructionsDesc: "Regras para a IA neste chat",
-        systemPromptPlaceholder: "Ex.: Você é um desenvolvedor Go...",
-        modelSelectLabel: "Modelo de IA",
-        tabAdvanced: "Avançado",
-        closeBehaviorLabel: "Ação ao fechar janela",
-        closeBehaviorAsk: "Perguntar sempre",
-        closeBehaviorMinimize: "Minimizar para a bandeja",
-        closeBehaviorQuit: "Sair do aplicativo",
-        closeModalTitle: "Minimizar ou Sair?",
-        closeModalDesc: "Escolha o que fazer ao clicar no botão fechar.",
-        btnMinimize: "Minimizar",
-        btnQuit: "Sair",
-        rememberChoice: "Lembrar minha escolha",
-        editPrompt: "Editar prompt",
-        btnSaveSubmit: "Salvar e enviar",
-        genParamsTitle: "Parâmetros de geração",
-        temperatureLabel: "Temperatura",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Tokens máx.",
-        safetyTitle: "Filtros de segurança",
-        safetyHate: "Discurso de ódio",
-        safetyHarassment: "Assédio",
-        safetyDangerous: "Conteúdo perigoso",
-        safetyExplicit: "Conteúdo explícito",
-        safetyBlockNone: "Sem filtro (NONE)",
-        safetyBlockHigh: "Fraco (Block High)",
-        safetyBlockMedium: "Médio (Block Med+)",
-        safetyBlockLow: "Rigoroso (Block Low+)",
-        tooltipTemp: "Controla a aleatoriedade. 0.0 é preciso (código/matemática); 1.0-2.0 é criativo, mas pode alucinar.",
-        tooltipTopP: "Aostragem de núcleo. Valores baixos focam a resposta, valores altos trazem diversidade.",
-        tooltipTopK: "Limita a seleção às K palavras mais prováveis.",
-        tooltipMaxTokens: "Limite rígido do número máximo de tokens na resposta.",
-        tooltipSafety: "Limite de moderação de conteúdo. NONE desativa a censura completamente."
-    },
-    hi: {
-        authTitle: "प्रमाणिकरण",
-        authDesc: "AI तक पहुँचने के लिए अपनी Gemini API कुंजी दर्ज करें",
-        apiKeyLabel: "API कुंजी",
-        loginBtn: "साइन इन करें",
-        checking: "जाँच हो रही है...",
-        unofficialClient: "अनौपचारिक क्लाइंट",
-        createdForEnthusiasts: "उत्साही लोगों द्वारा उत्साही लोगों के लिए बनाया गया",
-        searchPlaceholder: "चैट खोजें... (Ctrl+F)",
-        newChatBtn: "नया चैट",
-        logoutBtn: "API कुंजी बदलें",
-        selectChatTitle: "एक चैट चुनें या नया बनाएं",
-        mockMode: "मॉक मोड",
-        askPlaceholder: "कुछ भी पूछें...",
-        disclaimer: "Gemini गलत जानकारी दे सकता है। महत्वपूर्ण तथ्यों की जाँच करें।",
-        charCount: "वर्ण",
-        exportTitle: "चैट निर्यात करें",
-        exportDesc: "बातचीत का इतिहास सहेजने के लिए प्रारूप चुनें:",
-        downloadMd: "Markdown के रूप में डाउनलोड करें (.md)",
-        downloadJson: "JSON के रूप में डाउनलोड करें (.json)",
-        starredTitle: "सहेजे गए संदेश",
-        noStarred: "कोई सहेजा गया संदेश नहीं है",
-        tagTitle: "चैट टैग",
-        presets: "प्रिसेट",
-        work: "काम",
-        study: "पढ़ाई",
-        important: "महत्वपूर्ण",
-        customTag: "कस्टम टैग",
-        tagNamePlaceholder: "टैग का नाम...",
-        saveBtn: "सहेजें",
-        resetBtn: "रीसेट करें",
-        settingsTitle: "दिखावट सेटिंग्स",
-        accentColorLabel: "इंटरफ़ेस रंग",
-        codeThemeLabel: "कोड हाइलाइट थीम",
-        languageLabel: "इंटरफ़ेस भाषा",
-        preview: "पूर्वावलोकन:",
-        previewCodeTitle: "कोड पूर्वावलोकन:",
-        copyText: "पाठ कॉपी करें",
-        copied: "कॉपी किया गया!",
-        copyCode: "कोड कॉपी करें",
-        pinnedGroup: "पिन किए गए",
-        todayGroup: "आज",
-        yesterdayGroup: "कल",
-        past7DaysGroup: "पिछले 7 दिन",
-        earlierGroup: "पहले के",
-        emptyStateTitle: "मैं आपकी क्या मदद कर सकता हूँ?",
-        emptyStateDesc: "बातचीत शुरू करने के लिए बाईं ओर एक नया चैट बनाएं या मौजूदा चुनें।",
-        netLost: "इंटरनेट कनेक्शन टूट गया!",
-        invalidKey: "अमान्य API कुंजी! कृपया जाँचें और पुनः प्रयास करें।",
-        authError: "API कुंजी सत्यापन में त्रुटि",
-        chatLoadError: "चैट इतिहास लोड करने में त्रुटि",
-        createChatError: "चैट बनाने में विफल",
-        msgLoadError: "संदेश लोड करने में त्रुटि",
-        aiError: "AI प्रतिक्रिया प्राप्त करने में त्रुटि",
-        genStopped: "जनरेशन रोक दिया गया",
-        continueGen: "जनरेशन जारी रखें...",
-        mockEnabled: "मॉक मोड सक्षम: Gemini API को अनुरोध नहीं भेजे जाते",
-        mockDisabled: "मॉक मोड अक्षम: Gemini API का उपयोग किया जा रहा है",
-        starredAdded: "संदेश बुकमार्क में जोड़ा गया",
-        starredRemoved: "संदेश बुकमार्क से हटा दिया गया",
-        chatExportedMd: "चैट Markdown में निर्यात किया गया",
-        chatExportedJson: "चैट JSON में निर्यात किया गया",
-        selectExportChat: "निर्यात करने के लिए एक चैट चुनें",
-        savedStatus: "सहेजा गया",
-        deleteChatTitle: "चैट हटाएं?",
-        deleteChatConfirm: "क्या आप निश्चित हैं? इस चैट के सभी संदेश स्थायी रूप से खो जाएंगे।",
-        btnCancel: "रद्द करें",
-        btnDelete: "हटाएं",
-        tabAppearance: "दिखावट",
-        tabShortcuts: "शॉर्टकट्स",
-        hotkeyNewChat: "नया चैट",
-        hotkeySearch: "चैट खोजें",
-        hotkeySidebar: "साइडबार बदलें",
-        hotkeyMock: "मॉक मोड बदलें",
-        hotkeyExport: "चैट निर्यात करें",
-        hotkeyEsc: "मोडल्स बंद करें / खोज रीसेट करें",
-        regenerate: "प्रतिक्रिया पुन: उत्पन्न करें",
-        updateAvailable: "नया संस्करण {version} उपलब्ध है! डाउनलोड करने के लिए क्लिक करें।",
-        systemInstructionsTitle: "सिस्टम निर्देश",
-        systemInstructionsDesc: "इस चैट में AI के व्यवहार के नियम",
-        systemPromptPlaceholder: "उदा.: आप एक Go डेवलपर हैं...",
-        modelSelectLabel: "AI मॉडल",
-        tabAdvanced: "उन्नत",
-        closeBehaviorLabel: "विंडो बंद करने पर कार्रवाई",
-        closeBehaviorAsk: "हर बार पूछें",
-        closeBehaviorMinimize: "सिस्टम ट्रे में छोटा करें",
-        closeBehaviorQuit: "ऐप से बाहर निकलें",
-        closeModalTitle: "छोटा करें या बाहर निकलें?",
-        closeModalDesc: "बंद बटन पर क्लिक करने पर क्या हो, चुनें।",
-        btnMinimize: "ट्रे में",
-        btnQuit: "बाहर",
-        rememberChoice: "मेरी पसंद याद रखें",
-        editPrompt: "प्रॉम्प्ट संपादित करें",
-        btnSaveSubmit: "सहेजें और भेजें",
-        genParamsTitle: "जनरेशन पैरामीटर",
-        temperatureLabel: "तापमान",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "अधिकतम टोकन",
-        safetyTitle: "सुरक्षा फ़िल्टर",
-        safetyHate: "घृणास्पद भाषण",
-        safetyHarassment: "उत्पीड़न",
-        safetyDangerous: "खतरनाक सामग्री",
-        safetyExplicit: "यौन रूप से स्पष्ट",
-        safetyBlockNone: "बिना फ़िल्टर (NONE)",
-        safetyBlockHigh: "कमज़ोर (Block High)",
-        safetyBlockMedium: "मध्यम (Block Med+)",
-        safetyBlockLow: "सख्त (Block Low+)",
-        tooltipTemp: "यादृच्छिकता को नियंत्रित करता है। 0.0 सटीक है (कोड/गणित); 1.0-2.0 रचनात्मक है लेकिन भ्रम पैदा कर सकता है।",
-        tooltipTopP: "संभाव्यता नमूनाकरण। कम मान केंद्रित उत्तर देते हैं, उच्च मान विविधता लाते हैं।",
-        tooltipTopK: "शब्द चयन को K सबसे संभावित शब्दों तक सीमित करता है।",
-        tooltipMaxTokens: "प्रतिक्रिया की अधिकतम लंबाई पर टोकन सीमा।",
-        tooltipSafety: "सामग्री मॉडरेशन सीमा। NONE सेंसरशिप को पूरी तरह से निष्क्रिय करता है।"
-    },
-    it: {
-        authTitle: "Autenticazione",
-        authDesc: "Inserisci la tua chiave API Gemini per accedere all'IA",
-        apiKeyLabel: "Chiave API",
-        loginBtn: "Accedi",
-        checking: "Verifica...",
-        unofficialClient: "CLIENT NON UFFICIALE",
-        createdForEnthusiasts: "Creato da appassionati per appassionati",
-        searchPlaceholder: "Cerca chat... (Ctrl+F)",
-        newChatBtn: "Nuova chat",
-        logoutBtn: "Cambia chiave API",
-        selectChatTitle: "Seleziona o crea una chat",
-        mockMode: "Modalità Mock",
-        askPlaceholder: "Chiedi qualsiasi cosa...",
-        disclaimer: "Gemini può commettere errori. Verifica le informazioni importanti.",
-        charCount: "caratteri",
-        exportTitle: "Esporta chat",
-        exportDesc: "Scegli il formato per salvare la cronologia della conversazione:",
-        downloadMd: "Scarica come Markdown (.md)",
-        downloadJson: "Scarica come JSON (.json)",
-        starredTitle: "Messaggi salvati",
-        noStarred: "Nessun segnalibro salvato",
-        tagTitle: "Etichetta chat",
-        presets: "Preimpostazioni",
-        work: "Lavoro",
-        study: "Studio",
-        important: "Importante",
-        customTag: "Etichetta personalizzata",
-        tagNamePlaceholder: "Nome etichetta...",
-        saveBtn: "Salva",
-        resetBtn: "Ripristina",
-        settingsTitle: "Impostazioni aspetto",
-        accentColorLabel: "Colore di accento dell'interfaccia",
-        codeThemeLabel: "Tema di evidenziazione del codice",
-        languageLabel: "Lingua dell'interfaccia",
-        preview: "Anteprima:",
-        previewCodeTitle: "Anteprima codice:",
-        copyText: "Copia testo",
-        copied: "Copiato!",
-        copyCode: "Copia codice",
-        pinnedGroup: "Fissati",
-        todayGroup: "Oggi",
-        yesterdayGroup: "Ieri",
-        past7DaysGroup: "Ultimi 7 giorni",
-        earlierGroup: "Precedenti",
-        emptyStateTitle: "Come posso aiutarti?",
-        emptyStateDesc: "Crea una nuova chat a sinistra o selezionane una esistente per iniziare.",
-        netLost: "Connessione Internet persa!",
-        invalidKey: "Chiave API non valida! Verifica e riprova.",
-        authError: "Errore durante la convalida della chiave API",
-        chatLoadError: "Errore durante il caricamento della cronologia chat",
-        createChatError: "Impossibile creare la chat",
-        msgLoadError: "Errore durante il caricamento dei messaggi",
-        aiError: "Errore durante la ricezione della risposta dall'IA",
-        genStopped: "Generazione interrotta",
-        continueGen: "Continua generazione...",
-        mockEnabled: "Modalità Mock attivata: le richieste non vengono inviate all'API Gemini",
-        mockDisabled: "Modalità Mock disattivata: utilizzo dell'API Gemini",
-        starredAdded: "Messaggio aggiunto ai segnalibri",
-        starredRemoved: "Messaggio rimosso dai segnalibri",
-        chatExportedMd: "Chat esportata in Markdown",
-        chatExportedJson: "Chat esportata in JSON",
-        selectExportChat: "Seleziona una chat da esportare",
-        savedStatus: "Salvato",
-        deleteChatTitle: "Eliminare la chat?",
-        deleteChatConfirm: "Sei sicuro? Tutti i messaggi in questa chat andranno persi in modo permanente.",
-        btnCancel: "Annulla",
-        btnDelete: "Elimina",
-        tabAppearance: "Aspetto",
-        tabShortcuts: "Scorciatoie",
-        hotkeyNewChat: "Nuova chat",
-        hotkeySearch: "Cerca chat",
-        hotkeySidebar: "Mostra/Nascondi barra laterale",
-        hotkeyMock: "Attiva/Disattiva Modalità Mock",
-        hotkeyExport: "Esporta chat",
-        hotkeyEsc: "Chiudi modali / Ripristina ricerca",
-        regenerate: "Rigenera risposta",
-        updateAvailable: "Nuova versione {version} disponibile! Clicca per scaricare.",
-        systemInstructionsTitle: "Istruzioni di sistema",
-        systemInstructionsDesc: "Regole per l'IA in questa chat",
-        systemPromptPlaceholder: "Es.: Sei uno sviluppatore Go...",
-        modelSelectLabel: "Modello IA",
-        tabAdvanced: "Avanzate",
-        closeBehaviorLabel: "Azione alla chiusura",
-        closeBehaviorAsk: "Chiedi ogni volta",
-        closeBehaviorMinimize: "Riduci a icona nel tray",
-        closeBehaviorQuit: "Esci dall'applicazione",
-        closeModalTitle: "Riduci o Esci?",
-        closeModalDesc: "Scegli cosa fare quando fai clic su chiudi.",
-        btnMinimize: "Nel tray",
-        btnQuit: "Esci",
-        rememberChoice: "Ricorda la mia scelta",
-        editPrompt: "Modifica prompt",
-        btnSaveSubmit: "Salva e invia",
-        genParamsTitle: "Parametri di generazione",
-        temperatureLabel: "Temperatura",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Token max",
-        safetyTitle: "Filtri di sicurezza",
-        safetyHate: "Incitamento all'odio",
-        safetyHarassment: "Molestie",
-        safetyDangerous: "Contenuti pericolosi",
-        safetyExplicit: "Contenuti espliciti",
-        safetyBlockNone: "Senza filtri (NONE)",
-        safetyBlockHigh: "Debole (Block High)",
-        safetyBlockMedium: "Medio (Block Med+)",
-        safetyBlockLow: "Rigoroso (Block Low+)",
-        tooltipTemp: "Controlla la casualità. 0.0 è preciso (codice/matematica); 1.0-2.0 è creativo ma può allucinare.",
-        tooltipTopP: "Campionamento nucleus. Valori bassi focalizzano la risposta, valori alti aumentano la varietà.",
-        tooltipTopK: "Limita la scelta alle K parole più probabili.",
-        tooltipMaxTokens: "Limite massimo di token per la lunghezza della risposta.",
-        tooltipSafety: "Soglia di moderazione dei contenuti. NONE disattiva completamente la censura."
-    },
-    pl: {
-        authTitle: "Autoryzacja",
-        authDesc: "Wprowadź klucz API Gemini, aby uzyskać dostęp do AI",
-        apiKeyLabel: "Klucz API",
-        loginBtn: "Zaloguj się",
-        checking: "Sprawdzanie...",
-        unofficialClient: "NIEOFICJALNY KLIENT",
-        createdForEnthusiasts: "Stworzony przez entuzjastę dla entuzjastów",
-        searchPlaceholder: "Szukaj czatów... (Ctrl+F)",
-        newChatBtn: "Nowy czat",
-        logoutBtn: "Zmień klucz API",
-        selectChatTitle: "Wybierz lub utwórz czat",
-        mockMode: "Tryb Mock",
-        askPlaceholder: "Zapytaj o cokolwiek...",
-        disclaimer: "Gemini może popełniać błędy. Sprawdzaj ważne informacje.",
-        charCount: "znaków",
-        exportTitle: "Eksportuj czat",
-        exportDesc: "Wybierz format zapisu historii rozmowy:",
-        downloadMd: "Pobierz jako Markdown (.md)",
-        downloadJson: "Pobierz jako JSON (.json)",
-        starredTitle: "Zapisane wiadomości",
-        noStarred: "Brak zapisanych zakładek",
-        tagTitle: "Etykieta czatu",
-        presets: "Ustawienia wstępne",
-        work: "Praca",
-        study: "Nauka",
-        important: "Ważne",
-        customTag: "Własna etykieta",
-        tagNamePlaceholder: "Nazwa etykiety...",
-        saveBtn: "Zapisz",
-        resetBtn: "Resetuj",
-        settingsTitle: "Ustawienia wyglądu",
-        accentColorLabel: "Kolor akcentu interfejsu",
-        codeThemeLabel: "Motyw podświetlania kodu",
-        languageLabel: "Język interfejsu",
-        preview: "Podgląd:",
-        previewCodeTitle: "Podgląd kodu:",
-        copyText: "Kopiuj tekst",
-        copied: "Skopiowano!",
-        copyCode: "Kopiuj kod",
-        pinnedGroup: "Przypięte",
-        todayGroup: "Dzisiaj",
-        yesterdayGroup: "Wczoraj",
-        past7DaysGroup: "Ostatnie 7 dni",
-        earlierGroup: "Wcześniej",
-        emptyStateTitle: "W czym mogę pomóc?",
-        emptyStateDesc: "Utwórz nowy czat po lewej stronie lub wybierz istniejący, aby rozpocząć rozmowę.",
-        netLost: "Utracono połączenie z Internetem!",
-        invalidKey: "Nieprawidłowy klucz API! Sprawdź i spróbuj ponownie.",
-        authError: "Błąd walidacji klucza API",
-        chatLoadError: "Błąd ładowania historii czatów",
-        createChatError: "Nie udało się utworzyć czatu",
-        msgLoadError: "Błąd ładowania wiadomości",
-        aiError: "Błąd odbierania odpowiedzi od AI",
-        genStopped: "Generowanie zatrzymane",
-        continueGen: "Kontynuuj generowanie...",
-        mockEnabled: "Tryb Mock włączony: zapytania nie są wysyłane do API Gemini",
-        mockDisabled: "Tryb Mock wyłączony: używanie API Gemini",
-        starredAdded: "Wiadomość dodana do zakładek",
-        starredRemoved: "Wiadomość usunięta z zakładek",
-        chatExportedMd: "Czat wyeksportowany do Markdown",
-        chatExportedJson: "Czat wyeksportowany do JSON",
-        selectExportChat: "Wybierz czat do eksportu",
-        savedStatus: "Zapisano",
-        deleteChatTitle: "Usunąć czat?",
-        deleteChatConfirm: "Czy na pewno? Wszystkie wiadomości w tym czacie zostaną trwale utracone.",
-        btnCancel: "Anuluj",
-        btnDelete: "Usuń",
-        tabAppearance: "Wygląd",
-        tabShortcuts: "Skróty klawiszowe",
-        hotkeyNewChat: "Nowy czat",
-        hotkeySearch: "Szukaj czatów",
-        hotkeySidebar: "Przełącz panel boczny",
-        hotkeyMock: "Przełącz Tryb Mock",
-        hotkeyExport: "Eksportuj czat",
-        hotkeyEsc: "Zamknij okna / Resetuj szukanie",
-        regenerate: "Wygeneruj ponownie odpowiedź",
-        updateAvailable: "Nowa wersja {version} jest dostępna! Kliknij, aby pobrać.",
-        systemInstructionsTitle: "Instrukcje systemowe",
-        systemInstructionsDesc: "Zasady zachowania AI w tym czacie",
-        systemPromptPlaceholder: "Np.: Jesteś deweloperem Go...",
-        modelSelectLabel: "Model AI",
-        tabAdvanced: "Zaawansowane",
-        closeBehaviorLabel: "Akcja przy zamykaniu",
-        closeBehaviorAsk: "Pytaj za każdym razem",
-        closeBehaviorMinimize: "Minimalizuj do zasobnika",
-        closeBehaviorQuit: "Zamknij aplikację",
-        closeModalTitle: "Minimalizować czy Zamknąć?",
-        closeModalDesc: "Wybierz, co ma się stać po kliknięciu.",
-        btnMinimize: "Do zasobnika",
-        btnQuit: "Zamknij",
-        rememberChoice: "Zapamiętaj mój wybór",
-        editPrompt: "Edytuj prompt",
-        btnSaveSubmit: "Zapisz i wyślij",
-        genParamsTitle: "Parametry generowania",
-        temperatureLabel: "Temperatura",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Maks. tokenów",
-        safetyTitle: "Filtry bezpieczeństwa",
-        safetyHate: "Mowa nienawiści",
-        safetyHarassment: "Nękanie",
-        safetyDangerous: "Niebezpieczne treści",
-        safetyExplicit: "Treści drastyczne",
-        safetyBlockNone: "Bez filtrowania (NONE)",
-        safetyBlockHigh: "Słaba (Block High)",
-        safetyBlockMedium: "Średnia (Block Med+)",
-        safetyBlockLow: "Rygorystyczna (Block Low+)",
-        tooltipTemp: "Kontroluje losowość. 0.0 jest precyzyjne (kod/matematyka); 1.0-2.0 jest kreatywne, ale może halucynować.",
-        tooltipTopP: "Próbkowanie jądrowe. Niższe wartości skupiają odpowiedź, wyższe zwiększają różnorodność.",
-        tooltipTopK: "Ogranicza wybór słów do K najbardziej prawdopodobnych.",
-        tooltipMaxTokens: "Sztywny limit maksymalnej liczby tokenów w odpowiedzi.",
-        tooltipSafety: "Próg moderacji treści. NONE całkowicie wyłącza cenzurę."
-    },
-    tr: {
-        authTitle: "Kimlik Doğrulama",
-        authDesc: "Yapay zekaya erişmek için Gemini API Anahtarınızı girin",
-        apiKeyLabel: "API Anahtarı",
-        loginBtn: "Giriş Yap",
-        checking: "Kontrol ediliyor...",
-        unofficialClient: "RESMİ OLMAYAN İSTEMCİ",
-        createdForEnthusiasts: "Meraklılar tarafından meraklılar için oluşturuldu",
-        searchPlaceholder: "Sohbet ara... (Ctrl+F)",
-        newChatBtn: "Yeni Sohbet",
-        logoutBtn: "API Anahtarını Değiştir",
-        selectChatTitle: "Bir sohbet seçin veya oluşturun",
-        mockMode: "Mock Modu",
-        askPlaceholder: "İstediğinizi sorun...",
-        disclaimer: "Gemini hata yapabilir. Önemli bilgileri kontrol edin.",
-        charCount: "karakter",
-        exportTitle: "Sohbeti Dışa Aktar",
-        exportDesc: "Konuşma geçmişini kaydetmek için biçim seçin:",
-        downloadMd: "Markdown olarak indir (.md)",
-        downloadJson: "JSON olarak indir (.json)",
-        starredTitle: "Yer İşaretleri",
-        noStarred: "Kaydedilmiş yer işareti yok",
-        tagTitle: "Sohbet Etiketi",
-        presets: "Önayarlar",
-        work: "İş",
-        study: "Ders",
-        important: "Önemli",
-        customTag: "Özel Etiket",
-        tagNamePlaceholder: "Etiket adı...",
-        saveBtn: "Kaydet",
-        resetBtn: "Sıfırla",
-        settingsTitle: "Görünüm Ayarları",
-        accentColorLabel: "Arayüz Vurgu Rengi",
-        codeThemeLabel: "Kod Vurgulama Teması",
-        languageLabel: "Arayüz Dili",
-        preview: "Önizleme:",
-        previewCodeTitle: "Kod Önizlemesi:",
-        copyText: "Metni kopyala",
-        copied: "Kopyalandı!",
-        copyCode: "Kodu kopyala",
-        pinnedGroup: "Sabitlenmiş",
-        todayGroup: "Bugün",
-        yesterdayGroup: "Dün",
-        past7DaysGroup: "Son 7 Gün",
-        earlierGroup: "Daha Önce",
-        emptyStateTitle: "Nasıl yardımcı olabilirim?",
-        emptyStateDesc: "Sohbet başlatmak için soldan yeni bir sohbet oluşturun veya var olanı seçin.",
-        netLost: "İnternet bağlantısı kesildi!",
-        invalidKey: "Geçersiz API anahtarı! Lütfen kontrol edip tekrar deneyin.",
-        authError: "API anahtarı doğrulanırken hata oluştu",
-        chatLoadError: "Sohbet geçmişi yüklenirken hata",
-        createChatError: "Sohbet oluşturulamadı",
-        msgLoadError: "Mesajlar yüklenirken hata",
-        aiError: "Yapay zeka yanıtı alınırken hata",
-        genStopped: "Üretim durduruldu",
-        continueGen: "Üretmeye devam et...",
-        mockEnabled: "Mock Modu etkin: Gemini API'sine istek gönderilmiyor",
-        mockDisabled: "Mock Modu devre dışı: Gemini API kullanılıyor",
-        starredAdded: "Mesaj yer işaretlerine eklendi",
-        starredRemoved: "Mesaj yer işaretlerinden kaldırıldı",
-        chatExportedMd: "Sohbet Markdown olarak dışa aktarıldı",
-        chatExportedJson: "Sohbet JSON olarak dışa aktarıldı",
-        selectExportChat: "Dışa aktarmak için bir sohbet seçin",
-        savedStatus: "Kaydedildi",
-        deleteChatTitle: "Sohbet Silinsin mi?",
-        deleteChatConfirm: "Emin misiniz? Bu sohbetteki tüm mesajlar kalıcı olarak kaybolacak.",
-        btnCancel: "İptal",
-        btnDelete: "Sil",
-        tabAppearance: "Görünüm",
-        tabShortcuts: "Kısayollar",
-        hotkeyNewChat: "Yeni Sohbet",
-        hotkeySearch: "Sohbet Ara",
-        hotkeySidebar: "Yan Paneli Değiştir",
-        hotkeyMock: "Mock Modunu Değiştir",
-        hotkeyExport: "Sohbeti Dışa Aktar",
-        hotkeyEsc: "Pencereleri Kapat / Aramayı Sıfırla",
-        regenerate: "Yanıtı yeniden oluştur",
-        updateAvailable: "Yeni sürüm {version} mevcut! İndirmek için tıklayın.",
-        systemInstructionsTitle: "Sistem Talimatları",
-        systemInstructionsDesc: "Bu sohbetteki yapay zeka davranış kuralları",
-        systemPromptPlaceholder: "Örn.: Sen bir Go geliştiricisisin...",
-        modelSelectLabel: "Yapay Zeka Modeli",
-        tabAdvanced: "Gelişmiş",
-        closeBehaviorLabel: "Pencere kapatma eylemi",
-        closeBehaviorAsk: "Her zaman sor",
-        closeBehaviorMinimize: "Sistem tepsisine küçült",
-        closeBehaviorQuit: "Uygulamadan çık",
-        closeModalTitle: "Küçült mü, Çık mı?",
-        closeModalDesc: "Kapat düğmesine tıklandığında ne yapılacağını seçin.",
-        btnMinimize: "Küçült",
-        btnQuit: "Çık",
-        rememberChoice: "Seçimimi hatırla",
-        editPrompt: "İstemi düzenle",
-        btnSaveSubmit: "Kaydet ve Gönder",
-        genParamsTitle: "Üretim Parametreleri",
-        temperatureLabel: "Sıcaklık (Temperature)",
-        topPLabel: "Top P",
-        topKLabel: "Top K",
-        maxTokensLabel: "Maksimum Jeton",
-        safetyTitle: "Güvenlik Filtreleri",
-        safetyHate: "Nefret Söylemi",
-        safetyHarassment: "Taciz",
-        safetyDangerous: "Tehlikeli İçerik",
-        safetyExplicit: "Cinsel İçerik",
-        safetyBlockNone: "Filtresiz (NONE)",
-        safetyBlockHigh: "Zayıf (Block High)",
-        safetyBlockMedium: "Orta (Block Med+)",
-        safetyBlockLow: "Sıkı (Block Low+)",
-        tooltipTemp: "Rastgeleliği kontrol eder. 0.0 kesin sonuçlar verir (kod/matematik); 1.0-2.0 yaratıcıdır ancak mantık hataları yapabilir.",
-        tooltipTopP: "Olasılık örneklemesi. Düşük değerler odaklanmış, yüksek değerler çeşitli yanıtlar üretir.",
-        tooltipTopK: "Kelime seçimini en olası K kelimeyle sınırlar.",
-        tooltipMaxTokens: "Üretilen yanıtın maksimum jeton (token) sınırı.",
-        tooltipSafety: "İçerik denetim eşiği. NONE sansürü tamamen devre dışı bırakır."
-    }
-};
+import { locales, hljsThemes } from './locales.js';
 
 const state = {
     apiKey: null,
@@ -1495,9 +6,7 @@ const state = {
     chats: [],
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
     chatTags: JSON.parse(localStorage.getItem('chatTags') || '{}'),
-    starredMessages: JSON.parse(localStorage.getItem('starredMessages') || '[]'),
     currentTagChatId: null,
-    searchQuery: '',
     drafts: {},
     pendingAttachments: [],
     isSending: false,
@@ -1507,12 +16,25 @@ const state = {
     currentLoaderId: null,
     charBlurTimer: null,
     savedTimer: null,
+    starredFilter: 'current',
     uiScale: parseInt(localStorage.getItem('uiScale') || '100'),
     accentName: localStorage.getItem('accentName') || 'indigo',
     codeTheme: localStorage.getItem('codeTheme') || 'atom-one-dark',
     language: localStorage.getItem('language') || 'en',
     lastUserPrompt: '',
 };
+
+let mockBookmarks = [
+    {
+        id: 1,
+        message_id: 101,
+        chat_id: 1,
+        chat_title: 'Demo Chat',
+        sender: 'assistant',
+        message_content: 'This is an example bookmarked message from AI in mock mode.',
+        created_at: new Date().toISOString()
+    }
+];
 
 function formatResponseTime(ms) {
     if (ms == null) return null;
@@ -1543,13 +65,9 @@ function formatResponseTime(ms) {
 
 const mockResponses = [
     `Yes, I completely agree with your approach! This is the most efficient technical solution. How else can I help you?`,
-
     `Great question! Here is an example of concurrent channel processing in **Go** using goroutines:\n\n\`\`\`go\npackage main\n\nimport (\n\t"fmt"\n\t"time"\n)\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n\tfor j := range jobs {\n\t\tfmt.Printf("Worker %d started job %d\\n", id, j)\n\t\ttime.Sleep(time.Millisecond * 500)\n\t\tresults <- j * 2\n\t}\n}\n\nfunc main() {\n\tjobs := make(chan int, 100)\n\tresults := make(chan int, 100)\n\n\tfor w := 1; w <= 3; w++ {\n\t\tgo worker(w, jobs, results)\n\t}\n\n\tfor j := 1; j <= 5; j++ {\n\t\tjobs <- j\n\t}\n\tclose(jobs)\n\n\tfor a := 1; a <= 5; a++ {\n\t\t<-results\n\t}\n}\n\`\`\``,
-
     `## System Architecture Overview\n\nDesigning modern client-server applications requires adhering to several key principles:\n\n1. **Layer Isolation (Clean Architecture):** Domain logic should not depend on frameworks or databases.\n2. **Asynchrony & Concurrency:** Utilizing background workers for heavy computations.\n3. **Caching & Persistence:** Preserving state on both client and server.\n\n> "Good code is not about how easy it is to write, but how easy it is to maintain and scale."\n\n* **Pros:** High FPS, low memory footprint.\n* **Cons:** Requires strict application state management.`,
-
     `Here is a ready-to-use profile card component built with **HTML & JavaScript**:\n\n\`\`\`javascript\nclass UserCard extends HTMLElement {\n  constructor() {\n    super();\n    this.attachShadow({ mode: 'open' });\n  }\n\n  connectedCallback() {\n    const name = this.getAttribute('name') || 'Guest';\n    this.shadowRoot.innerHTML = \\\`\n      <style>\n        .card { padding: 1rem; border-radius: 12px; background: #18181b; color: #fff; }\n      </style>\n      <div class="card">\n        <h3>Hello, \\\${name}!</h3>\n      </div>\n    \\\`;\n  }\n}\n\ncustomElements.define('user-card', UserCard);\n\`\`\``,
-
     `Below is a comparison of popular AI models for developers:\n\n| Model | Speed | Code Quality | Context Window |\n| :--- | :---: | :---: | :---: |\n| **Gemini Pro** | High | Excellent | 1M Tokens |\n| **GPT-4o** | Medium | Superior | 128k Tokens |\n| **Claude 3.5** | High | Outstanding | 200k Tokens |\n\nGeneral Recommendations:\n* Use **Gemini** for large documents and rapid prototyping.\n* Use **Claude** for deep refactoring of complex codebases.`
 ];
 
@@ -1560,6 +78,17 @@ const AppAPI = {
         }
         console.warn('[Wails] Running in mock mode for GetChats');
         return [];
+    },
+    searchChats: async (query) => {
+        if (window.go?.bindings?.App?.SearchChats) {
+            return await window.go.bindings.App.SearchChats(query);
+        }
+        if (window.go?.bindings?.App?.SearchChat) {
+            return await window.go.bindings.App.SearchChat(query);
+        }
+        console.warn('[Wails] Running in mock mode for SearchChats');
+        const q = (query || '').toLowerCase();
+        return (state.chats || []).filter(c => (c.title || c.Title || '').toLowerCase().includes(q));
     },
     getModels: async () => {
         if (window.go?.bindings?.App?.GetModels) {
@@ -1686,6 +215,41 @@ const AppAPI = {
         if (window.go?.bindings?.App?.ShowWindow) {
             return await window.go.bindings.App.ShowWindow();
         }
+    },
+    getBookmarks: async () => {
+        if (window.go?.bindings?.App?.GetBookmarks) {
+            return await window.go.bindings.App.GetBookmarks();
+        }
+        console.warn('[Wails] Running in mock mode for GetBookmarks');
+        return [...mockBookmarks];
+    },
+    addBookmark: async (messageId) => {
+        if (window.go?.bindings?.App?.AddBookmark) {
+            return await window.go.bindings.App.AddBookmark(messageId);
+        }
+        console.warn('[Wails] Running in mock mode for AddBookmark');
+        const numId = parseInt(messageId, 10);
+        if (!mockBookmarks.some(b => (b.message_id || b.MessageID) === numId)) {
+            mockBookmarks.push({
+                id: Date.now(),
+                message_id: numId,
+                chat_id: state.activeChatId || 1,
+                chat_title: DOM.currentChatTitle?.textContent || 'Chat',
+                sender: 'assistant',
+                message_content: 'Bookmarked message content',
+                created_at: new Date().toISOString()
+            });
+        }
+        return true;
+    },
+    deleteBookmark: async (messageId) => {
+        if (window.go?.bindings?.App?.DeleteBookmark) {
+            return await window.go.bindings.App.DeleteBookmark(messageId);
+        }
+        console.warn('[Wails] Running in mock mode for DeleteBookmark');
+        const numId = parseInt(messageId, 10);
+        mockBookmarks = mockBookmarks.filter(b => (b.message_id || b.MessageID) !== numId);
+        return true;
     }
 };
 
@@ -1750,6 +314,8 @@ const DOM = {
 
     starredModal: document.getElementById('starred-modal'),
     btnCloseStarredModal: document.getElementById('btn-close-starred-modal'),
+    tabBtnStarredCurrent: document.getElementById('tab-btn-starred-current'),
+    tabBtnStarredAll: document.getElementById('tab-btn-starred-all'),
     starredMessagesList: document.getElementById('starred-messages-list'),
 
     settingsModal: document.getElementById('settings-modal'),
@@ -1871,7 +437,6 @@ function openFilePreview(att) {
         img.className = 'max-w-full max-h-[60vh] rounded-2xl object-contain shadow-lg border border-zinc-800';
         DOM.filePreviewBody.appendChild(img);
     } else {
-        // Декодируем Base64 в читаемый текст для кода/файлов
         let textContent = '';
         try {
             const binaryString = atob(att.data);
@@ -1885,7 +450,7 @@ function openFilePreview(att) {
         }
 
         const pre = document.createElement('pre');
-        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-all';
+        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-words [overflow-wrap:break-word]';
         const code = document.createElement('code');
         code.textContent = textContent;
         pre.appendChild(code);
@@ -2270,8 +835,10 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         if (DOM.searchChatInput && DOM.searchChatInput.value) {
             DOM.searchChatInput.value = '';
-            state.searchQuery = '';
-            renderChatList();
+            AppAPI.getChats().then(chats => {
+                state.chats = chats || [];
+                renderChatList();
+            });
             DOM.searchChatInput.blur();
         }
         DOM.exportModal.classList.add('hidden');
@@ -2477,7 +1044,7 @@ function gatherCurrentConfigFromUI() {
         max_output_tokens: parseInt(DOM.maxTokensInput?.value || 8192, 10),
         safety_hate_speech: DOM.safetyHateSelect?.value || 'NONE',
         safety_harassment: DOM.safetyHarassmentSelect?.value || 'NONE',
-        safety_dangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
+        safetyDangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
         safety_sexually_explicit: DOM.safetyExplicitSelect?.value || 'NONE'
     };
 }
@@ -2575,9 +1142,32 @@ DOM.mockModeToggle.addEventListener('change', (e) => {
     }
 });
 
+let searchDebounceTimer = null;
+let currentSearchRequestId = 0;
+
 DOM.searchChatInput.addEventListener('input', (e) => {
-    state.searchQuery = e.target.value.trim().toLowerCase();
-    renderChatList();
+    const query = e.target.value.trim();
+
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+
+    searchDebounceTimer = setTimeout(async () => {
+        const requestId = ++currentSearchRequestId;
+        try {
+            let foundChats;
+            if (query === '') {
+                foundChats = await AppAPI.getChats();
+                state.chats = foundChats || [];
+            } else {
+                foundChats = await AppAPI.searchChats(query);
+            }
+
+            if (requestId !== currentSearchRequestId) return;
+
+            renderChatList(foundChats || []);
+        } catch (err) {
+            console.error('Search error:', err);
+        }
+    }, 300);
 });
 
 let isScrollTicking = false;
@@ -2600,8 +1190,37 @@ DOM.btnScrollBottom.addEventListener('click', () => {
     scrollToBottom(true);
 });
 
-DOM.btnStarredModal.addEventListener('click', () => {
-    renderStarredMessages();
+function updateStarredTabsUI() {
+    if (!DOM.tabBtnStarredCurrent || !DOM.tabBtnStarredAll) return;
+    if (state.starredFilter === 'current') {
+        DOM.tabBtnStarredCurrent.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnStarredAll.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+    } else {
+        DOM.tabBtnStarredAll.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
+        DOM.tabBtnStarredCurrent.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+    }
+}
+
+if (DOM.tabBtnStarredCurrent) {
+    DOM.tabBtnStarredCurrent.addEventListener('click', async () => {
+        state.starredFilter = 'current';
+        updateStarredTabsUI();
+        await renderStarredMessages();
+    });
+}
+
+if (DOM.tabBtnStarredAll) {
+    DOM.tabBtnStarredAll.addEventListener('click', async () => {
+        state.starredFilter = 'all';
+        updateStarredTabsUI();
+        await renderStarredMessages();
+    });
+}
+
+DOM.btnStarredModal.addEventListener('click', async () => {
+    state.starredFilter = state.activeChatId ? 'current' : 'all';
+    updateStarredTabsUI();
+    await renderStarredMessages();
     DOM.starredModal.classList.remove('hidden');
 });
 
@@ -2822,68 +1441,122 @@ document.querySelectorAll('.btn-tag-preset').forEach(btn => {
     };
 });
 
-function toggleStarMessage(msgObj) {
-    const idx = state.starredMessages.findIndex(s => s.id === msgObj.id);
-    if (idx > -1) {
-        state.starredMessages.splice(idx, 1);
-        showToast(t('starredRemoved'), 'info');
-    } else {
-        state.starredMessages.push(msgObj);
-        showToast(t('starredAdded'), 'info');
-    }
-    localStorage.setItem('starredMessages', JSON.stringify(state.starredMessages));
-}
+async function renderStarredMessages() {
+    DOM.starredMessagesList.innerHTML = '<div class="text-center text-zinc-500 py-8 text-xs">Loading...</div>';
 
-function renderStarredMessages() {
-    DOM.starredMessagesList.innerHTML = '';
-    if (state.starredMessages.length === 0) {
-        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
-        return;
-    }
+    try {
+        const bookmarks = await AppAPI.getBookmarks() || [];
+        DOM.starredMessagesList.innerHTML = '';
 
-    state.starredMessages.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text';
-        div.innerHTML = `
-      <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
-        <span>${item.chatTitle || 'Chat'}</span>
-        <span>${formatMessageTime(item.createdAt)}</span>
-      </div>
-      <div class="markdown-body">${marked.parse(item.content)}</div>
-      <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
-        <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
-        </button>
-        <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-        </button>
-      </div>
-    `;
+        let filteredBookmarks = bookmarks;
+        if (state.starredFilter === 'current' && state.activeChatId) {
+            filteredBookmarks = bookmarks.filter(b => (b.chat_id ?? b.ChatID) === state.activeChatId);
+        }
 
-        div.querySelector('.btn-copy-star-text').onclick = async function() {
-            try {
-                await navigator.clipboard.writeText(item.content);
-                const originalHTML = this.innerHTML;
-                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        if (filteredBookmarks.length === 0) {
+            DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+            return;
+        }
+
+        filteredBookmarks.forEach(item => {
+            const messageId = item.message_id ?? item.MessageID;
+            const targetChatId = item.chat_id ?? item.ChatID;
+            const chatTitle = item.chat_title || item.ChatTitle || 'Chat';
+            const createdAt = item.created_at || item.CreatedAt;
+            const sender = (item.sender || item.Sender || 'assistant').toLowerCase();
+            const content = item.message_content || item.MessageContent || '';
+
+            const div = document.createElement('div');
+            div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text animate-fade-in';
+            div.setAttribute('data-starred-message-id', messageId);
+
+            div.innerHTML = `
+              <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[9px] font-bold text-accent">${sender === 'user' ? 'YOU' : 'AI'}</span>
+                  <span class="truncate max-w-[200px]">${chatTitle}</span>
+                </div>
+                <span>${formatMessageTime(createdAt)}</span>
+              </div>
+              <div class="markdown-body">${marked.parse(content)}</div>
+              <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
+                <button class="btn-goto-star-msg p-1.5 text-zinc-500 hover:text-indigo-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('goToMessage')}">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-3a3 3 0 100 6 3 3 0 000-6z"/>
+                  </svg>
+                </button>
+                <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                </button>
+                <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </button>
+              </div>
+            `;
+
+            div.querySelector('.btn-goto-star-msg').onclick = async () => {
+                DOM.starredModal.classList.add('hidden');
+
+                if (targetChatId && targetChatId !== state.activeChatId) {
+                    await selectChat(targetChatId);
+                }
+
                 setTimeout(() => {
-                    this.innerHTML = originalHTML;
-                }, 2000);
-            } catch (err) {
-                console.error('Copy error:', err);
-            }
-        };
+                    const msgEl = DOM.messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
+                    if (msgEl) {
+                        msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        msgEl.classList.add('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-zinc-950', 'transition-all', 'duration-500');
+                        setTimeout(() => {
+                            msgEl.classList.remove('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-zinc-950', 'transition-all', 'duration-500');
+                        }, 2000);
+                    }
+                }, 150);
+            };
 
-        div.querySelector('.btn-unstar-item').onclick = () => {
-            toggleStarMessage(item);
-            renderStarredMessages();
-            renderChatList();
-            if (state.activeChatId) {
-                loadMessages(state.activeChatId);
-            }
-        };
+            div.querySelector('.btn-copy-star-text').onclick = async function() {
+                try {
+                    await navigator.clipboard.writeText(content);
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy error:', err);
+                }
+            };
 
-        DOM.starredMessagesList.appendChild(div);
-    });
+            div.querySelector('.btn-unstar-item').onclick = async () => {
+                try {
+                    await AppAPI.deleteBookmark(messageId);
+                    showToast(t('starredRemoved'), 'info');
+                    div.remove();
+                    if (DOM.starredMessagesList.children.length === 0) {
+                        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+                    }
+
+                    const chatMsg = DOM.messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
+                    if (chatMsg) {
+                        const starBtn = chatMsg.querySelector('.btn-star-msg');
+                        if (starBtn) {
+                            starBtn.classList.remove('text-amber-400');
+                            const svg = starBtn.querySelector('svg');
+                            if (svg) svg.setAttribute('fill', 'none');
+                        }
+                    }
+                } catch (err) {
+                    showToast('Error removing bookmark', 'error');
+                    console.error('Delete bookmark error:', err);
+                }
+            };
+
+            DOM.starredMessagesList.appendChild(div);
+        });
+    } catch (err) {
+        console.error('Bookmarks load error:', err);
+        DOM.starredMessagesList.innerHTML = `<div class="text-center text-rose-400 py-8 text-xs">Error loading bookmarks</div>`;
+    }
 }
 
 function downloadFile(content, filename, type) {
@@ -3006,12 +1679,12 @@ DOM.btnToggleApiKey.addEventListener('click', () => {
     const iconClosed = DOM.btnToggleApiKey.querySelector('#icon-eye-closed');
 
     if (isPassword) {
-            iconOpen.classList.add('hidden');
-            iconClosed.classList.remove('hidden');
-        } else {
-            iconOpen.classList.remove('hidden');
-            iconClosed.classList.add('hidden');
-        }
+        iconOpen.classList.add('hidden');
+        iconClosed.classList.remove('hidden');
+    } else {
+        iconOpen.classList.remove('hidden');
+        iconClosed.classList.add('hidden');
+    }
 });
 
 DOM.btnLogout.addEventListener('click', () => {
@@ -3193,17 +1866,10 @@ function togglePinChat(chatId, e) {
     renderChatList();
 }
 
-function renderChatList() {
+function renderChatList(customList = null) {
     DOM.chatList.innerHTML = '';
 
-    let list = [...state.chats];
-
-    if (state.searchQuery) {
-        list = list.filter(chat => {
-            const title = (chat.title || chat.Title || '').toLowerCase();
-            return title.includes(state.searchQuery);
-        });
-    }
+    const list = customList !== null ? customList : state.chats;
 
     const pinned = [];
     const unpinned = [];
@@ -3335,8 +2001,12 @@ async function selectChat(chatId) {
         DOM.toppSlider.value = cfg.topP;
         if (DOM.toppVal) DOM.toppVal.textContent = parseFloat(cfg.topP).toFixed(2);
     }
-    if (DOM.topkInput) DOM.topkInput.value = cfg.topK;
-    if (DOM.maxTokensInput) DOM.maxTokensInput.value = cfg.maxOutputTokens;
+    if (DOM.topkInput) {
+        DOM.topkInput.value = cfg.topK;
+    }
+    if (DOM.maxTokensInput) {
+        DOM.maxTokensInput.value = cfg.maxOutputTokens;
+    }
 
     if (DOM.safetyHateSelect) DOM.safetyHateSelect.value = cfg.safetyHateSpeech;
     if (DOM.safetyHarassmentSelect) DOM.safetyHarassmentSelect.value = cfg.safetyHarassment;
@@ -3367,17 +2037,24 @@ async function loadMessages(chatId) {
     DOM.messagesContainer.innerHTML = '';
 
     try {
-        const messages = await AppAPI.getMessages(chatId);
+        const [messages, bookmarks] = await Promise.all([
+            AppAPI.getMessages(chatId),
+            AppAPI.getBookmarks()
+        ]);
 
         if (!messages || messages.length === 0) {
             DOM.messagesContainer.appendChild(DOM.emptyState);
             return;
         }
 
+        const bookmarkedIds = new Set((bookmarks || []).map(b => Number(b.message_id ?? b.MessageID)));
+
         messages.forEach((msg, idx) => {
             const role = msg.role || msg.Role;
             const content = msg.content || msg.Content;
             const attachments = msg.attachments || msg.Attachments || [];
+            const msgId = msg.id ?? msg.ID ?? null;
+            const isBookmarked = msgId ? bookmarkedIds.has(Number(msgId)) : false;
 
             if (role === 'user') {
                 state.lastUserPrompt = content;
@@ -3391,7 +2068,9 @@ async function loadMessages(chatId) {
                 formatResponseTime(msg.duration || msg.Duration || null),
                 false,
                 isLastInChat,
-                attachments
+                attachments,
+                msgId,
+                isBookmarked
             );
         });
         scrollToBottom(false);
@@ -3495,8 +2174,8 @@ function processCodeBlocks(container) {
     });
 }
 
-function appendEmptyAIMessageUI(createdAt = new Date().toISOString()) {
-    return appendMessageUI('assistant', '', createdAt, null, false, true);
+function appendEmptyAIMessageUI(createdAt = new Date().toISOString(), messageId = null) {
+    return appendMessageUI('assistant', '', createdAt, null, false, true, [], messageId, false);
 }
 
 function updateAIMessageContent(wrapper, content, duration = null) {
@@ -3519,7 +2198,7 @@ function updateAIMessageContent(wrapper, content, duration = null) {
     textBody.innerHTML = marked.parse(content) + renderFooter();
 }
 
-function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false, attachments = []) {
+function appendMessageUI(role, content, createdAt, duration = null, isAborted = false, isLastInChat = false, attachments = [], messageId = null, isStarred = false) {
     if (DOM.messagesContainer.contains(DOM.emptyState)) {
         DOM.messagesContainer.removeChild(DOM.emptyState);
     }
@@ -3532,12 +2211,9 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     wrapper.setAttribute('data-role', role);
     wrapper.setAttribute('data-created-at', createdAt);
     wrapper.setAttribute('data-raw-content', encodeURIComponent(content || ''));
-
-    const msgId = `${state.activeChatId}_${createdAt}_${(content || '').substring(0, 20)}`;
-    const isStarred = state.starredMessages.some(s => s.id === msgId);
-
-    const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
-    const chatTitle = currentChat ? (currentChat.title || currentChat.Title || 'Chat') : 'Chat';
+    if (messageId) {
+        wrapper.setAttribute('data-message-id', messageId);
+    }
 
     const renderFooter = () => `
       <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
@@ -3555,11 +2231,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
         <div class="msg-box select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-words max-w-full [overflow-wrap:break-word]'
             : 'text-zinc-200 markdown-body w-full'
     }">
           <div class="msg-attachments-container hidden flex flex-wrap gap-2 mb-2.5"></div>
-          <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
+          <div class="markdown-text-body break-words w-full max-w-full [overflow-wrap:break-word]"></div>
         </div>
 
         <div class="msg-actions flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -3634,7 +2310,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             const editBox = document.createElement('div');
             editBox.className = 'w-full flex flex-col gap-2 my-1 items-end';
             editBox.innerHTML = `
-              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:anywhere]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:break-word]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
               <div class="flex items-center gap-2">
                 <button class="btn-cancel-edit px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-full text-xs font-medium transition-colors">${t('btnCancel')}</button>
                 <button class="btn-save-edit px-3.5 py-1.5 bg-accent bg-accent-hover text-white rounded-full text-xs font-medium transition-colors shadow-md">${t('btnSaveSubmit')}</button>
@@ -3718,13 +2394,42 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     const starBtn = wrapper.querySelector('.btn-star-msg');
     if (starBtn) {
-        starBtn.onclick = () => {
-            const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
-            toggleStarMessage({ id: msgId, chatId: state.activeChatId, chatTitle, content: currentRaw, createdAt, role });
-            const nowStarred = state.starredMessages.some(s => s.id === msgId);
-            starBtn.className = `btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${nowStarred ? 'text-amber-400' : ''}`;
-            const svg = starBtn.querySelector('svg');
-            if (svg) svg.setAttribute('fill', nowStarred ? 'currentColor' : 'none');
+        starBtn.onclick = async () => {
+            let currentMsgId = parseInt(wrapper.getAttribute('data-message-id'), 10);
+            if (!currentMsgId || isNaN(currentMsgId)) {
+                showToast("Please wait, saving message...", "info");
+                return;
+            }
+
+            const isCurrentlyStarred = starBtn.classList.contains('text-amber-400');
+
+            const setStarredUI = (active) => {
+                if (active) {
+                    starBtn.classList.add('text-amber-400');
+                    const svg = starBtn.querySelector('svg');
+                    if (svg) svg.setAttribute('fill', 'currentColor');
+                } else {
+                    starBtn.classList.remove('text-amber-400');
+                    const svg = starBtn.querySelector('svg');
+                    if (svg) svg.setAttribute('fill', 'none');
+                }
+            };
+
+            setStarredUI(!isCurrentlyStarred);
+
+            try {
+                if (isCurrentlyStarred) {
+                    await AppAPI.deleteBookmark(currentMsgId);
+                    showToast(t('starredRemoved'), 'info');
+                } else {
+                    await AppAPI.addBookmark(currentMsgId);
+                    showToast(t('starredAdded'), 'info');
+                }
+            } catch (err) {
+                console.error('Bookmark toggle error:', err);
+                setStarredUI(isCurrentlyStarred);
+                showToast(isCurrentlyStarred ? 'Error removing bookmark' : 'Error adding bookmark', 'error');
+            }
         };
     }
 
@@ -3900,6 +2605,8 @@ async function triggerAIGeneration(prompt, isRegenerate = false, attachments = [
                 triggerSavedStatus();
                 debouncedRenderScrollbarMarkers();
             }
+
+            await loadMessages(targetChatId);
         }
     } catch (err) {
         if (!state.isAborted) {

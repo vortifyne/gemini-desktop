@@ -1,3 +1,7 @@
+# Nixos files
+*.nix
+.envrc
+
 # Database
 *.accdb
 *.db

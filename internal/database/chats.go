@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/vortifyne/gemini-desktop/internal/domain"
@@ -40,7 +41,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			id,
 			title,
 			COALESCE(system_prompt, ''),
-			COALESCE(model_name, 'gemini-2.0-flash'),
+			COALESCE(model_name, 'gemini-3.6-flash'),
 			COALESCE(temperature, 0.7),
 			COALESCE(top_p, 0.95),
 			COALESCE(top_k, 40),
@@ -51,7 +52,8 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			COALESCE(safety_sexually_explicit,'NONE'),
 			created_at
 		FROM chats
-		ORDER BY created_at DESC, id DESC`)
+		ORDER BY created_at DESC, id DESC`,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("GetChats.QueryContext(): %w", err)
 	}
@@ -61,8 +63,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 		}
 	}()
 
-	var chats []domain.Chat
-
+	chats := make([]domain.Chat, 0)
 	for rows.Next() {
 		var c domain.Chat
 
@@ -79,7 +80,8 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 			&c.SafetyHarassment,
 			&c.SafetyDangerousContent,
 			&c.SafetySexuallyExplicit,
-			&c.CreatedAt); err != nil {
+			&c.CreatedAt,
+		); err != nil {
 			return nil, fmt.Errorf("Rows.Next() iterations: %w", err)
 		}
 
@@ -88,7 +90,7 @@ func (s *Storage) GetChats() ([]domain.Chat, error) {
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("connection interrupted after rows.Next() iterations: %w", err)
+		return nil, fmt.Errorf("connection interrupted on iteration: %w", err)
 	}
 
 	return chats, nil
@@ -200,4 +202,75 @@ func (s *Storage) UpdateChatConfiguration(chatID int64, cfg domain.ChatConfig) e
 	}
 
 	return nil
+}
+
+func (s *Storage) SearchChat(chatTitle string) ([]domain.Chat, error) {
+	trimmed := strings.TrimSpace(chatTitle)
+	if trimmed == "" {
+		return s.GetChats()
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	substr := "%" + trimmed + "%"
+	rows, err := s.db.QueryContext(ctx, `
+		SELECT 
+			id,
+			COALESCE(title, ''),
+			COALESCE(system_prompt, ''),
+			COALESCE(model_name, 'gemini-3.6-flash'),
+			COALESCE(temperature, 0.7),
+			COALESCE(top_p, 0.95),
+			COALESCE(top_k, 40),
+			COALESCE(max_output_tokens, 8192),
+			COALESCE(safety_hate_speech, 'NONE'),
+			COALESCE(safety_harassment, 'NONE'),
+			COALESCE(safety_dangerous_content, 'NONE'),
+			COALESCE(safety_sexually_explicit, 'NONE'),
+			created_at
+		FROM chats
+		WHERE title LIKE ?
+		ORDER BY created_at, id DESC;
+		`, substr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to search chats by chat title %w", err)
+	}
+	defer func() {
+		if err = rows.Close(); err != nil {
+			fmt.Errorf("failed to close rows")
+		}
+	}()
+
+	foundChats := make([]domain.Chat, 0)
+	for rows.Next() {
+		var c domain.Chat
+
+		if err := rows.Scan(
+			&c.ID,
+			&c.Title,
+			&c.SystemPrompt,
+			&c.ModelName,
+			&c.Temperature,
+			&c.TopP,
+			&c.TopK,
+			&c.MaxOutputTokens,
+			&c.SafetyHateSpeech,
+			&c.SafetyHarassment,
+			&c.SafetyDangerousContent,
+			&c.SafetySexuallyExplicit,
+			&c.CreatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan chat row: %w", err)
+		}
+
+		c.ApplyDefaults()
+		foundChats = append(foundChats, c)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error during chats search iteration: %w", err)
+	}
+
+	return foundChats, nil
 }

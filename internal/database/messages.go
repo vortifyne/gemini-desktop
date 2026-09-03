@@ -90,7 +90,7 @@ func (s *Storage) GetMessages(chatID int64) ([]domain.Message, error) {
 	}()
 
 	// Extract all data from query msgRows to messages slice
-	var msgs []domain.Message
+	msgs := make([]domain.Message, 0)
 
 	for msgRows.Next() {
 		var msg domain.Message
