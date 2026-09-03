@@ -38,3 +38,7 @@ func (a *App) UpdateChatModel(chatID int64, modelName string) error {
 func (a *App) UpdateChatConfiguration(chatID int64, cfg domain.ChatConfig) error {
 	return a.storage.UpdateChatConfiguration(chatID, cfg)
 }
+
+func (a *App) SearchChat(chatTitle string) ([]domain.Chat, error) {
+	return a.storage.SearchChat(chatTitle)
+}

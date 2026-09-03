@@ -26,6 +26,8 @@ export function QuitApp():Promise<void>;
 
 export function RegenerateResponse(arg1:number,arg2:domain.AIParameter,arg3:Array<domain.Attachment>):Promise<string>;
 
+export function SearchChat(arg1:string):Promise<Array<domain.Chat>>;
+
 export function SendMessageToAI(arg1:number,arg2:domain.AIParameter,arg3:Array<domain.Attachment>):Promise<string>;
 
 export function SetApiKey(arg1:string):Promise<boolean>;

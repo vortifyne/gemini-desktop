@@ -201,3 +201,104 @@ func TestChatCRUD(t *testing.T) {
 		t.Fatalf("Expected 0 messages for deleted chat, got %d", len(deletedChatMsgs))
 	}
 }
+
+func TestSearchChat(t *testing.T) {
+	storage := setupTestDB(t)
+	defer func() { _ = storage.Close() }()
+
+	id1, err := storage.CreateChat("Golang Microservices")
+	if err != nil {
+		t.Fatalf("Failed to create chat 1: %v", err)
+	}
+
+	id2, err := storage.CreateChat("React Frontend SPA")
+	if err != nil {
+		t.Fatalf("Failed to create chat 2: %v", err)
+	}
+
+	id3, err := storage.CreateChat("Advanced Golang Concurrency")
+	if err != nil {
+		t.Fatalf("Failed to create chat 3: %v", err)
+	}
+
+	t.Run("Empty and whitespace queries return all chats", func(t *testing.T) {
+		for _, q := range []string{"", "   ", "\t\n"} {
+			chats, err := storage.SearchChat(q)
+			if err != nil {
+				t.Fatalf("SearchChat(%q) returned error: %v", q, err)
+			}
+			if len(chats) != 3 {
+				t.Fatalf("SearchChat(%q) expected 3 chats, got %d", q, len(chats))
+			}
+		}
+	})
+
+	t.Run("Substring matching", func(t *testing.T) {
+		chats, err := storage.SearchChat("Frontend")
+		if err != nil {
+			t.Fatalf("SearchChat('Frontend') returned error: %v", err)
+		}
+		if len(chats) != 1 {
+			t.Fatalf("Expected 1 result for 'Frontend', got %d", len(chats))
+		}
+		if chats[0].ID != id2 {
+			t.Fatalf("Expected chat ID %d, got %d", id2, chats[0].ID)
+		}
+	})
+
+	t.Run("Case-insensitive search and ordering (DESC)", func(t *testing.T) {
+		for _, q := range []string{"golang", "GOLANG", "GoLaNg", "  golang  "} {
+			chats, err := storage.SearchChat(q)
+			if err != nil {
+				t.Fatalf("SearchChat(%q) returned error: %v", q, err)
+			}
+			if len(chats) != 2 {
+				t.Fatalf("SearchChat(%q) expected 2 chats, got %d", q, len(chats))
+			}
+
+			if chats[0].ID != id3 {
+				t.Errorf("SearchChat(%q) sorting error: expected chat ID %d first, got %d", q, id3, chats[0].ID)
+			}
+			if chats[1].ID != id1 {
+				t.Errorf("SearchChat(%q) sorting error: expected chat ID %d second, got %d", q, id1, chats[1].ID)
+			}
+		}
+	})
+
+	t.Run("No matching chats returns empty slice", func(t *testing.T) {
+		chats, err := storage.SearchChat("NonExistentKeywordXYZ")
+		if err != nil {
+			t.Fatalf("SearchChat for non-existent query returned error: %v", err)
+		}
+		if chats == nil {
+			t.Fatalf("SearchChat returned nil slice instead of empty slice make([]Chat, 0)")
+		}
+		if len(chats) != 0 {
+			t.Fatalf("Expected 0 chats, got %d", len(chats))
+		}
+	})
+
+	t.Run("Resilience to NULL fields in matching records", func(t *testing.T) {
+		_, err := storage.db.Exec("INSERT INTO chats (title, temperature, top_p) VALUES ('Special Legacy NULL Chat', NULL, NULL)")
+		if err != nil {
+			t.Fatalf("Failed to insert NULL test row: %v", err)
+		}
+
+		chats, err := storage.SearchChat("Legacy NULL")
+		if err != nil {
+			t.Fatalf("SearchChat failed on record with NULL fields: %v", err)
+		}
+		if len(chats) != 1 {
+			t.Fatalf("Expected 1 match for NULL chat, got %d", len(chats))
+		}
+		if chats[0].Temperature != 0.7 {
+			t.Errorf("COALESCE failed for Temperature: expected 0.7, got %f", chats[0].Temperature)
+		}
+		if chats[0].TopP != 0.95 {
+			t.Errorf("COALESCE failed for TopP: expected 0.95, got %f", chats[0].TopP)
+		}
+		if chats[0].SystemPrompt != "" {
+			t.Errorf("COALESCE failed for SystemPrompt: expected empty string, got %s", chats[0].SystemPrompt)
+		}
+	})
+}

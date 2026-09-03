@@ -7,7 +7,6 @@ const state = {
     pinnedChatIds: JSON.parse(localStorage.getItem('pinnedChatIds') || '[]'),
     chatTags: JSON.parse(localStorage.getItem('chatTags') || '{}'),
     currentTagChatId: null,
-    searchQuery: '',
     drafts: {},
     pendingAttachments: [],
     isSending: false,
@@ -79,6 +78,17 @@ const AppAPI = {
         }
         console.warn('[Wails] Running in mock mode for GetChats');
         return [];
+    },
+    searchChats: async (query) => {
+        if (window.go?.bindings?.App?.SearchChats) {
+            return await window.go.bindings.App.SearchChats(query);
+        }
+        if (window.go?.bindings?.App?.SearchChat) {
+            return await window.go.bindings.App.SearchChat(query);
+        }
+        console.warn('[Wails] Running in mock mode for SearchChats');
+        const q = (query || '').toLowerCase();
+        return (state.chats || []).filter(c => (c.title || c.Title || '').toLowerCase().includes(q));
     },
     getModels: async () => {
         if (window.go?.bindings?.App?.GetModels) {
@@ -440,7 +450,7 @@ function openFilePreview(att) {
         }
 
         const pre = document.createElement('pre');
-        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-all';
+        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-words [overflow-wrap:break-word]';
         const code = document.createElement('code');
         code.textContent = textContent;
         pre.appendChild(code);
@@ -825,8 +835,10 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         if (DOM.searchChatInput && DOM.searchChatInput.value) {
             DOM.searchChatInput.value = '';
-            state.searchQuery = '';
-            renderChatList();
+            AppAPI.getChats().then(chats => {
+                state.chats = chats || [];
+                renderChatList();
+            });
             DOM.searchChatInput.blur();
         }
         DOM.exportModal.classList.add('hidden');
@@ -1032,7 +1044,7 @@ function gatherCurrentConfigFromUI() {
         max_output_tokens: parseInt(DOM.maxTokensInput?.value || 8192, 10),
         safety_hate_speech: DOM.safetyHateSelect?.value || 'NONE',
         safety_harassment: DOM.safetyHarassmentSelect?.value || 'NONE',
-        safety_dangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
+        safetyDangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
         safety_sexually_explicit: DOM.safetyExplicitSelect?.value || 'NONE'
     };
 }
@@ -1130,9 +1142,32 @@ DOM.mockModeToggle.addEventListener('change', (e) => {
     }
 });
 
+let searchDebounceTimer = null;
+let currentSearchRequestId = 0;
+
 DOM.searchChatInput.addEventListener('input', (e) => {
-    state.searchQuery = e.target.value.trim().toLowerCase();
-    renderChatList();
+    const query = e.target.value.trim();
+
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+
+    searchDebounceTimer = setTimeout(async () => {
+        const requestId = ++currentSearchRequestId;
+        try {
+            let foundChats;
+            if (query === '') {
+                foundChats = await AppAPI.getChats();
+                state.chats = foundChats || [];
+            } else {
+                foundChats = await AppAPI.searchChats(query);
+            }
+
+            if (requestId !== currentSearchRequestId) return;
+
+            renderChatList(foundChats || []);
+        } catch (err) {
+            console.error('Search error:', err);
+        }
+    }, 300);
 });
 
 let isScrollTicking = false;
@@ -1831,17 +1866,10 @@ function togglePinChat(chatId, e) {
     renderChatList();
 }
 
-function renderChatList() {
+function renderChatList(customList = null) {
     DOM.chatList.innerHTML = '';
 
-    let list = [...state.chats];
-
-    if (state.searchQuery) {
-        list = list.filter(chat => {
-            const title = (chat.title || chat.Title || '').toLowerCase();
-            return title.includes(state.searchQuery);
-        });
-    }
+    const list = customList !== null ? customList : state.chats;
 
     const pinned = [];
     const unpinned = [];
@@ -1973,8 +2001,12 @@ async function selectChat(chatId) {
         DOM.toppSlider.value = cfg.topP;
         if (DOM.toppVal) DOM.toppVal.textContent = parseFloat(cfg.topP).toFixed(2);
     }
-    if (DOM.topkInput) DOM.topkInput.value = cfg.topK;
-    if (DOM.maxTokensInput) DOM.maxTokensInput.value = cfg.maxOutputTokens;
+    if (DOM.topkInput) {
+        DOM.topkInput.value = cfg.topK;
+    }
+    if (DOM.maxTokensInput) {
+        DOM.maxTokensInput.value = cfg.maxOutputTokens;
+    }
 
     if (DOM.safetyHateSelect) DOM.safetyHateSelect.value = cfg.safetyHateSpeech;
     if (DOM.safetyHarassmentSelect) DOM.safetyHarassmentSelect.value = cfg.safetyHarassment;
@@ -2199,11 +2231,11 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
         <div class="msg-box select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-all max-w-full [overflow-wrap:anywhere]'
+            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-words max-w-full [overflow-wrap:break-word]'
             : 'text-zinc-200 markdown-body w-full'
     }">
           <div class="msg-attachments-container hidden flex flex-wrap gap-2 mb-2.5"></div>
-          <div class="markdown-text-body break-words w-full break-all max-w-full [overflow-wrap:anywhere]"></div>
+          <div class="markdown-text-body break-words w-full max-w-full [overflow-wrap:break-word]"></div>
         </div>
 
         <div class="msg-actions flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -2278,7 +2310,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             const editBox = document.createElement('div');
             editBox.className = 'w-full flex flex-col gap-2 my-1 items-end';
             editBox.innerHTML = `
-              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:anywhere]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:break-word]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
               <div class="flex items-center gap-2">
                 <button class="btn-cancel-edit px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-full text-xs font-medium transition-colors">${t('btnCancel')}</button>
                 <button class="btn-save-edit px-3.5 py-1.5 bg-accent bg-accent-hover text-white rounded-full text-xs font-medium transition-colors shadow-md">${t('btnSaveSubmit')}</button>

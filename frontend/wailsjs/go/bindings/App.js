@@ -50,6 +50,10 @@ export function RegenerateResponse(arg1, arg2, arg3) {
   return window['go']['bindings']['App']['RegenerateResponse'](arg1, arg2, arg3);
 }
 
+export function SearchChat(arg1) {
+  return window['go']['bindings']['App']['SearchChat'](arg1);
+}
+
 export function SendMessageToAI(arg1, arg2, arg3) {
   return window['go']['bindings']['App']['SendMessageToAI'](arg1, arg2, arg3);
 }
