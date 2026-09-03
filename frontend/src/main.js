@@ -1,3 +1,4 @@
+
 import { locales, hljsThemes } from './locales.js';
 
 const state = {
@@ -67,7 +68,7 @@ const mockResponses = [
     `Yes, I completely agree with your approach! This is the most efficient technical solution. How else can I help you?`,
     `Great question! Here is an example of concurrent channel processing in **Go** using goroutines:\n\n\`\`\`go\npackage main\n\nimport (\n\t"fmt"\n\t"time"\n)\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n\tfor j := range jobs {\n\t\tfmt.Printf("Worker %d started job %d\\n", id, j)\n\t\ttime.Sleep(time.Millisecond * 500)\n\t\tresults <- j * 2\n\t}\n}\n\nfunc main() {\n\tjobs := make(chan int, 100)\n\tresults := make(chan int, 100)\n\n\tfor w := 1; w <= 3; w++ {\n\t\tgo worker(w, jobs, results)\n\t}\n\n\tfor j := 1; j <= 5; j++ {\n\t\tjobs <- j\n\t}\n\tclose(jobs)\n\n\tfor a := 1; a <= 5; a++ {\n\t\t<-results\n\t}\n}\n\`\`\``,
     `## System Architecture Overview\n\nDesigning modern client-server applications requires adhering to several key principles:\n\n1. **Layer Isolation (Clean Architecture):** Domain logic should not depend on frameworks or databases.\n2. **Asynchrony & Concurrency:** Utilizing background workers for heavy computations.\n3. **Caching & Persistence:** Preserving state on both client and server.\n\n> "Good code is not about how easy it is to write, but how easy it is to maintain and scale."\n\n* **Pros:** High FPS, low memory footprint.\n* **Cons:** Requires strict application state management.`,
-    `Here is a ready-to-use profile card component built with **HTML & JavaScript**:\n\n\`\`\`javascript\nclass UserCard extends HTMLElement {\n  constructor() {\n    super();\n    this.attachShadow({ mode: 'open' });\n  }\n\n  connectedCallback() {\n    const name = this.getAttribute('name') || 'Guest';\n    this.shadowRoot.innerHTML = \\\`\n      <style>\n        .card { padding: 1rem; border-radius: 12px; background: #18181b; color: #fff; }\n      </style>\n      <div class="card">\n        <h3>Hello, \\\${name}!</h3>\n      </div>\n    \\\`;\n  }\n}\n\ncustomElements.define('user-card', UserCard);\n\`\`\``,
+    `Here is a ready-to-use profile card component built with **HTML & JavaScript**:\n\n\`\`\`javascript\nclass UserCard extends HTMLElement {\n  constructor() {\n    super();\n    this.attachShadow({ mode: 'open' });\n  }\n\n  connectedCallback() {\n    const name = this.getAttribute('name') || 'Guest';\n    this.shadowRoot.innerHTML = \\\`\n      <style>\n        .card { padding: 1rem; border-radius: 12px; background: #1e1f20; color: #f0f4f9; }\n      </style>\n      <div class="card">\n        <h3>Hello, \\\${name}!</h3>\n      </div>\n    \\\`;\n  }\n}\n\ncustomElements.define('user-card', UserCard);\n\`\`\``,
     `Below is a comparison of popular AI models for developers:\n\n| Model | Speed | Code Quality | Context Window |\n| :--- | :---: | :---: | :---: |\n| **Gemini Pro** | High | Excellent | 1M Tokens |\n| **GPT-4o** | Medium | Superior | 128k Tokens |\n| **Claude 3.5** | High | Outstanding | 200k Tokens |\n\nGeneral Recommendations:\n* Use **Gemini** for large documents and rapid prototyping.\n* Use **Claude** for deep refactoring of complex codebases.`
 ];
 
@@ -394,11 +395,11 @@ function showToast(message, type = 'info', duration = 5000) {
     DOM.toastMessage.textContent = message;
 
     if (type === 'error') {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-rose-950 border border-rose-500/40 text-rose-200 px-6 py-3 rounded-full shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-[#3a1d1d] border border-rose-500/30 text-rose-200 px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconError.classList.remove('hidden');
         DOM.toastIconInfo.classList.add('hidden');
     } else {
-        DOM.toastBox.className = 'flex items-center gap-3 bg-zinc-900 border border-zinc-700/80 text-zinc-200 px-6 py-3 rounded-full shadow-2xl';
+        DOM.toastBox.className = 'flex items-center gap-3 bg-[#282a2c] border border-[#37393b] text-[#f0f4f9] px-6 py-3 rounded-full shadow-2xl';
         DOM.toastIconInfo.classList.remove('hidden');
         DOM.toastIconError.classList.add('hidden');
     }
@@ -414,7 +415,7 @@ function showToast(message, type = 'info', duration = 5000) {
 
         if (DOM.toastBox) {
             DOM.toastBox.onclick = null;
-            DOM.toastBox.classList.remove('cursor-pointer', 'hover:border-indigo-500');
+            DOM.toastBox.classList.remove('cursor-pointer', 'hover:border-accent');
         }
     }, duration);
 }
@@ -434,7 +435,7 @@ function openFilePreview(att) {
     if (isImage) {
         const img = document.createElement('img');
         img.src = `data:${att.mime_type};base64,${att.data}`;
-        img.className = 'max-w-full max-h-[60vh] rounded-2xl object-contain shadow-lg border border-zinc-800';
+        img.className = 'max-w-full max-h-[60vh] rounded-2xl object-contain shadow-lg border border-[#313335]';
         DOM.filePreviewBody.appendChild(img);
     } else {
         let textContent = '';
@@ -450,7 +451,7 @@ function openFilePreview(att) {
         }
 
         const pre = document.createElement('pre');
-        pre.className = 'w-full bg-zinc-950 p-4 rounded-2xl text-xs font-mono text-zinc-200 overflow-x-auto custom-scrollbar border border-zinc-800/80 max-h-[60vh] select-text whitespace-pre-wrap break-words [overflow-wrap:break-word]';
+        pre.className = 'w-full bg-[#131314] p-4 rounded-2xl text-xs font-mono text-[#e3e3e3] overflow-x-auto custom-scrollbar border border-[#313335] max-h-[60vh] select-text whitespace-pre-wrap break-words [overflow-wrap:break-word]';
         const code = document.createElement('code');
         code.textContent = textContent;
         pre.appendChild(code);
@@ -494,17 +495,17 @@ function renderAttachmentsPreview() {
 
     state.pendingAttachments.forEach((att, index) => {
         const badge = document.createElement('div');
-        badge.className = 'inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-200 animate-fade-in shadow-md max-w-xs select-none cursor-pointer hover:border-zinc-700 hover:bg-zinc-800/80 transition-all';
+        badge.className = 'inline-flex items-center gap-2 px-3 py-1.5 bg-[#282a2c] border border-[#37393b] rounded-xl text-xs text-[#e3e3e3] animate-fade-in shadow-md max-w-xs select-none cursor-pointer hover:border-[#444746] hover:bg-[#333538] transition-all';
 
         const isImage = att.mime_type.startsWith('image/');
         const iconSvg = isImage
             ? `<svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`
-            : `<svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+            : `<svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
 
         badge.innerHTML = `
             ${iconSvg}
             <span class="truncate max-w-[140px]" title="${att.file_name}">${att.file_name}</span>
-            <button type="button" class="btn-remove-att p-0.5 text-zinc-500 hover:text-rose-400 rounded-full transition-colors shrink-0" title="Remove">
+            <button type="button" class="btn-remove-att p-0.5 text-[#8e918f] hover:text-rose-300 rounded-full transition-colors shrink-0" title="Remove">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         `;
@@ -746,7 +747,7 @@ function renderScrollbarMarkers() {
         dot.style.top = `${pct}%`;
 
         dot.innerHTML = `
-            <div class="prompt-marker-tooltip bg-zinc-900 border border-zinc-700/80 rounded-xl p-2 shadow-2xl text-[11px] text-zinc-200 max-w-[220px] truncate">
+            <div class="prompt-marker-tooltip bg-[#1e1f20] border border-[#313335] rounded-xl p-2 shadow-2xl text-[11px] text-[#f0f4f9] max-w-[220px] truncate">
                 ${displayTxt.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
             </div>
         `;
@@ -799,11 +800,11 @@ function setupCollapseUserMsg(wrapper, content) {
         msgBox.classList.add('max-h-[140px]', 'overflow-hidden', 'relative');
 
         const overlay = document.createElement('div');
-        overlay.className = 'msg-gradient-overlay absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-zinc-800 to-transparent pointer-events-none rounded-b-[28px]';
+        overlay.className = 'msg-gradient-overlay absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#282a2c] to-transparent pointer-events-none rounded-b-[24px]';
         msgBox.appendChild(overlay);
 
         const expandBtn = document.createElement('button');
-        expandBtn.className = 'btn-expand-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center';
+        expandBtn.className = 'btn-expand-msg p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#333538] transition-all rounded-full flex items-center justify-center';
         expandBtn.title = 'Expand / Collapse';
         expandBtn.innerHTML = `<svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
 
@@ -910,8 +911,8 @@ DOM.settingsModal.addEventListener('click', (e) => {
 if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts && DOM.tabBtnAdvanced) {
     DOM.tabBtnAppearance.addEventListener('click', () => {
         DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
-        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
         DOM.tabContentAppearance.classList.remove('hidden');
         DOM.tabContentShortcuts.classList.add('hidden');
         DOM.tabContentAdvanced.classList.add('hidden');
@@ -919,8 +920,8 @@ if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts && DOM.tabBtnAdvanced) {
 
     DOM.tabBtnShortcuts.addEventListener('click', () => {
         DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
-        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
         DOM.tabContentShortcuts.classList.remove('hidden');
         DOM.tabContentAppearance.classList.add('hidden');
         DOM.tabContentAdvanced.classList.add('hidden');
@@ -928,8 +929,8 @@ if (DOM.tabBtnAppearance && DOM.tabBtnShortcuts && DOM.tabBtnAdvanced) {
 
     DOM.tabBtnAdvanced.addEventListener('click', () => {
         DOM.tabBtnAdvanced.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
-        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnAppearance.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
+        DOM.tabBtnShortcuts.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
         DOM.tabContentAdvanced.classList.remove('hidden');
         DOM.tabContentAppearance.classList.add('hidden');
         DOM.tabContentShortcuts.classList.add('hidden');
@@ -1044,7 +1045,7 @@ function gatherCurrentConfigFromUI() {
         max_output_tokens: parseInt(DOM.maxTokensInput?.value || 8192, 10),
         safety_hate_speech: DOM.safetyHateSelect?.value || 'NONE',
         safety_harassment: DOM.safetyHarassmentSelect?.value || 'NONE',
-        safetyDangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
+        safety_dangerous_content: DOM.safetyDangerousSelect?.value || 'NONE',
         safety_sexually_explicit: DOM.safetyExplicitSelect?.value || 'NONE'
     };
 }
@@ -1194,10 +1195,10 @@ function updateStarredTabsUI() {
     if (!DOM.tabBtnStarredCurrent || !DOM.tabBtnStarredAll) return;
     if (state.starredFilter === 'current') {
         DOM.tabBtnStarredCurrent.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnStarredAll.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnStarredAll.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
     } else {
         DOM.tabBtnStarredAll.className = 'px-4 py-1.5 text-accent border-b-2 border-accent font-semibold transition-colors';
-        DOM.tabBtnStarredCurrent.className = 'px-4 py-1.5 text-zinc-400 hover:text-zinc-200 border-b-2 border-transparent transition-colors';
+        DOM.tabBtnStarredCurrent.className = 'px-4 py-1.5 text-[#8e918f] hover:text-[#f0f4f9] border-b-2 border-transparent transition-colors';
     }
 }
 
@@ -1257,7 +1258,7 @@ function startRenameTitle() {
     const currentChat = state.chats.find(c => (c.id || c.ID) === state.activeChatId);
     if (!currentChat) return;
 
-    DOM.currentChatTitleContainer.classList.add('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.add('border-[#37393b]', 'bg-[#1e1f20]');
     DOM.currentChatTitleContainer.classList.remove('border-transparent');
 
     DOM.currentChatTitle.classList.add('hidden');
@@ -1280,7 +1281,7 @@ async function finishRenameTitle() {
     const newTitle = DOM.chatTitleInput.value.trim();
     const oldTitle = currentChat.title || currentChat.Title || '';
 
-    DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+    DOM.currentChatTitleContainer.classList.remove('border-[#37393b]', 'bg-[#1e1f20]');
     DOM.currentChatTitleContainer.classList.add('border-transparent');
 
     DOM.chatTitleInput.classList.add('hidden');
@@ -1314,7 +1315,7 @@ DOM.chatTitleInput.addEventListener('keydown', (e) => {
         e.preventDefault();
         DOM.chatTitleInput.blur();
     } else if (e.key === 'Escape') {
-        DOM.currentChatTitleContainer.classList.remove('border-zinc-700', 'bg-zinc-900/50');
+        DOM.currentChatTitleContainer.classList.remove('border-[#37393b]', 'bg-[#1e1f20]');
         DOM.currentChatTitleContainer.classList.add('border-transparent');
         DOM.chatTitleInput.classList.add('hidden');
         DOM.currentChatTitle.classList.remove('hidden');
@@ -1442,7 +1443,7 @@ document.querySelectorAll('.btn-tag-preset').forEach(btn => {
 });
 
 async function renderStarredMessages() {
-    DOM.starredMessagesList.innerHTML = '<div class="text-center text-zinc-500 py-8 text-xs">Loading...</div>';
+    DOM.starredMessagesList.innerHTML = '<div class="text-center text-[#8e918f] py-8 text-xs">Loading...</div>';
 
     try {
         const bookmarks = await AppAPI.getBookmarks() || [];
@@ -1454,7 +1455,7 @@ async function renderStarredMessages() {
         }
 
         if (filteredBookmarks.length === 0) {
-            DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+            DOM.starredMessagesList.innerHTML = `<div class="text-center text-[#8e918f] py-8 text-xs">${t('noStarred')}</div>`;
             return;
         }
 
@@ -1467,29 +1468,29 @@ async function renderStarredMessages() {
             const content = item.message_content || item.MessageContent || '';
 
             const div = document.createElement('div');
-            div.className = 'bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-2 text-xs text-zinc-200 select-text animate-fade-in';
+            div.className = 'bg-[#131314] border border-[#313335] rounded-2xl p-4 space-y-2 text-xs text-[#e3e3e3] select-text animate-fade-in';
             div.setAttribute('data-starred-message-id', messageId);
 
             div.innerHTML = `
-              <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono border-b border-zinc-800/60 pb-1.5">
+              <div class="flex items-center justify-between text-[10px] text-[#8e918f] font-mono border-b border-[#313335] pb-1.5">
                 <div class="flex items-center gap-2">
-                  <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[9px] font-bold text-accent">${sender === 'user' ? 'YOU' : 'AI'}</span>
-                  <span class="truncate max-w-[200px]">${chatTitle}</span>
+                  <span class="px-1.5 py-0.5 rounded bg-[#1e1f20] border border-[#313335] text-[9px] font-bold text-accent">${sender === 'user' ? 'YOU' : 'AI'}</span>
+                  <span class="truncate max-w-[200px] text-[#c4c7c5]">${chatTitle}</span>
                 </div>
                 <span>${formatMessageTime(createdAt)}</span>
               </div>
               <div class="markdown-body">${marked.parse(content)}</div>
-              <div class="flex items-center justify-end gap-1 pt-1 border-t border-zinc-800/40">
-                <button class="btn-goto-star-msg p-1.5 text-zinc-500 hover:text-indigo-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('goToMessage')}">
+              <div class="flex items-center justify-end gap-1 pt-1 border-t border-[#313335]">
+                <button class="btn-goto-star-msg p-1.5 text-[#8e918f] hover:text-accent hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('goToMessage')}">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M12 3v3m0 12v3M3 12h3m12 0h3m-9-3a3 3 0 100 6 3 3 0 000-6z"/>
                   </svg>
                 </button>
-                <button class="btn-copy-star-text p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+                <button class="btn-copy-star-text p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
                 </button>
-                <button class="btn-unstar-item p-1.5 text-amber-400 hover:text-rose-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
+                <button class="btn-unstar-item p-1.5 text-amber-300 hover:text-rose-400 hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="Remove Bookmark">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                 </button>
               </div>
@@ -1506,9 +1507,9 @@ async function renderStarredMessages() {
                     const msgEl = DOM.messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
                     if (msgEl) {
                         msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        msgEl.classList.add('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-zinc-950', 'transition-all', 'duration-500');
+                        msgEl.classList.add('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-[#131314]', 'transition-all', 'duration-500');
                         setTimeout(() => {
-                            msgEl.classList.remove('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-zinc-950', 'transition-all', 'duration-500');
+                            msgEl.classList.remove('ring-2', 'ring-accent', 'ring-offset-2', 'ring-offset-[#131314]', 'transition-all', 'duration-500');
                         }, 2000);
                     }
                 }, 150);
@@ -1518,7 +1519,7 @@ async function renderStarredMessages() {
                 try {
                     await navigator.clipboard.writeText(content);
                     const originalHTML = this.innerHTML;
-                    this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                    this.innerHTML = `<svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                     setTimeout(() => {
                         this.innerHTML = originalHTML;
                     }, 2000);
@@ -1533,14 +1534,14 @@ async function renderStarredMessages() {
                     showToast(t('starredRemoved'), 'info');
                     div.remove();
                     if (DOM.starredMessagesList.children.length === 0) {
-                        DOM.starredMessagesList.innerHTML = `<div class="text-center text-zinc-500 py-8 text-xs">${t('noStarred')}</div>`;
+                        DOM.starredMessagesList.innerHTML = `<div class="text-center text-[#8e918f] py-8 text-xs">${t('noStarred')}</div>`;
                     }
 
                     const chatMsg = DOM.messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
                     if (chatMsg) {
                         const starBtn = chatMsg.querySelector('.btn-star-msg');
                         if (starBtn) {
-                            starBtn.classList.remove('text-amber-400');
+                            starBtn.classList.remove('text-amber-300');
                             const svg = starBtn.querySelector('svg');
                             if (svg) svg.setAttribute('fill', 'none');
                         }
@@ -1555,7 +1556,7 @@ async function renderStarredMessages() {
         });
     } catch (err) {
         console.error('Bookmarks load error:', err);
-        DOM.starredMessagesList.innerHTML = `<div class="text-center text-rose-400 py-8 text-xs">Error loading bookmarks</div>`;
+        DOM.starredMessagesList.innerHTML = `<div class="text-center text-rose-300 py-8 text-xs">Error loading bookmarks</div>`;
     }
 }
 
@@ -1619,7 +1620,7 @@ DOM.btnExportJson.addEventListener('click', async () => {
 function updateSendButtonUI() {
     if (state.isSending) {
         DOM.btnSend.disabled = false;
-        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-rose-700/90 hover:bg-rose-600 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
         <rect x="6" y="6" width="12" height="12" rx="1.5"/>
@@ -1627,7 +1628,7 @@ function updateSendButtonUI() {
     `;
         DOM.btnSend.title = t('genStopped');
     } else {
-        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-accent bg-accent-hover disabled:opacity-30 text-white rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
+        DOM.btnSend.className = 'w-8 h-8 p-1.5 bg-accent bg-accent-hover disabled:opacity-25 text-[#040e1b] rounded-full transition-all duration-150 shrink-0 shadow-md flex items-center justify-center';
         DOM.btnSend.innerHTML = `
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V5m0 0l-6 6m6-6l6 6"/>
@@ -1732,7 +1733,7 @@ async function autoLoginWithSavedKey() {
 function setupUpdateListener() {
     if (window.runtime?.EventsOn) {
         window.runtime.EventsOn("update-available", (release) => {
-            const newVersion = release.tag_name || release.TagName || "v0.5.0";
+            const newVersion = release.tag_name || release.TagName || "v0.6.0";
             const releaseUrl = release.html_url || release.HtmlUrl;
 
             const messageText = t('updateAvailable').replace('{version}', newVersion);
@@ -1741,7 +1742,7 @@ function setupUpdateListener() {
 
             if (DOM.toastBox && releaseUrl) {
                 DOM.toast.classList.remove('pointer-events-none');
-                DOM.toastBox.classList.add('cursor-pointer', 'hover:border-indigo-500', 'transition-colors');
+                DOM.toastBox.classList.add('cursor-pointer', 'hover:border-accent', 'transition-colors');
 
                 DOM.toastBox.onclick = () => {
                     if (window.runtime?.BrowserOpenURL) {
@@ -1888,7 +1889,7 @@ function renderChatList(customList = null) {
 
         if (groupTitle) {
             const headerDiv = document.createElement('div');
-            headerDiv.className = 'text-[10px] uppercase font-bold text-zinc-500 px-3 pt-3 pb-1 select-none';
+            headerDiv.className = 'text-[10px] uppercase font-semibold text-[#8e918f] px-3 pt-3 pb-1 select-none tracking-wider';
             headerDiv.textContent = groupTitle;
             DOM.chatList.appendChild(headerDiv);
         }
@@ -1904,7 +1905,7 @@ function renderChatList(customList = null) {
             btn.className = `w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-all flex flex-col gap-1 group ${
                 isActive
                     ? 'bg-accent-alpha text-accent border border-accent'
-                    : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
+                    : 'text-[#c4c7c5] hover:bg-[#282a2c] hover:text-[#f0f4f9]'
             }`;
 
             btn.innerHTML = `
@@ -1915,10 +1916,10 @@ function renderChatList(customList = null) {
             <span class="truncate">${title}</span>
           </div>
           <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="btn-tag p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="Tag">
+            <button class="btn-tag p-1 text-[#8e918f] hover:text-accent rounded-full transition-colors" title="Tag">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5a1 1 0 01.707.293l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A1 1 0 013 12V7a4 4 0 014-4z"/></svg>
             </button>
-            <button class="btn-pin p-1 text-zinc-500 hover:text-accent rounded-full transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
+            <button class="btn-pin p-1 text-[#8e918f] hover:text-accent rounded-full transition-colors" title="${isPinned ? 'Unpin' : 'Pin'}">
               <svg class="w-3.5 h-3.5 ${isPinned ? 'rotate-45 text-accent' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
             </button>
           </div>
@@ -2116,19 +2117,19 @@ function processCodeBlocks(container) {
         codeContentDiv.appendChild(code.cloneNode(true));
 
         const rawTextArea = document.createElement('textarea');
-        rawTextArea.className = 'w-full h-48 bg-zinc-950 text-zinc-300 font-mono text-sm p-4 focus:outline-none resize-y hidden custom-scrollbar';
+        rawTextArea.className = 'w-full h-48 bg-[#131314] text-[#e3e3e3] font-mono text-sm p-4 focus:outline-none resize-y hidden custom-scrollbar';
         rawTextArea.value = rawCodeText;
         rawTextArea.readOnly = true;
 
         codeWrapper.appendChild(codeContentDiv);
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-4 py-1.5 bg-zinc-900 border-b border-zinc-800/80 text-xs text-zinc-400 font-mono select-none';
+        header.className = 'flex items-center justify-between px-4 py-1.5 bg-[#1e1f20] border-b border-[#313335] text-xs text-[#8e918f] font-mono select-none';
         header.innerHTML = `
       <span>${lang}</span>
       <div class="flex items-center gap-1">
-        <button class="btn-toggle-raw hover:text-zinc-100 transition-colors px-2 py-1">Raw</button>
-        <button class="btn-copy-code p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700/50 transition-all rounded-full flex items-center justify-center" title="${t('copyCode')}">
+        <button class="btn-toggle-raw hover:text-[#f0f4f9] transition-colors px-2 py-1">Raw</button>
+        <button class="btn-copy-code p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('copyCode')}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
         </button>
       </div>
@@ -2158,7 +2159,7 @@ function processCodeBlocks(container) {
             try {
                 await navigator.clipboard.writeText(rawCodeText);
                 const originalHTML = this.innerHTML;
-                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
                     this.innerHTML = originalHTML;
                 }, 2000);
@@ -2189,7 +2190,7 @@ function updateAIMessageContent(wrapper, content, duration = null) {
     const timeStr = formatMessageTime(createdAt);
 
     const renderFooter = () => `
-      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-[#8e918f]' : 'text-[#8e918f]'} mt-2 select-none font-mono leading-none">
         ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
         <span>${timeStr}</span>
       </div>
@@ -2216,7 +2217,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
     }
 
     const renderFooter = () => `
-      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-zinc-400' : 'text-zinc-500'} mt-2 select-none font-mono leading-none">
+      <div class="flex items-center justify-between gap-3 text-[10px] ${isUser ? 'text-[#8e918f]' : 'text-[#8e918f]'} mt-2 select-none font-mono leading-none">
         ${(!isUser && duration) ? `<span class="opacity-0 group-hover:opacity-100 transition-opacity text-accent font-medium">${duration}</span>` : '<span></span>'}
         <span>${timeStr}</span>
       </div>
@@ -2224,15 +2225,15 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
     wrapper.innerHTML = `
     <div class="flex gap-4 max-w-4xl w-full group ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold text-white shadow-sm mt-0.5 ${isUser ? 'bg-zinc-700' : 'bg-transparent border border-zinc-700/80 text-accent'}">
+      <div class="user-avatar w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold shadow-sm mt-0.5 ${isUser ? 'bg-[#282a2c] text-[#f0f4f9] border border-[#37393b]' : 'bg-transparent border border-accent text-accent'}">
         ${isUser ? 'YOU' : 'AI'}
       </div>
 
       <div class="flex flex-col gap-1 min-w-0 ${isUser ? 'items-end' : 'items-start w-full'}">
         <div class="msg-box select-text relative transition-all duration-200 ${
         isUser
-            ? 'bg-zinc-800 text-zinc-100 px-6 py-3.5 rounded-[28px] markdown-body markdown-user shadow-sm w-auto break-words max-w-full [overflow-wrap:break-word]'
-            : 'text-zinc-200 markdown-body w-full'
+            ? 'bg-[#282a2c] text-[#f0f4f9] px-6 py-3.5 rounded-[24px] markdown-body markdown-user shadow-sm w-auto break-words max-w-full [overflow-wrap:break-word] border border-[#37393b]'
+            : 'text-[#e3e3e3] markdown-body w-full'
     }">
           <div class="msg-attachments-container hidden flex flex-wrap gap-2 mb-2.5"></div>
           <div class="markdown-text-body break-words w-full max-w-full [overflow-wrap:break-word]"></div>
@@ -2240,23 +2241,23 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
 
         <div class="msg-actions flex items-center gap-1 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           ${isUser ? `
-          <button class="btn-edit-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('editPrompt')}">
+          <button class="btn-edit-msg p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('editPrompt')}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
           </button>
           ` : ''}
-          <button class="btn-copy-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
+          <button class="btn-copy-msg p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('copyText')}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
           </button>
-          <button class="btn-star-msg p-1.5 text-zinc-500 hover:text-amber-400 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center ${isStarred ? 'text-amber-400' : ''}" title="Bookmark">
+          <button class="btn-star-msg p-1.5 text-[#8e918f] hover:text-amber-300 hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center ${isStarred ? 'text-amber-300' : ''}" title="Bookmark">
             <svg class="w-5 h-5" fill="${isStarred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
           ${(!isUser && isLastInChat) ? `
-          <button class="btn-regenerate-msg p-1.5 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-all rounded-full flex items-center justify-center" title="${t('regenerate')}">
+          <button class="btn-regenerate-msg p-1.5 text-[#8e918f] hover:text-[#f0f4f9] hover:bg-[#282a2c] transition-all rounded-full flex items-center justify-center" title="${t('regenerate')}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
           </button>
           ` : ''}
           ${(!isUser && isAborted) ? `
-            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-400 hover:text-rose-300 hover:bg-zinc-800/60 transition-all px-3 py-1.5 rounded-full">
+            <button class="btn-continue-ai flex items-center gap-1 text-[11px] text-rose-300 hover:text-rose-200 hover:bg-[#282a2c] transition-all px-3 py-1.5 rounded-full">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               <span>${t('continueGen')}</span>
             </button>
@@ -2275,12 +2276,12 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             const data = att.data || att.Data || '';
 
             const badge = document.createElement('div');
-            badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-xs text-zinc-200 cursor-pointer hover:border-indigo-500 hover:bg-zinc-800 transition-all select-none shadow-sm';
+            badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1e1f20] border border-[#313335] rounded-xl text-xs text-[#e3e3e3] cursor-pointer hover:border-accent hover:bg-[#282a2c] transition-all select-none shadow-sm';
 
             const isImage = mimeType.startsWith('image/');
             const iconSvg = isImage
                 ? `<svg class="w-3.5 h-3.5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`
-                : `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+                : `<svg class="w-3.5 h-3.5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
 
             badge.innerHTML = `${iconSvg}<span class="truncate max-w-[140px]" title="${fileName}">${fileName}</span>`;
             badge.onclick = () => openFilePreview({ file_name: fileName, mime_type: mimeType, data: data });
@@ -2310,10 +2311,10 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
             const editBox = document.createElement('div');
             editBox.className = 'w-full flex flex-col gap-2 my-1 items-end';
             editBox.innerHTML = `
-              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-zinc-900 border border-zinc-700/80 rounded-2xl p-3.5 text-sm text-zinc-100 focus:outline-none focus:border-indigo-500 transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:break-word]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+              <textarea class="edit-textarea w-full min-w-[280px] sm:min-w-[380px] min-h-[80px] max-h-36 bg-[#1e1f20] border border-[#313335] rounded-2xl p-3.5 text-sm text-[#f0f4f9] focus:outline-none focus:border-accent transition-all resize-none custom-scrollbar leading-relaxed break-words [overflow-wrap:break-word]">${currentRaw.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
               <div class="flex items-center gap-2">
-                <button class="btn-cancel-edit px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-full text-xs font-medium transition-colors">${t('btnCancel')}</button>
-                <button class="btn-save-edit px-3.5 py-1.5 bg-accent bg-accent-hover text-white rounded-full text-xs font-medium transition-colors shadow-md">${t('btnSaveSubmit')}</button>
+                <button class="btn-cancel-edit px-3 py-1.5 bg-[#282a2c] hover:bg-[#333538] text-[#c4c7c5] rounded-full text-xs font-medium transition-colors">${t('btnCancel')}</button>
+                <button class="btn-save-edit px-3.5 py-1.5 bg-accent bg-accent-hover text-[#040e1b] rounded-full text-xs font-semibold transition-colors shadow-md">${t('btnSaveSubmit')}</button>
               </div>
             `;
 
@@ -2382,7 +2383,7 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
                 const currentRaw = decodeURIComponent(wrapper.getAttribute('data-raw-content') || '');
                 await navigator.clipboard.writeText(currentRaw);
                 const originalHTML = this.innerHTML;
-                this.innerHTML = `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                this.innerHTML = `<svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 setTimeout(() => {
                     this.innerHTML = originalHTML;
                 }, 2000);
@@ -2401,15 +2402,15 @@ function appendMessageUI(role, content, createdAt, duration = null, isAborted = 
                 return;
             }
 
-            const isCurrentlyStarred = starBtn.classList.contains('text-amber-400');
+            const isCurrentlyStarred = starBtn.classList.contains('text-amber-300');
 
             const setStarredUI = (active) => {
                 if (active) {
-                    starBtn.classList.add('text-amber-400');
+                    starBtn.classList.add('text-amber-300');
                     const svg = starBtn.querySelector('svg');
                     if (svg) svg.setAttribute('fill', 'currentColor');
                 } else {
-                    starBtn.classList.remove('text-amber-400');
+                    starBtn.classList.remove('text-amber-300');
                     const svg = starBtn.querySelector('svg');
                     if (svg) svg.setAttribute('fill', 'none');
                 }
@@ -2481,10 +2482,10 @@ function appendLoaderUI() {
 
     wrapper.innerHTML = `
     <div class="flex gap-4 max-w-4xl w-full flex-row">
-      <div class="w-8 h-8 rounded-full bg-transparent border border-zinc-700/80 text-accent flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">
+      <div class="w-8 h-8 rounded-full bg-transparent border border-accent text-accent flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">
         AI
       </div>
-      <div class="py-2 text-zinc-400 flex items-center gap-1.5 w-full">
+      <div class="py-2 text-[#8e918f] flex items-center gap-1.5 w-full">
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.2s]"></div>
         <div class="w-2 h-2 bg-accent rounded-full animate-pulse-fast [animation-delay:0.4s]"></div>

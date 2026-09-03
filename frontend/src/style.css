@@ -3,42 +3,53 @@
 @tailwind utilities;
 
 :root, html[data-accent="indigo"] {
-    --accent-color: #6366f1;
-    --accent-hover: #4f46e5;
-    --accent-alpha: rgba(99, 102, 241, 0.15);
-    --accent-border: rgba(99, 102, 241, 0.35);
+    --accent-color: #a8c7fa;
+    --accent-hover: #8ab4f8;
+    --accent-container: #004a77;
+    --on-accent-container: #c2e7ff;
+    --accent-alpha: rgba(168, 199, 250, 0.12);
+    --accent-border: rgba(168, 199, 250, 0.28);
 }
 
 html[data-accent="emerald"] {
-    --accent-color: #10b981;
-    --accent-hover: #059669;
-    --accent-alpha: rgba(16, 185, 129, 0.15);
-    --accent-border: rgba(16, 185, 129, 0.35);
+    --accent-color: #a8ebb5;
+    --accent-hover: #86efac;
+    --accent-container: #0a5327;
+    --on-accent-container: #cbfad4;
+    --accent-alpha: rgba(168, 235, 181, 0.12);
+    --accent-border: rgba(168, 235, 181, 0.28);
 }
 
 html[data-accent="rose"] {
-    --accent-color: #f43f5e;
-    --accent-hover: #e11d48;
-    --accent-alpha: rgba(244, 63, 94, 0.15);
-    --accent-border: rgba(244, 63, 94, 0.35);
+    --accent-color: #f2b8b5;
+    --accent-hover: #fca5a5;
+    --accent-container: #601410;
+    --on-accent-container: #f9dedc;
+    --accent-alpha: rgba(242, 184, 181, 0.12);
+    --accent-border: rgba(242, 184, 181, 0.28);
 }
 
 html[data-accent="amber"] {
-    --accent-color: #f59e0b;
-    --accent-hover: #d97706;
-    --accent-alpha: rgba(245, 158, 11, 0.15);
-    --accent-border: rgba(245, 158, 11, 0.35);
+    --accent-color: #ffdf99;
+    --accent-hover: #fde047;
+    --accent-container: #4c3700;
+    --on-accent-container: #ffe08b;
+    --accent-alpha: rgba(255, 223, 153, 0.12);
+    --accent-border: rgba(255, 223, 153, 0.28);
 }
 
 html[data-accent="cyan"] {
-    --accent-color: #06b6d4;
-    --accent-hover: #0891b2;
-    --accent-alpha: rgba(6, 182, 212, 0.15);
-    --accent-border: rgba(6, 182, 212, 0.35);
+    --accent-color: #a1e3f9;
+    --accent-hover: #67e8f9;
+    --accent-container: #004f58;
+    --on-accent-container: #bcebf9;
+    --accent-alpha: rgba(161, 227, 249, 0.12);
+    --accent-border: rgba(161, 227, 249, 0.28);
 }
 
 .bg-accent {
     background-color: var(--accent-color) !important;
+    color: #040e1b !important;
 }
 
 .bg-accent-hover:hover {
@@ -64,23 +75,23 @@ html[data-accent="cyan"] {
 select, select option {
     appearance: none;
     -webkit-appearance: none;
-    background-color: #18181b !important;
-    color: #f4f4f5 !important;
-    border-color: #27272a !important;
+    background-color: #1e1f20 !important;
+    color: #e3e3e3 !important;
+    border-color: #313335 !important;
 }
 
 html, body {
-    background-color: #09090b !important;
-    color: #f4f4f5 !important;
+    background-color: #131314 !important;
+    color: #e3e3e3 !important;
 }
 
 ::selection {
-    background-color: rgba(99, 102, 241, 0.35);
+    background-color: rgba(168, 199, 250, 0.25);
     color: #ffffff;
 }
 
 #sidebar {
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width 0.3s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 #sidebar.collapsed {
@@ -93,7 +104,7 @@ html, body {
 }
 
 #right-sidebar {
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width 0.3s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s cubic-bezier(0.2, 0, 0, 1), padding 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 #right-sidebar.collapsed {
@@ -120,7 +131,7 @@ html, body {
 }
 
 #btn-scroll-bottom {
-    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 #btn-scroll-bottom.hidden {
@@ -130,31 +141,29 @@ html, body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 9999px;
+    background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.14);
     border-radius: 9999px;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     background-clip: padding-box;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.35);
-    border: 2px solid transparent;
-    background-clip: padding-box;
+    background: rgba(255, 255, 255, 0.28);
 }
 
 .markdown-body {
     font-size: 0.95rem;
     line-height: 1.7;
+    color: #e3e3e3;
     word-break: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -180,6 +189,13 @@ html, body {
     word-break: normal;
 }
 
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    color: #f0f4f9;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
 .markdown-body p {
     margin-bottom: 0.75rem;
 }
@@ -197,30 +213,33 @@ html, body {
 .markdown-body ol { list-style-type: decimal; }
 
 .markdown-body code:not(pre code) {
-    background-color: rgba(255, 255, 255, 0.12);
-    padding: 0.15rem 0.4rem;
+    background-color: #282a2c;
+    color: #e3e3e3;
+    padding: 0.18rem 0.45rem;
     border-radius: 0.375rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.85em;
-    color: #f43f5e;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     overflow-wrap: break-word;
     word-break: break-word;
 }
 
 .markdown-user code:not(pre code) {
-    color: #fecdd3;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: #1e1f20;
+    color: #c2e7ff;
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .markdown-body blockquote {
-    border-left: 4px solid var(--accent-color);
+    border-left: 3px solid var(--accent-color);
     padding: 0.5rem 1rem;
     margin-left: 0;
     margin-right: 0;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    background-color: rgba(255, 255, 255, 0.03);
-    border-radius: 0.5rem 1rem 1rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 0.25rem 0.75rem 0.75rem 0.25rem;
+    color: #c4c7c5;
     overflow-wrap: break-word;
 }
 
@@ -230,8 +249,8 @@ html, body {
     border-spacing: 0;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
+    border: 1px solid #313335;
+    border-radius: 0.75rem;
     overflow: hidden;
     word-break: normal;
     overflow-wrap: break-word;
@@ -239,13 +258,14 @@ html, body {
 
 .markdown-body th, .markdown-body td {
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #313335;
     text-align: left;
     overflow-wrap: break-word;
 }
 
 .markdown-body th {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #1e1f20;
+    color: #f0f4f9;
     font-weight: 600;
 }
 
@@ -256,10 +276,10 @@ html, body {
 .markdown-body pre {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: #18181b;
+    border: 1px solid #313335;
+    background-color: #1e1f20;
 }
 
 .markdown-body pre code {
@@ -282,17 +302,17 @@ html, body {
 }
 
 .btn-pin, .btn-tag, .btn-star-msg {
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.15s ease, color 0.15s ease;
 }
 
 .btn-pin:hover, .btn-tag:hover, .btn-star-msg:hover {
-    transform: scale(1.15);
+    transform: scale(1.12);
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(6px);
+        transform: translateY(4px);
     }
     to {
         opacity: 1;
@@ -301,11 +321,11 @@ html, body {
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 @keyframes pulse-fast {
-    0%, 100% { opacity: 0.3; }
+    0%, 100% { opacity: 0.35; }
     50% { opacity: 0.9; }
 }
 
@@ -313,28 +333,14 @@ html, body {
     animation: pulse-fast 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes sparkGlowPulse {
-    0%, 100% {
-        opacity: 0.3;
-    }
-    50% {
-        opacity: 0.75;
-    }
-}
-
-.spark-contour-glow {
-    position: relative;
-    overflow: visible !important;
-}
-
 .prompt-marker-dot {
     position: absolute;
     right: 2px;
-    width: 8px;
-    height: 24px;
+    width: 6px;
+    height: 22px;
     border-radius: 9999px;
     background-color: var(--accent-color);
-    opacity: 0.6;
+    opacity: 0.65;
     transition: opacity 0.2s ease, transform 0.2s ease;
     pointer-events: auto;
     transform: translateY(-50%);
@@ -342,13 +348,13 @@ html, body {
 
 .prompt-marker-dot:hover {
     opacity: 1;
-    transform: translateY(-50%) scale(1.15);
+    transform: translateY(-50%) scale(1.2);
     cursor: pointer;
 }
 
 .prompt-marker-tooltip {
     position: absolute;
-    right: 16px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     opacity: 0;
